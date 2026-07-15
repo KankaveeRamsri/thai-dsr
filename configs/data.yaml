@@ -1,0 +1,24 @@
+# data.yaml
+# Configuration for dataset locations, splits, and audio preprocessing.
+
+paths:
+  raw_dir: data/raw            # untouched source recordings
+  clean_dir: data/clean        # clean/reference audio
+  distorted_dir: data/distorted  # synthetically distorted or real dysarthric audio
+  embeddings_dir: data/embeddings  # extracted speaker/content embeddings
+  manifest_path: data/manifest.csv  # output of build_manifest.py
+
+audio:
+  sample_rate: 16000    # target sample rate all audio is resampled to
+  mono: true             # force mono channel
+  max_duration_sec: 10   # clip/pad utterances longer than this
+
+split:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  seed: 42                # random seed for reproducible splits
+
+distortion:
+  types: []                # list of distortion types to apply, e.g. [pitch_jitter, slur, dropout]
+  severity_levels: []      # e.g. [mild, moderate, severe]

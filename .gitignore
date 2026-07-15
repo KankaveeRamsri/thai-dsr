@@ -1,0 +1,11 @@
+data/raw/
+data/distorted/
+data/embeddings/
+results/checkpoints/
+results/logs/
+__pycache__/
+*.pyc
+.DS_Store
+*.npy
+*.pt
+.venv/

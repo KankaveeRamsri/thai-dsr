@@ -1,0 +1,26 @@
+# train.yaml
+# Configuration for the training run: optimization, logging, checkpoints.
+
+optim:
+  batch_size: 16
+  learning_rate: 0.0001
+  weight_decay: 0.0
+  num_epochs: 100
+  optimizer: adam        # e.g. adam | adamw | sgd
+  lr_scheduler: null      # e.g. cosine | step | null
+
+loss:
+  reconstruction_weight: 1.0   # weight for feature/waveform reconstruction loss
+  speaker_consistency_weight: 0.0  # weight for speaker-embedding preservation loss
+
+logging:
+  log_dir: results/logs
+  checkpoint_dir: results/checkpoints
+  log_every_n_steps: 50
+  save_every_n_epochs: 5
+
+runtime:
+  device: cuda        # cuda | cpu | mps
+  num_workers: 4
+  seed: 42
+  resume_from: null    # path to checkpoint to resume from

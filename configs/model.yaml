@@ -1,0 +1,20 @@
+# model.yaml
+# Configuration for model architecture: encoder, mapper, and vocoder.
+
+encoder:
+  speaker_model: speechbrain/spkrec-ecapa-voxceleb  # pretrained ECAPA-TDNN checkpoint
+  content_model: null       # e.g. a HuggingFace wav2vec2/HuBERT model name
+  embedding_dim: 192         # speaker embedding size
+  freeze: true                # whether to freeze pretrained encoder weights
+
+mapper:
+  architecture: transformer   # e.g. transformer | seq2seq | diffusion
+  hidden_dim: 256
+  num_layers: 4
+  num_heads: 4
+  dropout: 0.1
+
+vocoder:
+  type: hifigan                # vocoder architecture
+  checkpoint: null              # path to pretrained/fine-tuned vocoder weights
+  sample_rate: 16000
