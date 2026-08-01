@@ -68,7 +68,7 @@ SEVERITY_PARAMS = {
     },
     "severe": {
         "f0_shift_range": (0.15, 0.20),
-        "jitter_std": 0.025,
+        "jitter_std": 0.07,
         "formant_shift_range": (0.09, 0.14),
         "segment_duration_range": (0.3, 0.5),
         "tempo_rate_range": (0.6, 1.4),
