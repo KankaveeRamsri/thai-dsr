@@ -39,9 +39,14 @@ from models import Generator  # noqa: E402
 
 DEFAULT_LAYER = 9
 DEFAULT_CHECKPOINT = os.path.join(REPO_ROOT, "results", "checkpoints", "best_mapper.pt")
-DEFAULT_HIFIGAN_MODEL = "LJ_FT_T2_V1"
+DEFAULT_HIFIGAN_MODEL = "UNIVERSAL_V1"
 DEFAULT_OUTPUT_DIR = os.path.join(REPO_ROOT, "results", "audio_samples")
 DEFAULT_DISTORTED_DIR = os.path.join(REPO_ROOT, "data", "distorted")
+
+# HiFi-GAN was trained on mel-spectrograms in roughly this range; the mapper's
+# log(mel + 1e-9) output can stray outside it, so clamp before vocoding.
+MEL_CLAMP_MIN = -11
+MEL_CLAMP_MAX = 2
 
 
 def get_device():
@@ -116,6 +121,7 @@ def reconstruct(wav_path, output_dir, encoder, mapper, hifigan, hifigan_config, 
     t0 = time.perf_counter()
     with torch.no_grad():
         predicted_mel = mapper(embedding)  # (1, T_mel, 80)
+    predicted_mel = predicted_mel.clamp(min=MEL_CLAMP_MIN, max=MEL_CLAMP_MAX)
     timings["4. mapper inference"] = time.perf_counter() - t0
 
     t0 = time.perf_counter()

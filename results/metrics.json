@@ -1,0 +1,138 @@
+{
+  "severity": "severe",
+  "num_utterances": 10,
+  "per_utterance": [
+    {
+      "utterance_id": "001_วันนี้ฉะฉันรู้สึกดีมาก",
+      "severity": "severe",
+      "stoi_distorted": 0.48364497611581386,
+      "stoi_reconstructed": 0.036518197094402835,
+      "pesq_distorted": 1.083348035812378,
+      "pesq_reconstructed": 1.124143362045288,
+      "snr_distorted": -5.042484283447266,
+      "snr_reconstructed": -3.7469635009765625
+    },
+    {
+      "utterance_id": "002_ขอน้ำหนึ่งแก้วได้ไหม",
+      "severity": "severe",
+      "stoi_distorted": 0.1599748244196477,
+      "stoi_reconstructed": 0.21439038797651613,
+      "pesq_distorted": 1.091636061668396,
+      "pesq_reconstructed": 1.0970535278320312,
+      "snr_distorted": -5.641692161560059,
+      "snr_reconstructed": -4.943138122558594
+    },
+    {
+      "utterance_id": "003_ฉันอยู่ที่บ้านนะ",
+      "severity": "severe",
+      "stoi_distorted": 0.15841867019732894,
+      "stoi_reconstructed": 0.06519849986039827,
+      "pesq_distorted": 1.114425539970398,
+      "pesq_reconstructed": 1.1353933811187744,
+      "snr_distorted": -5.948954105377197,
+      "snr_reconstructed": -3.6889684200286865
+    },
+    {
+      "utterance_id": "004_หิวข้าวแล้ว",
+      "severity": "severe",
+      "stoi_distorted": -0.011191204274538598,
+      "stoi_reconstructed": 0.1076489168929702,
+      "pesq_distorted": 1.1621204614639282,
+      "pesq_reconstructed": 1.1677699089050293,
+      "snr_distorted": -5.12087345123291,
+      "snr_reconstructed": -4.3257293701171875
+    },
+    {
+      "utterance_id": "005_ขอบคุณมากนะครับ",
+      "severity": "severe",
+      "stoi_distorted": 0.18652179066427937,
+      "stoi_reconstructed": 0.10111962028104919,
+      "pesq_distorted": 1.264594554901123,
+      "pesq_reconstructed": 1.1268277168273926,
+      "snr_distorted": -5.454870223999023,
+      "snr_reconstructed": -5.043351650238037
+    },
+    {
+      "utterance_id": "006_ช่วยฉันด้วยได้ไหม",
+      "severity": "severe",
+      "stoi_distorted": -0.03799979480419697,
+      "stoi_reconstructed": 0.05532906894604382,
+      "pesq_distorted": 1.14174485206604,
+      "pesq_reconstructed": 1.1921851634979248,
+      "snr_distorted": -5.08181095123291,
+      "snr_reconstructed": -4.44277811050415
+    },
+    {
+      "utterance_id": "007_วันนี้อากาศร้อนมาก",
+      "severity": "severe",
+      "stoi_distorted": 0.11605514809486367,
+      "stoi_reconstructed": 0.23973241688553834,
+      "pesq_distorted": 1.143577218055725,
+      "pesq_reconstructed": 1.1095696687698364,
+      "snr_distorted": -5.665685653686523,
+      "snr_reconstructed": -5.078327655792236
+    },
+    {
+      "utterance_id": "008_ฉันชื่อกันต์กวี",
+      "severity": "severe",
+      "stoi_distorted": 0.21423502935289335,
+      "stoi_reconstructed": 0.3264191815029927,
+      "pesq_distorted": 1.1500775814056396,
+      "pesq_reconstructed": 1.0867239236831665,
+      "snr_distorted": -5.581782341003418,
+      "snr_reconstructed": -4.701451301574707
+    },
+    {
+      "utterance_id": "009_โทรหาหมอให้ทีได้ไหม",
+      "severity": "severe",
+      "stoi_distorted": 0.05210769421009425,
+      "stoi_reconstructed": 0.05074202610932668,
+      "pesq_distorted": 1.1566712856292725,
+      "pesq_reconstructed": 1.0868935585021973,
+      "snr_distorted": -4.658725738525391,
+      "snr_reconstructed": -4.141456604003906
+    },
+    {
+      "utterance_id": "010_ฉันต้องการความช่วยเหลือ",
+      "severity": "severe",
+      "stoi_distorted": 0.3274016401778417,
+      "stoi_reconstructed": 0.19064769860559433,
+      "pesq_distorted": 1.0981920957565308,
+      "pesq_reconstructed": 1.087135672569275,
+      "snr_distorted": -6.289462566375732,
+      "snr_reconstructed": -4.808311462402344
+    }
+  ],
+  "summary": {
+    "stoi": {
+      "distorted": {
+        "mean": 0.16491687741540273,
+        "std": 0.15572668889644725
+      },
+      "reconstructed": {
+        "mean": 0.13877460141548326,
+        "std": 0.09819535309221007
+      }
+    },
+    "pesq": {
+      "distorted": {
+        "mean": 1.1406387686729431,
+        "std": 0.05202012166436393
+      },
+      "reconstructed": {
+        "mean": 1.1213695883750916,
+        "std": 0.03604530449759283
+      }
+    },
+    "snr": {
+      "distorted": {
+        "mean": -5.448634147644043,
+        "std": 0.48193612694740295
+      },
+      "reconstructed": {
+        "mean": -4.4920477867126465,
+        "std": 0.5107843279838562
+      }
+    }
+  }
+}
