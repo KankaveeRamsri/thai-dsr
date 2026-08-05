@@ -1,0 +1,88 @@
+{
+  "severity": "severe",
+  "num_utterances": 5,
+  "per_utterance": [
+    {
+      "utterance_id": "001_I_need_help_please",
+      "severity": "severe",
+      "stoi_distorted": 0.20621075231576644,
+      "stoi_reconstructed": 0.116165148293074,
+      "pesq_distorted": 1.0575977563858032,
+      "pesq_reconstructed": 1.0301305055618286,
+      "snr_distorted": -3.0409934520721436,
+      "snr_reconstructed": -1.4447805881500244
+    },
+    {
+      "utterance_id": "002_Can_I_have_some_water",
+      "severity": "severe",
+      "stoi_distorted": 0.09347455996731699,
+      "stoi_reconstructed": 0.11341792700088732,
+      "pesq_distorted": 1.0471946001052856,
+      "pesq_reconstructed": 1.02689528465271,
+      "snr_distorted": -4.073309898376465,
+      "snr_reconstructed": -3.950234889984131
+    },
+    {
+      "utterance_id": "003_Call_the_doctor_please",
+      "severity": "severe",
+      "stoi_distorted": 0.09906898886733735,
+      "stoi_reconstructed": 0.13381641319389712,
+      "pesq_distorted": 1.0654727220535278,
+      "pesq_reconstructed": 1.0279093980789185,
+      "snr_distorted": -4.715139389038086,
+      "snr_reconstructed": -2.031395196914673
+    },
+    {
+      "utterance_id": "004_Please_call_my_family",
+      "severity": "severe",
+      "stoi_distorted": 0.019958345147679787,
+      "stoi_reconstructed": 0.08435215199227883,
+      "pesq_distorted": 1.030521035194397,
+      "pesq_reconstructed": 1.0252685546875,
+      "snr_distorted": -2.765869140625,
+      "snr_reconstructed": -1.5872318744659424
+    },
+    {
+      "utterance_id": "005_I_am_not_feeling_well",
+      "severity": "severe",
+      "stoi_distorted": 0.14687554710891237,
+      "stoi_reconstructed": 0.1736244422540095,
+      "pesq_distorted": 1.0528759956359863,
+      "pesq_reconstructed": 1.019531488418579,
+      "snr_distorted": -3.8544058799743652,
+      "snr_reconstructed": -2.3234357833862305
+    }
+  ],
+  "summary": {
+    "stoi": {
+      "distorted": {
+        "mean": 0.1131176386814026,
+        "std": 0.06904309028101407
+      },
+      "reconstructed": {
+        "mean": 0.12427521654682935,
+        "std": 0.032802002751920606
+      }
+    },
+    "pesq": {
+      "distorted": {
+        "mean": 1.050732421875,
+        "std": 0.01313412073755077
+      },
+      "reconstructed": {
+        "mean": 1.0259470462799072,
+        "std": 0.003995968145244929
+      }
+    },
+    "snr": {
+      "distorted": {
+        "mean": -3.689943790435791,
+        "std": 0.7905842661857605
+      },
+      "reconstructed": {
+        "mean": -2.2674155235290527,
+        "std": 1.003755807876587
+      }
+    }
+  }
+}

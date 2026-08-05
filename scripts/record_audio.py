@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Record Thai speech utterances from the microphone into data/raw/."""
+"""Record speech utterances from the microphone into data/raw/ (or --output_dir)."""
+import argparse
 import os
 import re
 import time
@@ -10,7 +11,7 @@ import soundfile as sf
 SAMPLE_RATE = 16000
 CHANNELS = 1
 DURATION_SECONDS = 5
-OUTPUT_DIR = os.path.join(
+DEFAULT_OUTPUT_DIR = os.path.join(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "raw"
 )
 
@@ -48,8 +49,17 @@ def record_utterance():
 
 
 def main():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    print("=== เครื่องมือบันทึกเสียงภาษาไทย ===")
+    parser = argparse.ArgumentParser(description="Record speech utterances from the microphone.")
+    parser.add_argument(
+        "--output_dir", type=str, default=DEFAULT_OUTPUT_DIR,
+        help=f"Directory to save recorded .wav files (default: {DEFAULT_OUTPUT_DIR})",
+    )
+    args = parser.parse_args()
+    output_dir = args.output_dir
+
+    os.makedirs(output_dir, exist_ok=True)
+    print("=== เครื่องมือบันทึกเสียง ===")
+    print(f"บันทึกไปที่: {output_dir}")
     print(f"อัตราสุ่มตัวอย่าง: {SAMPLE_RATE} Hz | ความยาว: {DURATION_SECONDS} วินาทีต่อประโยค\n")
 
     while True:
@@ -63,9 +73,9 @@ def main():
 
         audio = record_utterance()
 
-        index = next_index(OUTPUT_DIR)
+        index = next_index(output_dir)
         filename = f"{index:03d}_{sanitize_label(label)}.wav"
-        filepath = os.path.join(OUTPUT_DIR, filename)
+        filepath = os.path.join(output_dir, filename)
         sf.write(filepath, audio, SAMPLE_RATE, subtype="PCM_16")
 
         print(f"บันทึกสำเร็จ: {filepath}\n")

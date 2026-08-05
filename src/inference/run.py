@@ -158,7 +158,11 @@ def main():
     )
     parser.add_argument(
         "--batch", action="store_true",
-        help=f"Process every .wav file in {DEFAULT_DISTORTED_DIR} instead of a single --input file.",
+        help=f"Process every .wav file in --input_dir instead of a single --input file.",
+    )
+    parser.add_argument(
+        "--input_dir", type=str, default=DEFAULT_DISTORTED_DIR,
+        help=f"Directory of distorted .wav files to process in --batch mode (default: {DEFAULT_DISTORTED_DIR})",
     )
     parser.add_argument("--checkpoint", type=str, default=DEFAULT_CHECKPOINT, help="Mapper checkpoint path.")
     parser.add_argument("--layer", type=int, default=DEFAULT_LAYER, help="wav2vec2 layer to extract.")
@@ -184,8 +188,8 @@ def main():
     print(f"Loaded HiFi-GAN ({args.hifigan_model}) in {time.perf_counter() - t0:.2f}s")
 
     if args.batch:
-        wav_paths = sorted(glob.glob(os.path.join(DEFAULT_DISTORTED_DIR, "*.wav")))
-        print(f"\nBatch mode: {len(wav_paths)} files found in {DEFAULT_DISTORTED_DIR}")
+        wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))
+        print(f"\nBatch mode: {len(wav_paths)} files found in {args.input_dir}")
     else:
         wav_paths = [args.input]
 

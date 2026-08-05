@@ -1,8 +1,9 @@
-data/raw/
-data/distorted/
+data/raw*/
+data/distorted*/
 data/embeddings/
 results/checkpoints/
 results/logs/
+results/audio_samples/
 __pycache__/
 *.pyc
 .DS_Store
@@ -10,3 +11,4 @@ __pycache__/
 *.pt
 .venv/
 vendor/
+*.profraw
