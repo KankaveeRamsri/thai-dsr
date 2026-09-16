@@ -1,0 +1,211 @@
+utterance_id,speaker_id,clean_path,distorted_path,severity,transcript,duration_sec
+001_วันนี้ฉะฉันรู้สึกดีมาก,spk001,data/raw/001_วันนี้ฉะฉันรู้สึกดีมาก.wav,data/distorted/001_วันนี้ฉะฉันรู้สึกดีมาก_severe.wav,severe,วันนี้ฉะฉันรู้สึกดีมาก,5.1634
+002_ขอน้ำหนึ่งแก้วได้ไหม,spk001,data/raw/002_ขอน้ำหนึ่งแก้วได้ไหม.wav,data/distorted/002_ขอน้ำหนึ่งแก้วได้ไหม_severe.wav,severe,ขอน้ำหนึ่งแก้วได้ไหม,5.7266
+003_ฉันอยู่ที่บ้านนะ,spk001,data/raw/003_ฉันอยู่ที่บ้านนะ.wav,data/distorted/003_ฉันอยู่ที่บ้านนะ_severe.wav,severe,ฉันอยู่ที่บ้านนะ,5.5211
+004_หิวข้าวแล้ว,spk001,data/raw/004_หิวข้าวแล้ว.wav,data/distorted/004_หิวข้าวแล้ว_severe.wav,severe,หิวข้าวแล้ว,5.9488
+005_ขอบคุณมากนะครับ,spk001,data/raw/005_ขอบคุณมากนะครับ.wav,data/distorted/005_ขอบคุณมากนะครับ_severe.wav,severe,ขอบคุณมากนะครับ,4.7894
+006_ช่วยฉันด้วยได้ไหม,spk001,data/raw/006_ช่วยฉันด้วยได้ไหม.wav,data/distorted/006_ช่วยฉันด้วยได้ไหม_severe.wav,severe,ช่วยฉันด้วยได้ไหม,5.7329
+007_วันนี้อากาศร้อนมาก,spk001,data/raw/007_วันนี้อากาศร้อนมาก.wav,data/distorted/007_วันนี้อากาศร้อนมาก_severe.wav,severe,วันนี้อากาศร้อนมาก,4.8814
+008_ฉันชื่อกันต์กวี,spk001,data/raw/008_ฉันชื่อกันต์กวี.wav,data/distorted/008_ฉันชื่อกันต์กวี_severe.wav,severe,ฉันชื่อกันต์กวี,5.119
+009_โทรหาหมอให้ทีได้ไหม,spk001,data/raw/009_โทรหาหมอให้ทีได้ไหม.wav,data/distorted/009_โทรหาหมอให้ทีได้ไหม_severe.wav,severe,โทรหาหมอให้ทีได้ไหม,5.4365
+010_ฉันต้องการความช่วยเหลือ,spk001,data/raw/010_ฉันต้องการความช่วยเหลือ.wav,data/distorted/010_ฉันต้องการความช่วยเหลือ_severe.wav,severe,ฉันต้องการความช่วยเหลือ,4.823
+cv_0000,common_voice,data/common_voice/cv_0000.wav,data/distorted_cv/cv_0000_severe.wav,severe,ชีสนั้นอร่อยโดยเฉพาะอย่างยิ่งเมื่อมาพร้อมกับขนมปังแสนอร่อยกรอบ,5.247
+cv_0001,common_voice,data/common_voice/cv_0001.wav,data/distorted_cv/cv_0001_severe.wav,severe,ใกล้กระดูกทำให้เนื้อหวานขึ้น,3.9406
+cv_0002,common_voice,data/common_voice/cv_0002.wav,data/distorted_cv/cv_0002_severe.wav,severe,ฉันมาแล้ว คุณเห็นไหม,2.4489
+cv_0003,common_voice,data/common_voice/cv_0003.wav,data/distorted_cv/cv_0003_severe.wav,severe,ฉันรู้สึกปิติยินดี,3.0836
+cv_0004,common_voice,data/common_voice/cv_0004.wav,data/distorted_cv/cv_0004_severe.wav,severe,คุณถามฉันหรือเปล่าว่ามันคืออะไร?,2.6856
+cv_0005,common_voice,data/common_voice/cv_0005.wav,data/distorted_cv/cv_0005_severe.wav,severe,วันนี้หัวหน้าไม่มาเนื่องจากเขาเป็นไข้หวัด,3.5109
+cv_0006,common_voice,data/common_voice/cv_0006.wav,data/distorted_cv/cv_0006_severe.wav,severe,เตรียมพร้อมสำหรับการระเบิดเขาประกาศและเริ่มนับถอยหลัง,4.8054
+cv_0007,common_voice,data/common_voice/cv_0007.wav,data/distorted_cv/cv_0007_severe.wav,severe,การทดสอบกลายเป็นหายนะ,3.2643
+cv_0008,common_voice,data/common_voice/cv_0008.wav,data/distorted_cv/cv_0008_severe.wav,severe,การวิ่งนั้นไร้ประโยชน์เพราะพวกเขาเล็กเกินไป,3.4403
+cv_0009,common_voice,data/common_voice/cv_0009.wav,data/distorted_cv/cv_0009_severe.wav,severe,เราต้องหาว่าการทดลองนี้นานแค่ไหน,4.3986
+cv_0010,common_voice,data/common_voice/cv_0010.wav,data/distorted_cv/cv_0010_severe.wav,severe,อย่าโง่เลย!,2.525
+cv_0011,common_voice,data/common_voice/cv_0011.wav,data/distorted_cv/cv_0011_severe.wav,severe,เธอกินด้วยความรู้สึกหิวโหย,3.5101
+cv_0012,common_voice,data/common_voice/cv_0012.wav,data/distorted_cv/cv_0012_severe.wav,severe,งั้นฟังนะ ขอล่ะ,3.8964
+cv_0013,common_voice,data/common_voice/cv_0013.wav,data/distorted_cv/cv_0013_severe.wav,severe,ม้าหมุนไม่น่าตื่นเต้นเท่าไหร่,3.7487
+cv_0014,common_voice,data/common_voice/cv_0014.wav,data/distorted_cv/cv_0014_severe.wav,severe,ริชาร์ดกล่าวว่านี่เป็นสถานที่ที่น่ารัก,5.5705
+cv_0015,common_voice,data/common_voice/cv_0015.wav,data/distorted_cv/cv_0015_severe.wav,severe,เวลาตอนเย็นที่นั่นช่างดีเสียจริง,4.7831
+cv_0016,common_voice,data/common_voice/cv_0016.wav,data/distorted_cv/cv_0016_severe.wav,severe,ฉันเกือบจะแน่ใจแล้ว,3.6808
+cv_0017,common_voice,data/common_voice/cv_0017.wav,data/distorted_cv/cv_0017_severe.wav,severe,อยากให้อนาคตเราสดใส,4.2107
+cv_0018,common_voice,data/common_voice/cv_0018.wav,data/distorted_cv/cv_0018_severe.wav,severe,เธอน่าจะมากับรถเมย์ เขาพูดวนซ้ำแล้วซ้ำเล่า,5.3162
+cv_0019,common_voice,data/common_voice/cv_0019.wav,data/distorted_cv/cv_0019_severe.wav,severe,ธุรกิจนี้ของแองเจล่าและฉัน,4.1996
+cv_0020,common_voice,data/common_voice/cv_0020.wav,data/distorted_cv/cv_0020_severe.wav,severe,พวกเขาอาศัยอยู่ในบ้านบนระเบียงด้านหนึ่งของรางรถไฟ,5.8117
+cv_0021,common_voice,data/common_voice/cv_0021.wav,data/distorted_cv/cv_0021_severe.wav,severe,นั่นคือจิตวิญญาณ!.,2.873
+cv_0022,common_voice,data/common_voice/cv_0022.wav,data/distorted_cv/cv_0022_severe.wav,severe,โทมัสบอกเธอว่าพี่ชายเธอยกเลิกการแสดงของเขา,5.8412
+cv_0023,common_voice,data/common_voice/cv_0023.wav,data/distorted_cv/cv_0023_severe.wav,severe,กรุณาแบ่งปันความคิดเห็นของคุณ,4.3459
+cv_0024,common_voice,data/common_voice/cv_0024.wav,data/distorted_cv/cv_0024_severe.wav,severe,คุณเข้าใจไหมว่าฉันค่อนข้างเด็ก อายุเพียงสิบแปดปีเท่านั้น และฉันปรารถนาที่จะมีชีวิตอยู่ต่อไป,9.963
+cv_0025,common_voice,data/common_voice/cv_0025.wav,data/distorted_cv/cv_0025_severe.wav,severe,แต่เขาพูดถูก,2.7409
+cv_0026,common_voice,data/common_voice/cv_0026.wav,data/distorted_cv/cv_0026_severe.wav,severe,กฎลูกโซ่ถูกนำไปใช้สองครั้งกับสูตรนี้,3.7348
+cv_0027,common_voice,data/common_voice/cv_0027.wav,data/distorted_cv/cv_0027_severe.wav,severe,มีข้อมูลจำนวนเท่าไรในหนึ่งเอกซะไบท์,4.4167
+cv_0028,common_voice,data/common_voice/cv_0028.wav,data/distorted_cv/cv_0028_severe.wav,severe,ก็ไม่เป็นไร,3.6603
+cv_0029,common_voice,data/common_voice/cv_0029.wav,data/distorted_cv/cv_0029_severe.wav,severe,เลขนี้คือ?,2.1299
+cv_0030,common_voice,data/common_voice/cv_0030.wav,data/distorted_cv/cv_0030_severe.wav,severe,'ข้าขอให้การรับรองว่า อยู่กับข้าที่นี่ มั่นคงแน่นหนาพอ' เขากล่าว,6.8601
+cv_0031,common_voice,data/common_voice/cv_0031.wav,data/distorted_cv/cv_0031_severe.wav,severe,ฟังเพลงเพราะไม่มีโฆษณาคั่น,4.8202
+cv_0032,common_voice,data/common_voice/cv_0032.wav,data/distorted_cv/cv_0032_severe.wav,severe,มันโอเค ไม่มีการทำให้แตกหักกะร่องกะแร่ง,6.1215
+cv_0033,common_voice,data/common_voice/cv_0033.wav,data/distorted_cv/cv_0033_severe.wav,severe,ฉันเถียงกับเธอไม่ได้ เธอก็รู้ดีอยู่แล้ว,6.5466
+cv_0034,common_voice,data/common_voice/cv_0034.wav,data/distorted_cv/cv_0034_severe.wav,severe,คนขับรถบรรทุกมักจะหยุดพักระหว่างทางที่ร้านตามจุดพักรถ,6.8049
+cv_0035,common_voice,data/common_voice/cv_0035.wav,data/distorted_cv/cv_0035_severe.wav,severe,นี่คือเหมืองร้าง,3.3735
+cv_0036,common_voice,data/common_voice/cv_0036.wav,data/distorted_cv/cv_0036_severe.wav,severe,ไม่มีทาง ฉันหวังว่าอย่างนั้นนะ ลูกพี่ลูกน้องริชาร์ด,6.0839
+cv_0037,common_voice,data/common_voice/cv_0037.wav,data/distorted_cv/cv_0037_severe.wav,severe,การเชื่อมต่ออินเทอร์เน็ตของเขาช้าเกินไป,5.5364
+cv_0038,common_voice,data/common_voice/cv_0038.wav,data/distorted_cv/cv_0038_severe.wav,severe,ใช้อนาคอนดาสำหรับโครงการนี้กันเถอะ,3.8662
+cv_0039,common_voice,data/common_voice/cv_0039.wav,data/distorted_cv/cv_0039_severe.wav,severe,ตัวอย่างที่ดีของไดโนเสาร์คือพเตเรอแดกติล,5.9017
+cv_0040,common_voice,data/common_voice/cv_0040.wav,data/distorted_cv/cv_0040_severe.wav,severe,ฉันรอคุณมาตอบอยู่นะ,3.6223
+cv_0041,common_voice,data/common_voice/cv_0041.wav,data/distorted_cv/cv_0041_severe.wav,severe,ฉันจองวันหยุดเรียบร้อยแล้ว,2.9194
+cv_0042,common_voice,data/common_voice/cv_0042.wav,data/distorted_cv/cv_0042_severe.wav,severe,เมื่อไหร่รถไฟฟ้าความเร็วสูงจะเสร็จสักที,3.9982
+cv_0043,common_voice,data/common_voice/cv_0043.wav,data/distorted_cv/cv_0043_severe.wav,severe,มันเป็นความคิดที่น่าจะเป็นไปได้และน่าจะเข้าท่าด้วย,4.9351
+cv_0044,common_voice,data/common_voice/cv_0044.wav,data/distorted_cv/cv_0044_severe.wav,severe,มันจะช่วยให้อะไรดีขึ้น,2.4354
+cv_0045,common_voice,data/common_voice/cv_0045.wav,data/distorted_cv/cv_0045_severe.wav,severe,เราต้องรวบรวมรายชื่อหุ้นส่วนทั้งหมดของโครงการนี้,4.2599
+cv_0046,common_voice,data/common_voice/cv_0046.wav,data/distorted_cv/cv_0046_severe.wav,severe,ช่างไฟรู้วิธีเชื่อม,4.8542
+cv_0047,common_voice,data/common_voice/cv_0047.wav,data/distorted_cv/cv_0047_severe.wav,severe,นี่เพื่อนของคุณหรอ ?,2.3952
+cv_0048,common_voice,data/common_voice/cv_0048.wav,data/distorted_cv/cv_0048_severe.wav,severe,คุณกำลังจะพูดว่าอะไร ?,2.7317
+cv_0049,common_voice,data/common_voice/cv_0049.wav,data/distorted_cv/cv_0049_severe.wav,severe,ความคิดเห็นถูกแบ่งแยกไปตามความสำคัญของการไขว้กับการกลายพันธุ์,5.1167
+cv_0050,common_voice,data/common_voice/cv_0050.wav,data/distorted_cv/cv_0050_severe.wav,severe,คุณไม่ชอบแจ๊คเก็ตตัวนี้หรอ,3.2789
+cv_0051,common_voice,data/common_voice/cv_0051.wav,data/distorted_cv/cv_0051_severe.wav,severe,ฉันว่าฉันจะสั่งขนมปังไส้หมูฉีก,4.5518
+cv_0052,common_voice,data/common_voice/cv_0052.wav,data/distorted_cv/cv_0052_severe.wav,severe,ฉันพยายามจำโน๊ตให้ได้มากที่สุดก่อนจะสอบ,3.6931
+cv_0053,common_voice,data/common_voice/cv_0053.wav,data/distorted_cv/cv_0053_severe.wav,severe,วงเล็บปีกกาพิมพ์ยาก,2.9831
+cv_0054,common_voice,data/common_voice/cv_0054.wav,data/distorted_cv/cv_0054_severe.wav,severe,ไฟแรง !,3.6714
+cv_0055,common_voice,data/common_voice/cv_0055.wav,data/distorted_cv/cv_0055_severe.wav,severe,มันมีรูอยู่ที่พรม,5.3271
+cv_0056,common_voice,data/common_voice/cv_0056.wav,data/distorted_cv/cv_0056_severe.wav,severe,คุณช่วยบอกรายละเอียดของเขาให้ฉันฟังหน่อยได้ไหม ?,7.86
+cv_0057,common_voice,data/common_voice/cv_0057.wav,data/distorted_cv/cv_0057_severe.wav,severe,มันคือหนทางเดียว,4.8472
+cv_0058,common_voice,data/common_voice/cv_0058.wav,data/distorted_cv/cv_0058_severe.wav,severe,นายหญิงออกไปข้างนอกใช่ไหม,6.1191
+cv_0059,common_voice,data/common_voice/cv_0059.wav,data/distorted_cv/cv_0059_severe.wav,severe,เขาทำมันเพื่ออะไร ?,6.2437
+cv_0060,common_voice,data/common_voice/cv_0060.wav,data/distorted_cv/cv_0060_severe.wav,severe,การเดินทางไกลกลับบ้านใช้เวลาหนึ่งปี,4.6756
+cv_0061,common_voice,data/common_voice/cv_0061.wav,data/distorted_cv/cv_0061_severe.wav,severe,พวกเขายืนกำลังฟังในความมืด,4.9508
+cv_0062,common_voice,data/common_voice/cv_0062.wav,data/distorted_cv/cv_0062_severe.wav,severe,เทคโนโลยีชีวภาพ หรือ ไอโอเทค เป็นตัวเลือกที่นิยมสำหรับปริญญาตรี,6.9796
+cv_0063,common_voice,data/common_voice/cv_0063.wav,data/distorted_cv/cv_0063_severe.wav,severe,กลีบดอกร่วงโรยตามลม,3.5722
+cv_0064,common_voice,data/common_voice/cv_0064.wav,data/distorted_cv/cv_0064_severe.wav,severe,ขอพระเจ้าอวยพรท่านสุขภาพดีเพียงใด !,4.8312
+cv_0065,common_voice,data/common_voice/cv_0065.wav,data/distorted_cv/cv_0065_severe.wav,severe,อลิซรู้สึกงุนงงทั้งหมด,3.6993
+cv_0066,common_voice,data/common_voice/cv_0066.wav,data/distorted_cv/cv_0066_severe.wav,severe,เธอพักฟื้นตัวเองด้วยความพยายาม,5.1126
+cv_0067,common_voice,data/common_voice/cv_0067.wav,data/distorted_cv/cv_0067_severe.wav,severe,ยามค่ำคืนนั้นสงบและเต็มไปด้วยหิมะ,5.5704
+cv_0068,common_voice,data/common_voice/cv_0068.wav,data/distorted_cv/cv_0068_severe.wav,severe,บาคาร์ดี้ ไรย์ วอดก้า - คุณต้องการอะไร ถามบาร์เทนเดอร์,8.2345
+cv_0069,common_voice,data/common_voice/cv_0069.wav,data/distorted_cv/cv_0069_severe.wav,severe,กลุ่มกบฏเปลี่ยนโฉมรถรถคู่ใจของเขาด้วยเครื่องยนต์ไฮดรอลิค,8.1741
+cv_0070,common_voice,data/common_voice/cv_0070.wav,data/distorted_cv/cv_0070_severe.wav,severe,ไทเกอร์ วูดส์ คือนักกอล์ฟที่มีชื่อเสียง,5.6089
+cv_0071,common_voice,data/common_voice/cv_0071.wav,data/distorted_cv/cv_0071_severe.wav,severe,แมป,2.1833
+cv_0072,common_voice,data/common_voice/cv_0072.wav,data/distorted_cv/cv_0072_severe.wav,severe,วันนี้ก็เป็นวันที่ดีอีกวัน,4.2585
+cv_0073,common_voice,data/common_voice/cv_0073.wav,data/distorted_cv/cv_0073_severe.wav,severe,คิดว่าพวกเขาคงชักสีหน้าใส่ฉัน,5.3936
+cv_0074,common_voice,data/common_voice/cv_0074.wav,data/distorted_cv/cv_0074_severe.wav,severe,ชื่อที่ให้ในสเปนและโปรตุเกส,4.9176
+cv_0075,common_voice,data/common_voice/cv_0075.wav,data/distorted_cv/cv_0075_severe.wav,severe,ฟิลิปยืนละล้าละลัง หูเงี่ยฟังเสียง,6.28
+cv_0076,common_voice,data/common_voice/cv_0076.wav,data/distorted_cv/cv_0076_severe.wav,severe,ได้โปรดเอาซุปมาให้หน่อย,3.4178
+cv_0077,common_voice,data/common_voice/cv_0077.wav,data/distorted_cv/cv_0077_severe.wav,severe,เมื่อไวน์หมดสติอยู่,4.0301
+cv_0078,common_voice,data/common_voice/cv_0078.wav,data/distorted_cv/cv_0078_severe.wav,severe,มันเกิดอะไรขึ้นในร้านทำผมกันแน่ ?,3.815
+cv_0079,common_voice,data/common_voice/cv_0079.wav,data/distorted_cv/cv_0079_severe.wav,severe,ข้อสอบข้อนี้ยากจริง ๆ,3.7321
+cv_0080,common_voice,data/common_voice/cv_0080.wav,data/distorted_cv/cv_0080_severe.wav,severe,กีฬากระโดดร่ม เป็นสิ่งที่ค่อนข้างอันตราย,5.9328
+cv_0081,common_voice,data/common_voice/cv_0081.wav,data/distorted_cv/cv_0081_severe.wav,severe,ซาลกำลังทำให้คนอื่น ๆ โกรธ,3.8637
+cv_0082,common_voice,data/common_voice/cv_0082.wav,data/distorted_cv/cv_0082_severe.wav,severe,ฉันเห็นเบ็นในเมืองรถ มินิคูเปอร์ของเขา,4.7446
+cv_0083,common_voice,data/common_voice/cv_0083.wav,data/distorted_cv/cv_0083_severe.wav,severe,ซึ่งศาลจะอ่านคำพิพากษาดารณี,4.3536
+cv_0084,common_voice,data/common_voice/cv_0084.wav,data/distorted_cv/cv_0084_severe.wav,severe,พิธีกรรมสาธารณะและสิ่งมันระลึกถึง,5.398
+cv_0085,common_voice,data/common_voice/cv_0085.wav,data/distorted_cv/cv_0085_severe.wav,severe,ฉันคิดอยู่ว่าจะซื้อหมวกนั่น แต่ดันไปเห็นว่ามันราคาแปดสิบดอลลาร์,7.0438
+cv_0086,common_voice,data/common_voice/cv_0086.wav,data/distorted_cv/cv_0086_severe.wav,severe,โอไบรอันส่งเสียงกรีดร้องที่ดำดิ่งอย่างรวดเร็วพร้อมกับเสียงสะอื้น,6.5693
+cv_0087,common_voice,data/common_voice/cv_0087.wav,data/distorted_cv/cv_0087_severe.wav,severe,มาสิ มาทดลองชิ้นส่วนแรกกัน ม็อคเทอร์เทิลกล่างแก่กริฟฟอน,7.9428
+cv_0088,common_voice,data/common_voice/cv_0088.wav,data/distorted_cv/cv_0088_severe.wav,severe,ฉันคิดว่าฉันอาจจะหยุด,3.8299
+cv_0089,common_voice,data/common_voice/cv_0089.wav,data/distorted_cv/cv_0089_severe.wav,severe,ต้องระวางโทษจำคุกไม่เกินห้าปี หรือปรับไม่เกินหนึ่งแสนบาท,6.2031
+cv_0090,common_voice,data/common_voice/cv_0090.wav,data/distorted_cv/cv_0090_severe.wav,severe,หัวใจผมคำนับผู้หญิงคนนี้ไปแล้ว,4.3673
+cv_0091,common_voice,data/common_voice/cv_0091.wav,data/distorted_cv/cv_0091_severe.wav,severe,แปดร้อยยี่สิบสี่ถัง,3.2001
+cv_0092,common_voice,data/common_voice/cv_0092.wav,data/distorted_cv/cv_0092_severe.wav,severe,เราจะเอามันมาเป็นมื้อเที่ยงวันนี้,4.0269
+cv_0093,common_voice,data/common_voice/cv_0093.wav,data/distorted_cv/cv_0093_severe.wav,severe,ที่จะเป็นอิสระที่ค่าใช้จ่ายของผู้อื่น,5.4082
+cv_0094,common_voice,data/common_voice/cv_0094.wav,data/distorted_cv/cv_0094_severe.wav,severe,อย่าเอ่ยถึงมัน ชายชรา ฉันตอบอย่างสุภาพ,7.355
+cv_0095,common_voice,data/common_voice/cv_0095.wav,data/distorted_cv/cv_0095_severe.wav,severe,ไส้กรอกพวกนี้อร่อยมาก ๆ,3.7525
+cv_0096,common_voice,data/common_voice/cv_0096.wav,data/distorted_cv/cv_0096_severe.wav,severe,สำหรับฉันมันธรรมดามาก,3.5996
+cv_0097,common_voice,data/common_voice/cv_0097.wav,data/distorted_cv/cv_0097_severe.wav,severe,เพลงนั้น ในขณะที่ทางเทคนิคแล้วเป็นเพลงวอลทซ์ ก็ฟังแล้วเหมือนคนเมาเล่นทูบาที่เข้าไปเล่นในส่วนเครื่องเคาะจังหวะของวงออร์เคสตร้า,7.8243
+cv_0098,common_voice,data/common_voice/cv_0098.wav,data/distorted_cv/cv_0098_severe.wav,severe,พลอยปลอมส่องประกายมากแต่มีราคาน้อย,4.7236
+cv_0099,common_voice,data/common_voice/cv_0099.wav,data/distorted_cv/cv_0099_severe.wav,severe,การเดินทางไปมหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต ด้วยรถโดยสารประจำทาง,8.2534
+cv_0100,common_voice,data/common_voice/cv_0100.wav,data/distorted_cv/cv_0100_severe.wav,severe,ฉันทำให้ตัวเองรู้สึกดีเหมือนเดิมและเดินกลับบ้านต่อ,4.7289
+cv_0101,common_voice,data/common_voice/cv_0101.wav,data/distorted_cv/cv_0101_severe.wav,severe,คนเราต้องสู้ชีวิต,3.4087
+cv_0102,common_voice,data/common_voice/cv_0102.wav,data/distorted_cv/cv_0102_severe.wav,severe,แฮรรี่หวังว่าเขาจะพบกับความสำเร็จจากโปรเจคที่เขากำลังทำอยู่,6.6943
+cv_0103,common_voice,data/common_voice/cv_0103.wav,data/distorted_cv/cv_0103_severe.wav,severe,ฉันก็รักคุณเหมือนกัน,3.5374
+cv_0104,common_voice,data/common_voice/cv_0104.wav,data/distorted_cv/cv_0104_severe.wav,severe,คำสารภาพของเธอเกี่ยวกับมันยืนยันเรื่องราวทั้งหมด,4.9241
+cv_0105,common_voice,data/common_voice/cv_0105.wav,data/distorted_cv/cv_0105_severe.wav,severe,บ่ายหนึ่ง,2.7308
+cv_0106,common_voice,data/common_voice/cv_0106.wav,data/distorted_cv/cv_0106_severe.wav,severe,แผนที่ถนนแบบเปิดช่วยให้พนักงานช่วยเหลือด้านมนุษยธรรมเข้าถึงสถานที่ที่ยากที่สุดในการเข้าถึง,7.7404
+cv_0107,common_voice,data/common_voice/cv_0107.wav,data/distorted_cv/cv_0107_severe.wav,severe,ไรอันคงไม่เคยตรวจสุจภาพจิต,3.0778
+cv_0108,common_voice,data/common_voice/cv_0108.wav,data/distorted_cv/cv_0108_severe.wav,severe,ฉันข้ามถนนพร้อมกับผิวปากอย่างสนุกสานและล้อเลียนท่าทางโยกเยกของคนส่งนม,6.7597
+cv_0109,common_voice,data/common_voice/cv_0109.wav,data/distorted_cv/cv_0109_severe.wav,severe,ความรู้สึกน่าชื่นชม,2.9312
+cv_0110,common_voice,data/common_voice/cv_0110.wav,data/distorted_cv/cv_0110_severe.wav,severe,ระบบเรียนรู้ผ่านเครื่องจักรช่วยกระตุ้นให้คนพัฒนาตนเองมากขึ้น,5.7722
+cv_0111,common_voice,data/common_voice/cv_0111.wav,data/distorted_cv/cv_0111_severe.wav,severe,ในห้องของมาร์ธไม่มีแสงสว่างเลย,3.0304
+cv_0112,common_voice,data/common_voice/cv_0112.wav,data/distorted_cv/cv_0112_severe.wav,severe,จริยธรรมจะต้องถูกสร้างให้กับปัญญาประดิษฐ์ตั้งแต่แรก,5.4597
+cv_0113,common_voice,data/common_voice/cv_0113.wav,data/distorted_cv/cv_0113_severe.wav,severe,วนิดาก้าวเข้ามาเป็นนักศึกษามหาวิทยาลัยธรรมศาสตร์ในยุคประชาธิปไตยเบ่งบาน หลังเหตุการณ์ สิบสี่ ตุลา และเข้าร่วมกิจกรรม นักศึกษาฝ่ายก้าวหน้าอย่างแข็งขัน,10.2554
+cv_0114,common_voice,data/common_voice/cv_0114.wav,data/distorted_cv/cv_0114_severe.wav,severe,คุณวูดคอร์ต คุณกำลังจะไปลอนดอนหรือ ?,3.7532
+cv_0115,common_voice,data/common_voice/cv_0115.wav,data/distorted_cv/cv_0115_severe.wav,severe,สนามหญ้าถูกโรยหน้าด้วยดอกเดซี่,4.494
+cv_0116,common_voice,data/common_voice/cv_0116.wav,data/distorted_cv/cv_0116_severe.wav,severe,แจ็คทุกคนมีจิลของเขา,2.785
+cv_0117,common_voice,data/common_voice/cv_0117.wav,data/distorted_cv/cv_0117_severe.wav,severe,ฉันระงับความไม่พอใจของฉันไว้,2.8206
+cv_0118,common_voice,data/common_voice/cv_0118.wav,data/distorted_cv/cv_0118_severe.wav,severe,การจำนองของเรามีการค้างชำระ,2.8718
+cv_0119,common_voice,data/common_voice/cv_0119.wav,data/distorted_cv/cv_0119_severe.wav,severe,ไฟลวกหมาจิ้งจอก,3.0393
+cv_0120,common_voice,data/common_voice/cv_0120.wav,data/distorted_cv/cv_0120_severe.wav,severe,มีอาอายุครบเจ็ดขวบวันนี้,3.4934
+cv_0121,common_voice,data/common_voice/cv_0121.wav,data/distorted_cv/cv_0121_severe.wav,severe,บ่ายโมง,2.5293
+cv_0122,common_voice,data/common_voice/cv_0122.wav,data/distorted_cv/cv_0122_severe.wav,severe,วันทำงาน,2.7292
+cv_0123,common_voice,data/common_voice/cv_0123.wav,data/distorted_cv/cv_0123_severe.wav,severe,ฉันไปว่ายน้ำเล่นกับโลมามาเมื่อวาน,4.5633
+cv_0124,common_voice,data/common_voice/cv_0124.wav,data/distorted_cv/cv_0124_severe.wav,severe,สิ่งเล็ก ๆ เป็นจุดเริ่มต้นของความยิ่งใหญ่,4.2037
+cv_0125,common_voice,data/common_voice/cv_0125.wav,data/distorted_cv/cv_0125_severe.wav,severe,ไม่ เธอต้องฟังเขา,3.2569
+cv_0126,common_voice,data/common_voice/cv_0126.wav,data/distorted_cv/cv_0126_severe.wav,severe,ความร่ำรวยคือล่อของผู้มั่งคั่ง,4.9134
+cv_0127,common_voice,data/common_voice/cv_0127.wav,data/distorted_cv/cv_0127_severe.wav,severe,เธอเดินออกจากห้องพิจารณาคดี,4.7633
+cv_0128,common_voice,data/common_voice/cv_0128.wav,data/distorted_cv/cv_0128_severe.wav,severe,เมษายน,2.2022
+cv_0129,common_voice,data/common_voice/cv_0129.wav,data/distorted_cv/cv_0129_severe.wav,severe,จัดตั้งจังหวัดกาฬสินธุ์ โดยแยกจากจังหวัดมหาสารคาม,5.2066
+cv_0130,common_voice,data/common_voice/cv_0130.wav,data/distorted_cv/cv_0130_severe.wav,severe,อย่ากังวลเลย พวกนั้นเป็นคนดี,3.5096
+cv_0131,common_voice,data/common_voice/cv_0131.wav,data/distorted_cv/cv_0131_severe.wav,severe,อย่าทำให้มิสแคลร์ตื่น,3.7901
+cv_0132,common_voice,data/common_voice/cv_0132.wav,data/distorted_cv/cv_0132_severe.wav,severe,มองซิเออร์ คุณอยากรู้ความจริงใช่ไหม ฉันเกลียดเธอ,5.6892
+cv_0133,common_voice,data/common_voice/cv_0133.wav,data/distorted_cv/cv_0133_severe.wav,severe,และฉันก็ระเบิดหัวเราะออกมา เป็นการขำเยาะเย้ยที่น่าเอ็นดู,5.3051
+cv_0134,common_voice,data/common_voice/cv_0134.wav,data/distorted_cv/cv_0134_severe.wav,severe,ฉันถือมันไว้ในอุ้งมือของฉัน,3.3338
+cv_0135,common_voice,data/common_voice/cv_0135.wav,data/distorted_cv/cv_0135_severe.wav,severe,ที่นั่นฉันทานอาหารเช้าเป็นวิสกี้ผสมโซดาและขนมปังกรอบนิดหน่อยจากในตู้,9.577
+cv_0136,common_voice,data/common_voice/cv_0136.wav,data/distorted_cv/cv_0136_severe.wav,severe,ให้เราดูโรงจอดรถ,3.9515
+cv_0137,common_voice,data/common_voice/cv_0137.wav,data/distorted_cv/cv_0137_severe.wav,severe,แต่แผนที่นี้สร้างมาเพื่อเธอ ใช่มั้ย,6.2941
+cv_0138,common_voice,data/common_voice/cv_0138.wav,data/distorted_cv/cv_0138_severe.wav,severe,เขาเป็นคนสูงศักดิ์,2.4647
+cv_0139,common_voice,data/common_voice/cv_0139.wav,data/distorted_cv/cv_0139_severe.wav,severe,เรียล,2.2306
+cv_0140,common_voice,data/common_voice/cv_0140.wav,data/distorted_cv/cv_0140_severe.wav,severe,กรุณาเงียบ,2.6756
+cv_0141,common_voice,data/common_voice/cv_0141.wav,data/distorted_cv/cv_0141_severe.wav,severe,ตรงนี้ฉันเห็นและรู้อยู่แล้วหละ,3.796
+cv_0142,common_voice,data/common_voice/cv_0142.wav,data/distorted_cv/cv_0142_severe.wav,severe,มันเป็นวัฒนธรรมที่ต้องกินสายไหมริมทะเล,4.3629
+cv_0143,common_voice,data/common_voice/cv_0143.wav,data/distorted_cv/cv_0143_severe.wav,severe,ซอฟต์แวร์นั้นเป็นกรรมสิทธิ์ของโปรแกรมหรือเป็นโอเพ่นซอร์สหรือไม่,6.6724
+cv_0144,common_voice,data/common_voice/cv_0144.wav,data/distorted_cv/cv_0144_severe.wav,severe,คุณยายของฉันกำลังพักฟื้นตัวอยู่ที่ศูนย์ฟื้นฟูผู้ป่วย,5.1366
+cv_0145,common_voice,data/common_voice/cv_0145.wav,data/distorted_cv/cv_0145_severe.wav,severe,วิกผมของตัวตลกแต่ละตัวมีหมวกกะลาเล็ก ๆ ที่มีสายรัดคางยืดหยุ่น,8.1823
+cv_0146,common_voice,data/common_voice/cv_0146.wav,data/distorted_cv/cv_0146_severe.wav,severe,รถคันนี้ขายในราคา หนึ่งหมื่นสองพันสี่ร้อยหกสิบเก้าดอลลาร์,6.2953
+cv_0147,common_voice,data/common_voice/cv_0147.wav,data/distorted_cv/cv_0147_severe.wav,severe,มาร์คแกะกล่องสินค้าด้วยความระมัดระวัง,5.0974
+cv_0148,common_voice,data/common_voice/cv_0148.wav,data/distorted_cv/cv_0148_severe.wav,severe,คุณจะมาโทษฉันที่ถอนตัวไม่ได้,5.6426
+cv_0149,common_voice,data/common_voice/cv_0149.wav,data/distorted_cv/cv_0149_severe.wav,severe,มูหราดเพื่อนของฉันกำลังจะมาสุดสัปดาห์นี้,5.2683
+cv_0150,common_voice,data/common_voice/cv_0150.wav,data/distorted_cv/cv_0150_severe.wav,severe,อยู่ตรงนี้ล่ะฟัง อย่าไปไหนเลย,4.3696
+cv_0151,common_voice,data/common_voice/cv_0151.wav,data/distorted_cv/cv_0151_severe.wav,severe,ฉันได้รับมรดกรูปปั้นในพินัยกรรมของยายของฉัน,6.0823
+cv_0152,common_voice,data/common_voice/cv_0152.wav,data/distorted_cv/cv_0152_severe.wav,severe,เธอไม่ชอบกระแสของถุงน่องไนลอน,4.203
+cv_0153,common_voice,data/common_voice/cv_0153.wav,data/distorted_cv/cv_0153_severe.wav,severe,ผู้ชายหลายคนที่เดินกลางถนน,4.2132
+cv_0154,common_voice,data/common_voice/cv_0154.wav,data/distorted_cv/cv_0154_severe.wav,severe,สินค้ามีราคาที่แตกต่างกัน,3.0916
+cv_0155,common_voice,data/common_voice/cv_0155.wav,data/distorted_cv/cv_0155_severe.wav,severe,ฉันจะไปเยอรมันพรุ่งนี้,3.9589
+cv_0156,common_voice,data/common_voice/cv_0156.wav,data/distorted_cv/cv_0156_severe.wav,severe,การจราจรติดขัดทั้งเมือง,2.9301
+cv_0157,common_voice,data/common_voice/cv_0157.wav,data/distorted_cv/cv_0157_severe.wav,severe,เราทำเป็นว่ามันไม่เคยเกิดขึ้นไม่ได้หรอก,4.8666
+cv_0158,common_voice,data/common_voice/cv_0158.wav,data/distorted_cv/cv_0158_severe.wav,severe,สถานที่แข่งที่ต่อไปคือที่ไหน,5.3884
+cv_0159,common_voice,data/common_voice/cv_0159.wav,data/distorted_cv/cv_0159_severe.wav,severe,หินเหล็กไฟได้กระเด็นออกและจุดคบเพลิงน้ำมันสน,7.8182
+cv_0160,common_voice,data/common_voice/cv_0160.wav,data/distorted_cv/cv_0160_severe.wav,severe,เติบโตช้ายังดีกว่าไม่พัฒนาเลย,4.5812
+cv_0161,common_voice,data/common_voice/cv_0161.wav,data/distorted_cv/cv_0161_severe.wav,severe,ฉันถูกดึงไปเพื่อฝ่าไฟแดง,3.4271
+cv_0162,common_voice,data/common_voice/cv_0162.wav,data/distorted_cv/cv_0162_severe.wav,severe,ฉันแนะนำให้ใช้เครื่องตรวจตัวสะกดเพื่อหลีกเลี่ยงความผิดพลาดดังกล่าว,5.2259
+cv_0163,common_voice,data/common_voice/cv_0163.wav,data/distorted_cv/cv_0163_severe.wav,severe,คุณมีมัน,2.8341
+cv_0164,common_voice,data/common_voice/cv_0164.wav,data/distorted_cv/cv_0164_severe.wav,severe,โซดาจะดีกับสุขภาพมากกว่านี้ ถ้ามันไม่มีน้ำตาลในนั้น,4.4745
+cv_0165,common_voice,data/common_voice/cv_0165.wav,data/distorted_cv/cv_0165_severe.wav,severe,ทำเช่นนั้นด้วยแท่งไม้,3.9682
+cv_0166,common_voice,data/common_voice/cv_0166.wav,data/distorted_cv/cv_0166_severe.wav,severe,บริษัทเราจะต้องปรับตัวเพื่อใช้งานเทคโนโลยีเหล่านี้,6.4393
+cv_0167,common_voice,data/common_voice/cv_0167.wav,data/distorted_cv/cv_0167_severe.wav,severe,ฉันพิจารณาแล้วว่ามันเป็นพฤติกรรมที่สุ่มเสี่ยง,5.9078
+cv_0168,common_voice,data/common_voice/cv_0168.wav,data/distorted_cv/cv_0168_severe.wav,severe,ฉันเขียนจดหมายถึงภรรยาของฉันด้วยมือ,3.9637
+cv_0169,common_voice,data/common_voice/cv_0169.wav,data/distorted_cv/cv_0169_severe.wav,severe,แล้วเขาก็เดินไปที่ห้องบัลลังก์แล้วเคาะประตู,4.9659
+cv_0170,common_voice,data/common_voice/cv_0170.wav,data/distorted_cv/cv_0170_severe.wav,severe,ฉันฟื้นฟูตัวเองและเดินไปบ้านต่อ,4.273
+cv_0171,common_voice,data/common_voice/cv_0171.wav,data/distorted_cv/cv_0171_severe.wav,severe,การศึกษาเป็นสิ่งสำคัญมาก,3.1378
+cv_0172,common_voice,data/common_voice/cv_0172.wav,data/distorted_cv/cv_0172_severe.wav,severe,คุณคงไม่มีที่ไป,2.5213
+cv_0173,common_voice,data/common_voice/cv_0173.wav,data/distorted_cv/cv_0173_severe.wav,severe,คุณเตรียมพร้อมสำหรับการตอบคำถามภูมิศาสตร์ในวันพรุ่งนี้?,4.4838
+cv_0174,common_voice,data/common_voice/cv_0174.wav,data/distorted_cv/cv_0174_severe.wav,severe,เติมผักชี,3.8942
+cv_0175,common_voice,data/common_voice/cv_0175.wav,data/distorted_cv/cv_0175_severe.wav,severe,บังเอิญว่ามันเป็นเรื่องจริง,2.4183
+cv_0176,common_voice,data/common_voice/cv_0176.wav,data/distorted_cv/cv_0176_severe.wav,severe,ยูเอสบีไดรฟ์,4.415
+cv_0177,common_voice,data/common_voice/cv_0177.wav,data/distorted_cv/cv_0177_severe.wav,severe,วันอาสาฬหบูชา,4.4718
+cv_0178,common_voice,data/common_voice/cv_0178.wav,data/distorted_cv/cv_0178_severe.wav,severe,ฉันยกผ้าคลุมขึ้นและพูดกับหล่อน,3.7309
+cv_0179,common_voice,data/common_voice/cv_0179.wav,data/distorted_cv/cv_0179_severe.wav,severe,ฉันต้องการเรียนรู้เรื่องสัตววิทยา,3.3351
+cv_0180,common_voice,data/common_voice/cv_0180.wav,data/distorted_cv/cv_0180_severe.wav,severe,ทำไมที่นี่ยังต้องใช้สำเนาบัตรประชาชน,3.7786
+cv_0181,common_voice,data/common_voice/cv_0181.wav,data/distorted_cv/cv_0181_severe.wav,severe,พวกเขาเปิดขวดไวน์และดื่มอย่างหนัก,3.9729
+cv_0182,common_voice,data/common_voice/cv_0182.wav,data/distorted_cv/cv_0182_severe.wav,severe,ที่กินที่เที่ยว,2.2131
+cv_0183,common_voice,data/common_voice/cv_0183.wav,data/distorted_cv/cv_0183_severe.wav,severe,คอมพิวเตอร์เครื่องนี้ติดไวรัส,4.0563
+cv_0184,common_voice,data/common_voice/cv_0184.wav,data/distorted_cv/cv_0184_severe.wav,severe,โอ้มันแย่มาก!,2.0356
+cv_0185,common_voice,data/common_voice/cv_0185.wav,data/distorted_cv/cv_0185_severe.wav,severe,มันไม่ถูกต้องเธอรู้ใช่ไหม,4.5868
+cv_0186,common_voice,data/common_voice/cv_0186.wav,data/distorted_cv/cv_0186_severe.wav,severe,ฉันขอแซนด์วิชที่ไม่ใส่มะเขือเทศ,3.4813
+cv_0187,common_voice,data/common_voice/cv_0187.wav,data/distorted_cv/cv_0187_severe.wav,severe,หยุดทำงาน,3.2304
+cv_0188,common_voice,data/common_voice/cv_0188.wav,data/distorted_cv/cv_0188_severe.wav,severe,ขอพูดอีกครั้งว่าที่นี่มีบางอย่างที่ฉันไม่เข้าใจ,5.3708
+cv_0189,common_voice,data/common_voice/cv_0189.wav,data/distorted_cv/cv_0189_severe.wav,severe,คุณคิดยังไงถึงจะดีที่สุด คุณซัมเมอร์สัน,6.0214
+cv_0190,common_voice,data/common_voice/cv_0190.wav,data/distorted_cv/cv_0190_severe.wav,severe,คุณเห็นสิ่งที่จะเกิดขึ้น,3.2837
+cv_0191,common_voice,data/common_voice/cv_0191.wav,data/distorted_cv/cv_0191_severe.wav,severe,อีกไกลแค่ไหนถึงจะถึง,4.0586
+cv_0192,common_voice,data/common_voice/cv_0192.wav,data/distorted_cv/cv_0192_severe.wav,severe,คุณอายุเท่าไหร่?,4.1491
+cv_0193,common_voice,data/common_voice/cv_0193.wav,data/distorted_cv/cv_0193_severe.wav,severe,เคทลีนหยิบมือถือออกมาจากกระเป๋า,5.8057
+cv_0194,common_voice,data/common_voice/cv_0194.wav,data/distorted_cv/cv_0194_severe.wav,severe,เราบอกเขาไปว่า ฉันก็อยู่อย่างฉัน เธอก็อยู่อย่างเธอ,5.8642
+cv_0195,common_voice,data/common_voice/cv_0195.wav,data/distorted_cv/cv_0195_severe.wav,severe,คุณยังเด็กที่จะเป็นผู้ดูแลโรงแรม” ฉันพูด,5.7133
+cv_0196,common_voice,data/common_voice/cv_0196.wav,data/distorted_cv/cv_0196_severe.wav,severe,คุณเป็นอย่างไรบ้าง,2.3991
+cv_0197,common_voice,data/common_voice/cv_0197.wav,data/distorted_cv/cv_0197_severe.wav,severe,และแสงสว่างจ้าทะลุผ่านรอยขาดของผ้าม่าน,4.6854
+cv_0198,common_voice,data/common_voice/cv_0198.wav,data/distorted_cv/cv_0198_severe.wav,severe,มีห้องว่างอยู่จากที่ที่เธอมา,5.2112
+cv_0199,common_voice,data/common_voice/cv_0199.wav,data/distorted_cv/cv_0199_severe.wav,severe,ทำไมฉันถึงต้องตามหาเธอบ่อย ๆ ถ้าฉันไม่สนใจ,5.6787
