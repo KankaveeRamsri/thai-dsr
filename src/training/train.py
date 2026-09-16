@@ -1,19 +1,9 @@
-# train.py
-#
-# Purpose:
-#   Main training entry point that ties together dataset.py, the models in
-#   src/models/, and the hyperparameters in configs/train.yaml to fit the
-#   dysarthric-to-clean reconstruction model.
-#
-# Expected responsibilities:
-#   - Parse configs/{data,model,train}.yaml
-#   - Build DataLoaders (dataset.py), model (encoder/mapper/vocoder)
-#   - Run the training loop: forward pass, loss, backward, optimizer step
-#   - Log metrics/checkpoints to results/logs/ and results/checkpoints/
-#   - Support resuming from a checkpoint
+"""Train the configured wav2vec2-to-mel Bi-LSTM mapper."""
 
+import argparse
 import os
 import random
+from pathlib import Path
 
 import matplotlib
 
@@ -21,28 +11,31 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import yaml
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, Subset
 
-from src.models.mapper import MapperModel
+from src.models.mapper import build_mapper_from_config
 from src.training.dataset import DysarthricDataset, collate_fn
+from src.training.splits import SPLIT_NAMES, load_or_create_splits, row_indices_for_split
+from src.utils.config import (
+    DEFAULT_DATA_CONFIG_PATH,
+    DEFAULT_MODEL_CONFIG_PATH,
+    DEFAULT_TRAIN_CONFIG_PATH,
+    REPO_ROOT,
+    load_yaml_config,
+)
 
-CONFIG_PATH = os.path.join("configs", "train.yaml")
-NUM_VAL_SAMPLES = 2
-PRINT_EVERY_N_EPOCHS = 10
 
-# Loss-curve plot palette (project dataviz reference: categorical slots 1/2).
-COLOR_TRAIN = "#2a78d6"  # blue
-COLOR_VAL = "#eb6834"  # orange
+COLOR_TRAIN = "#2a78d6"
+COLOR_VAL = "#eb6834"
 INK = "#0b0b0b"
 MUTED = "#898781"
 GRID = "#e1e0d9"
 SURFACE = "#fcfcfb"
 
 
-def load_config(path=CONFIG_PATH):
-    with open(path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+def project_path(path):
+    value = Path(path)
+    return value if value.is_absolute() else REPO_ROOT / value
 
 
 def set_seed(seed):
@@ -53,7 +46,7 @@ def set_seed(seed):
 
 
 def get_device(preference="auto"):
-    """Auto-detect the best available device unless a specific one is requested."""
+    """Auto-detect the best available device unless one is requested."""
     if preference not in (None, "auto"):
         return torch.device(preference)
     if torch.cuda.is_available():
@@ -64,27 +57,19 @@ def get_device(preference="auto"):
 
 
 def masked_l1_loss(pred, target, lengths):
-    """L1 loss on the mel-spectrogram, ignoring padded timesteps.
-
-    collate_fn pads variable-length sequences to a common length within a
-    batch; `lengths` marks how much of each sample is real so padding never
-    pollutes the loss.
-    """
+    """L1 mel loss that excludes padded timesteps."""
     max_len = pred.size(1)
     mel_dim = pred.size(-1)
     mask = (torch.arange(max_len, device=lengths.device)[None, :] < lengths[:, None]).float()
-    mask = mask.unsqueeze(-1)  # (B, T, 1), broadcasts over the mel dimension
-
+    mask = mask.unsqueeze(-1)
     diff = (pred - target).abs() * mask
-    denom = mask.sum() * mel_dim
-    return diff.sum() / denom.clamp(min=1)
+    return diff.sum() / (mask.sum() * mel_dim).clamp(min=1)
 
 
-def run_epoch(model, loader, device, optimizer=None):
-    """Run one pass over `loader`; trains if `optimizer` is given, else evaluates."""
+def run_epoch(model, loader, device, reconstruction_weight, optimizer=None):
+    """Run one pass over a loader; train only when an optimizer is supplied."""
     is_train = optimizer is not None
     model.train(is_train)
-
     total_loss = 0.0
     total_samples = 0
 
@@ -94,11 +79,10 @@ def run_epoch(model, loader, device, optimizer=None):
             mels = mels.to(device)
             lengths = lengths.to(device)
 
-            preds = model(embeddings, lengths)
-            loss = masked_l1_loss(preds, mels, lengths)
-
+            predictions = model(embeddings, lengths)
+            loss = reconstruction_weight * masked_l1_loss(predictions, mels, lengths)
             if is_train:
-                optimizer.zero_grad()
+                optimizer.zero_grad(set_to_none=True)
                 loss.backward()
                 optimizer.step()
 
@@ -106,24 +90,65 @@ def run_epoch(model, loader, device, optimizer=None):
             total_loss += loss.item() * batch_size
             total_samples += batch_size
 
+    if total_samples == 0:
+        raise ValueError("Cannot run an epoch with an empty data loader")
     return total_loss / total_samples
+
+
+def build_optimizer(model, config):
+    name = str(config["optimizer"]).lower()
+    kwargs = {
+        "lr": float(config["learning_rate"]),
+        "weight_decay": float(config["weight_decay"]),
+    }
+    if name == "adam":
+        return torch.optim.Adam(model.parameters(), **kwargs)
+    if name == "adamw":
+        return torch.optim.AdamW(model.parameters(), **kwargs)
+    if name == "sgd":
+        return torch.optim.SGD(model.parameters(), **kwargs)
+    raise ValueError(f"Unsupported optimizer: {name}")
+
+
+def build_scheduler(optimizer, name, num_epochs):
+    name = None if name is None else str(name).lower()
+    if name in (None, "none", "null"):
+        return None
+    if name == "reduce_on_plateau":
+        return torch.optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer, mode="min", patience=5
+        )
+    if name == "cosine":
+        return torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer, T_max=max(num_epochs, 1)
+        )
+    if name == "step":
+        return torch.optim.lr_scheduler.StepLR(
+            optimizer, step_size=max(num_epochs // 3, 1), gamma=0.5
+        )
+    raise ValueError(f"Unsupported lr_scheduler: {name}")
+
+
+def step_scheduler(scheduler, scheduler_name, val_loss):
+    if scheduler is None:
+        return
+    if str(scheduler_name).lower() == "reduce_on_plateau":
+        scheduler.step(val_loss)
+    else:
+        scheduler.step()
 
 
 def plot_loss_curve(train_losses, val_losses, output_path):
     epochs = list(range(1, len(train_losses) + 1))
-
     fig, ax = plt.subplots(figsize=(9, 5), facecolor=SURFACE)
     ax.set_facecolor(SURFACE)
-
     ax.plot(epochs, train_losses, color=COLOR_TRAIN, linewidth=2, label="Train loss")
     ax.plot(epochs, val_losses, color=COLOR_VAL, linewidth=2, label="Val loss")
-
     best_epoch = int(np.argmin(val_losses)) + 1
     ax.scatter(
         [best_epoch], [val_losses[best_epoch - 1]],
         color=COLOR_VAL, s=50, zorder=5, edgecolor=INK, linewidth=0.8,
     )
-
     ax.set_title("Mapper training: L1 loss on mel-spectrogram", loc="left", fontsize=12, color=INK)
     ax.set_xlabel("Epoch", color=INK)
     ax.set_ylabel("L1 loss", color=INK)
@@ -132,89 +157,235 @@ def plot_loss_curve(train_losses, val_losses, output_path):
     ax.spines[["left", "bottom"]].set_color(MUTED)
     ax.tick_params(colors=MUTED)
     ax.legend(frameon=False, labelcolor=INK)
-
     fig.tight_layout()
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=150, facecolor=SURFACE)
     plt.close(fig)
-    print(f"Saved loss curve to: {output_path}")
+
+
+def checkpoint_payload(
+    epoch, model, optimizer, scheduler, val_loss, best_val_loss,
+    train_config, data_config, model_config, train_losses, val_losses,
+):
+    return {
+        "epoch": epoch,
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "scheduler_state_dict": scheduler.state_dict() if scheduler else None,
+        "val_loss": val_loss,
+        "best_val_loss": best_val_loss,
+        "train_config": train_config,
+        "data_config": data_config,
+        "model_config": model_config,
+        "train_losses": train_losses,
+        "val_losses": val_losses,
+    }
+
+
+def load_checkpoint(path, model, optimizer, scheduler, device):
+    checkpoint = torch.load(path, map_location=device, weights_only=True)
+    model.load_state_dict(checkpoint["model_state_dict"])
+    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
+    if scheduler is not None and checkpoint.get("scheduler_state_dict") is not None:
+        scheduler.load_state_dict(checkpoint["scheduler_state_dict"])
+    return checkpoint
+
+
+def print_effective_config(values):
+    print("\nEffective configuration:")
+    for key, value in values.items():
+        print(f"  {key}: {value}")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train the Thai-DSR mapper.")
+    parser.add_argument("--train-config", default=os.fspath(DEFAULT_TRAIN_CONFIG_PATH))
+    parser.add_argument("--data-config", default=os.fspath(DEFAULT_DATA_CONFIG_PATH))
+    parser.add_argument("--model-config", default=os.fspath(DEFAULT_MODEL_CONFIG_PATH))
+    parser.add_argument("--num-epochs", type=int, default=None, help="Temporary run override.")
+    parser.add_argument("--num-workers", type=int, default=None, help="Temporary loader override.")
+    parser.add_argument("--checkpoint-dir", default=None, help="Temporary output override.")
+    parser.add_argument("--log-dir", default=None, help="Temporary output override.")
+    return parser.parse_args()
 
 
 def main():
-    config = load_config()
+    args = parse_args()
+    train_config = load_yaml_config(args.train_config)
+    data_config = load_yaml_config(args.data_config)
+    model_config = load_yaml_config(args.model_config)
 
-    seed = config["runtime"]["seed"]
+    runtime = train_config["runtime"]
+    optim_config = train_config["optim"]
+    logging_config = train_config["logging"]
+    seed = int(runtime["seed"])
     set_seed(seed)
+    device = get_device(runtime["device"])
 
-    device = get_device(config["runtime"].get("device", "auto"))
-    print(f"Using device: {device}")
+    num_epochs = (
+        int(optim_config["num_epochs"])
+        if args.num_epochs is None
+        else args.num_epochs
+    )
+    if num_epochs <= 0:
+        raise ValueError(f"num_epochs must be positive, got {num_epochs}")
+    checkpoint_dir = project_path(args.checkpoint_dir or logging_config["checkpoint_dir"])
+    log_dir = project_path(args.log_dir or logging_config["log_dir"])
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    log_dir.mkdir(parents=True, exist_ok=True)
 
-    severity = config["data"]["severity"]
-    layer = config["data"]["layer"]
-    batch_size = config["optim"]["batch_size"]
-    num_epochs = config["optim"]["num_epochs"]
-    learning_rate = config["optim"]["learning_rate"]
-    checkpoint_dir = config["logging"]["checkpoint_dir"]
-    log_dir = config["logging"]["log_dir"]
+    paths = data_config["paths"]
+    severity_value = train_config["data"]["severity"]
+    severity = None if str(severity_value).lower() == "all" else severity_value
+    dataset = DysarthricDataset(
+        manifest_path=project_path(paths["manifest_path"]),
+        embeddings_dir=project_path(paths["embeddings_dir"]) / "distorted",
+        severity=severity,
+        train_config_path=args.train_config,
+    )
+    if len(dataset) == 0:
+        raise ValueError(f"No dataset rows found for severity={severity_value!r}")
 
-    os.makedirs(checkpoint_dir, exist_ok=True)
-    os.makedirs(log_dir, exist_ok=True)
+    split_config = data_config["split"]
+    ratios = {
+        "train": float(split_config["train_ratio"]),
+        "val": float(split_config["val_ratio"]),
+        "test": float(split_config["test_ratio"]),
+    }
+    utterance_ids = dataset.manifest["utterance_id"].astype(str).unique().tolist()
+    splits, wrote_splits = load_or_create_splits(
+        utterance_ids=utterance_ids,
+        ratios=ratios,
+        seed=int(split_config["seed"]),
+        output_path=project_path(paths["splits_path"]),
+    )
+    subsets = {
+        name: Subset(dataset, row_indices_for_split(dataset.manifest, splits[name]))
+        for name in SPLIT_NAMES
+    }
 
-    dataset = DysarthricDataset(severity=severity, layer=layer)
-    print(f"Loaded {len(dataset)} '{severity}' samples (wav2vec2 layer {layer}).")
+    num_workers = (
+        int(runtime["num_workers"])
+        if args.num_workers is None
+        else args.num_workers
+    )
+    if num_workers < 0:
+        raise ValueError(f"num_workers must be non-negative, got {num_workers}")
+    loader_options = {
+        "batch_size": int(optim_config["batch_size"]),
+        "num_workers": num_workers,
+        "collate_fn": collate_fn,
+        "pin_memory": device.type == "cuda",
+        "persistent_workers": num_workers > 0,
+    }
+    generator = torch.Generator().manual_seed(seed)
+    train_loader = DataLoader(
+        subsets["train"], shuffle=True, generator=generator, **loader_options
+    )
+    val_loader = DataLoader(subsets["val"], shuffle=False, **loader_options)
+    test_loader = DataLoader(subsets["test"], shuffle=False, **loader_options)
 
-    num_val = NUM_VAL_SAMPLES
-    num_train = len(dataset) - num_val
-    split_generator = torch.Generator().manual_seed(seed)
-    train_set, val_set = random_split(dataset, [num_train, num_val], generator=split_generator)
-    print(f"Split: {num_train} train / {num_val} val")
+    mapper = build_mapper_from_config(model_config).to(device)
+    optimizer = build_optimizer(mapper, optim_config)
+    scheduler_name = optim_config["lr_scheduler"]
+    scheduler = build_scheduler(optimizer, scheduler_name, num_epochs)
+    reconstruction_weight = float(train_config["loss"]["reconstruction_weight"])
+    log_interval = int(logging_config["log_interval"])
+    save_interval = int(logging_config["save_every_n_epochs"])
 
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, collate_fn=collate_fn)
-    val_loader = DataLoader(val_set, batch_size=batch_size, shuffle=False, collate_fn=collate_fn)
+    print_effective_config({
+        "device": device,
+        "severity": severity_value,
+        "wav2vec2_layer": dataset.layer,
+        "mapper_architecture": model_config["mapper"]["architecture"],
+        "split_ratios": ratios,
+        "split_seed": split_config["seed"],
+        "batch_size": loader_options["batch_size"],
+        "learning_rate": optim_config["learning_rate"],
+        "weight_decay": optim_config["weight_decay"],
+        "optimizer": optim_config["optimizer"],
+        "lr_scheduler": scheduler_name,
+        "reconstruction_weight": reconstruction_weight,
+        "num_epochs": num_epochs,
+        "num_workers": num_workers,
+        "log_interval": log_interval,
+        "save_every_n_epochs": save_interval,
+        "resume_checkpoint": runtime["resume_checkpoint"],
+        "checkpoint_dir": checkpoint_dir,
+        "log_dir": log_dir,
+    })
+    print(f"\nSplit assignments: {'wrote' if wrote_splits else 'reused'} {paths['splits_path']}")
+    for name in SPLIT_NAMES:
+        print(
+            f"  {name}: {len(splits[name])} utterance(s), "
+            f"{len(subsets[name])} row(s)"
+        )
+    mapper.count_parameters()
 
-    model = MapperModel().to(device)
-    model.count_parameters()
-
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", patience=5)
-
-    checkpoint_path = os.path.join(checkpoint_dir, "best_mapper.pt")
+    best_path = checkpoint_dir / "best_mapper.pt"
     best_val_loss = float("inf")
     train_losses = []
     val_losses = []
+    start_epoch = 1
+    resume_checkpoint = runtime["resume_checkpoint"]
+    if resume_checkpoint:
+        resume_path = project_path(resume_checkpoint)
+        checkpoint = load_checkpoint(resume_path, mapper, optimizer, scheduler, device)
+        start_epoch = int(checkpoint["epoch"]) + 1
+        best_val_loss = float(checkpoint.get("best_val_loss", checkpoint["val_loss"]))
+        train_losses = list(checkpoint.get("train_losses", []))
+        val_losses = list(checkpoint.get("val_losses", []))
+        if not best_path.exists():
+            torch.save(checkpoint, best_path)
+        print(f"Resumed from {resume_path} at epoch {start_epoch}")
 
-    for epoch in range(1, num_epochs + 1):
-        train_loss = run_epoch(model, train_loader, device, optimizer=optimizer)
-        val_loss = run_epoch(model, val_loader, device, optimizer=None)
-        scheduler.step(val_loss)
-
+    for epoch in range(start_epoch, num_epochs + 1):
+        train_loss = run_epoch(
+            mapper, train_loader, device, reconstruction_weight, optimizer=optimizer
+        )
+        val_loss = run_epoch(mapper, val_loader, device, reconstruction_weight)
+        step_scheduler(scheduler, scheduler_name, val_loss)
         train_losses.append(train_loss)
         val_losses.append(val_loss)
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             torch.save(
-                {
-                    "epoch": epoch,
-                    "model_state_dict": model.state_dict(),
-                    "optimizer_state_dict": optimizer.state_dict(),
-                    "val_loss": val_loss,
-                    "config": config,
-                },
-                checkpoint_path,
+                checkpoint_payload(
+                    epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
+                    train_config, data_config, model_config, train_losses, val_losses,
+                ),
+                best_path,
             )
 
-        if epoch == 1 or epoch % PRINT_EVERY_N_EPOCHS == 0:
+        if save_interval > 0 and epoch % save_interval == 0:
+            periodic_path = checkpoint_dir / f"mapper_epoch_{epoch:03d}.pt"
+            torch.save(
+                checkpoint_payload(
+                    epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
+                    train_config, data_config, model_config, train_losses, val_losses,
+                ),
+                periodic_path,
+            )
+
+        if epoch == start_epoch or epoch % max(log_interval, 1) == 0 or epoch == num_epochs:
             print(
-                f"Epoch {epoch:3d}/{num_epochs} | "
-                f"train_loss={train_loss:.4f} | val_loss={val_loss:.4f} | "
-                f"best_val_loss={best_val_loss:.4f}"
+                f"Epoch {epoch:3d}/{num_epochs} | train_loss={train_loss:.4f} | "
+                f"val_loss={val_loss:.4f} | best_val_loss={best_val_loss:.4f}"
             )
 
-    plot_loss_curve(train_losses, val_losses, os.path.join(log_dir, "loss_curve.png"))
+    if not train_losses:
+        raise ValueError(
+            f"No epochs ran: resume epoch {start_epoch} exceeds configured num_epochs {num_epochs}"
+        )
+    plot_loss_curve(train_losses, val_losses, log_dir / "loss_curve.png")
 
+    best_checkpoint = torch.load(best_path, map_location=device, weights_only=True)
+    mapper.load_state_dict(best_checkpoint["model_state_dict"])
+    test_loss = run_epoch(mapper, test_loader, device, reconstruction_weight)
     print(f"\nTraining complete. Best val loss: {best_val_loss:.4f}")
-    print(f"Best checkpoint saved to: {checkpoint_path}")
+    print(f"Held-out test loss: {test_loss:.4f}")
+    print(f"Best checkpoint saved to: {best_path}")
 
 
 if __name__ == "__main__":

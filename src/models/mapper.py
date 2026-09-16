@@ -94,6 +94,24 @@ class MapperModel(nn.Module):
         return total
 
 
+def build_mapper_from_config(model_config):
+    """Construct the configured mapper and reject unsupported architectures."""
+    mapper_config = model_config["mapper"]
+    architecture = str(mapper_config["architecture"]).lower()
+    if architecture != "bilstm":
+        raise ValueError(
+            f"Unsupported mapper architecture '{architecture}'; expected 'bilstm'"
+        )
+    return MapperModel(
+        input_dim=int(mapper_config["input_dim"]),
+        lstm_hidden_size=int(mapper_config["lstm_hidden_size"]),
+        lstm_num_layers=int(mapper_config["lstm_num_layers"]),
+        lstm_dropout=float(mapper_config["dropout"]),
+        projection_hidden_dim=int(mapper_config["projection_hidden_dim"]),
+        mel_dim=int(mapper_config["mel_dim"]),
+    )
+
+
 if __name__ == "__main__":
     model = MapperModel()
     print(model)

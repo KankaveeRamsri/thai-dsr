@@ -2,19 +2,19 @@
 # Configuration for model architecture: encoder, mapper, and vocoder.
 
 encoder:
-  speaker_model: speechbrain/spkrec-ecapa-voxceleb  # pretrained ECAPA-TDNN checkpoint
-  content_model: null       # e.g. a HuggingFace wav2vec2/HuBERT model name
-  embedding_dim: 192         # speaker embedding size
-  freeze: true                # whether to freeze pretrained encoder weights
+  content_model: airesearch/wav2vec2-large-xlsr-53-th
+  freeze: true
 
 mapper:
-  architecture: transformer   # e.g. transformer | seq2seq | diffusion
-  hidden_dim: 256
-  num_layers: 4
-  num_heads: 4
+  architecture: bilstm
+  input_dim: 1024
+  lstm_hidden_size: 512
+  lstm_num_layers: 2
   dropout: 0.1
+  projection_hidden_dim: 256
+  mel_dim: 80
 
 vocoder:
-  type: hifigan                # vocoder architecture
-  checkpoint: null              # path to pretrained/fine-tuned vocoder weights
-  sample_rate: 16000
+  type: hifigan
+  checkpoint: vendor/hifi-gan/checkpoints/UNIVERSAL_V1
+  sample_rate: 22050

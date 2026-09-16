@@ -7,6 +7,7 @@ paths:
   distorted_dir: data/distorted  # synthetically distorted or real dysarthric audio
   embeddings_dir: data/embeddings  # extracted speaker/content embeddings
   manifest_path: data/manifest.csv  # output of build_manifest.py
+  splits_path: data/splits.json      # reproducible utterance-level assignments
 
 audio:
   sample_rate: 16000    # target sample rate all audio is resampled to
@@ -14,9 +15,9 @@ audio:
   max_duration_sec: 10   # clip/pad utterances longer than this
 
 split:
-  train_ratio: 0.8
-  val_ratio: 0.1
-  test_ratio: 0.1
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
   seed: 42                # random seed for reproducible splits
 
 distortion:

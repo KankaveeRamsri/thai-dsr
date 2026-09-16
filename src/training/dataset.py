@@ -13,7 +13,6 @@
 
 import os
 
-import librosa
 import numpy as np
 import pandas as pd
 import soundfile as sf
@@ -21,18 +20,14 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 
-MANIFEST_PATH = os.path.join("data", "manifest.csv")
-DISTORTED_EMBEDDINGS_DIR = os.path.join("data", "embeddings", "distorted")
+from src.utils.config import DEFAULT_TRAIN_CONFIG_PATH, REPO_ROOT, get_selected_layer
+from src.utils.mel import compute_mel
+
+
+MANIFEST_PATH = REPO_ROOT / "data" / "manifest.csv"
+DISTORTED_EMBEDDINGS_DIR = REPO_ROOT / "data" / "embeddings" / "distorted"
 
 DEFAULT_SEVERITY = "severe"
-DEFAULT_LAYER = 9  # wav2vec2 layer selected via scripts/select_layer.py
-
-# Mel-spectrogram extraction settings for the clean target.
-MEL_SAMPLE_RATE = 22050
-N_FFT = 1024
-HOP_LENGTH = 256
-N_MELS = 80
-LOG_EPS = 1e-9
 
 
 class DysarthricDataset(Dataset):
@@ -51,10 +46,10 @@ class DysarthricDataset(Dataset):
         manifest_path=MANIFEST_PATH,
         embeddings_dir=DISTORTED_EMBEDDINGS_DIR,
         severity=DEFAULT_SEVERITY,
-        layer=DEFAULT_LAYER,
+        train_config_path=DEFAULT_TRAIN_CONFIG_PATH,
     ):
-        self.embeddings_dir = embeddings_dir
-        self.layer = layer
+        self.embeddings_dir = os.fspath(embeddings_dir)
+        self.layer = get_selected_layer(train_config_path)
 
         manifest = pd.read_csv(manifest_path)
         if severity is not None:
@@ -86,25 +81,16 @@ class DysarthricDataset(Dataset):
         return np.load(path)
 
     def _extract_clean_mel(self, clean_path):
-        """Compute a log-mel spectrogram from the clean reference .wav.
+        """Compute a HiFi-GAN-compatible log-mel from the clean reference.
 
         Shape: (T_mel, 80).
         """
+        if not os.path.isabs(clean_path):
+            clean_path = REPO_ROOT / clean_path
         audio, sample_rate = sf.read(clean_path, dtype="float32")
         if audio.ndim > 1:
             audio = audio.mean(axis=1)
-        if sample_rate != MEL_SAMPLE_RATE:
-            audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=MEL_SAMPLE_RATE)
-
-        mel = librosa.feature.melspectrogram(
-            y=audio,
-            sr=MEL_SAMPLE_RATE,
-            n_fft=N_FFT,
-            hop_length=HOP_LENGTH,
-            n_mels=N_MELS,
-        )
-        log_mel = np.log(mel + LOG_EPS)
-        return log_mel.T.astype(np.float32)  # (n_mels, T_mel) -> (T_mel, n_mels)
+        return compute_mel(audio, sr=sample_rate).T
 
 
 def interpolate_embedding(embedding, target_length):
@@ -147,7 +133,10 @@ def collate_fn(batch):
 
 if __name__ == "__main__":
     dataset = DysarthricDataset()
-    print(f"Dataset size: {len(dataset)} samples (severity='{DEFAULT_SEVERITY}', layer={DEFAULT_LAYER})")
+    print(
+        f"Dataset size: {len(dataset)} samples "
+        f"(severity='{DEFAULT_SEVERITY}', layer={dataset.layer})"
+    )
 
     embedding, mel = dataset[0]
     print(f"First sample - embedding shape: {tuple(embedding.shape)}, mel shape: {tuple(mel.shape)}")

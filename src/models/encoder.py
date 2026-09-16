@@ -12,17 +12,20 @@
 #   - Handle freezing/fine-tuning options
 #   - Be importable by extract_embedding.py and mapper.py
 
-import numpy as np
 import soundfile as sf
 import torch
 import torchaudio
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 
-# Pretrained Thai wav2vec2 XLSR-53 checkpoint on HuggingFace -- same model
-# used by src/preprocessing/extract_embedding.py to build data/embeddings/.
-MODEL_NAME = "airesearch/wav2vec2-large-xlsr-53-th"
+from src.utils.config import (
+    DEFAULT_MODEL_CONFIG_PATH,
+    DEFAULT_TRAIN_CONFIG_PATH,
+    get_selected_layer,
+    load_yaml_config,
+)
+
+
 TARGET_SAMPLE_RATE = 16000
-DEFAULT_LAYER = 9  # wav2vec2 layer selected via scripts/select_layer.py
 
 
 class Wav2Vec2ContentEncoder:
@@ -35,16 +38,33 @@ class Wav2Vec2ContentEncoder:
     instead of shelling out to the standalone extraction script.
     """
 
-    def __init__(self, layer=DEFAULT_LAYER, device=None, model_name=MODEL_NAME, freeze=True):
-        self.layer = layer
-        self.device = device or torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    def __init__(
+        self,
+        device=None,
+        train_config_path=DEFAULT_TRAIN_CONFIG_PATH,
+        model_config_path=DEFAULT_MODEL_CONFIG_PATH,
+    ):
+        train_layer = get_selected_layer(train_config_path)
+        model_config = load_yaml_config(model_config_path)["encoder"]
+        model_name = model_config["content_model"]
+        freeze = bool(model_config["freeze"])
+
+        self.layer = train_layer
+        if device is None:
+            if torch.cuda.is_available():
+                device = torch.device("cuda")
+            elif torch.backends.mps.is_available():
+                device = torch.device("mps")
+            else:
+                device = torch.device("cpu")
+        self.device = device
 
         self.feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
         self.model = Wav2Vec2Model.from_pretrained(model_name)
         self.model.to(self.device)
+        self.model.eval()
 
         if freeze:
-            self.model.eval()
             for param in self.model.parameters():
                 param.requires_grad = False
 
@@ -69,13 +89,12 @@ class Wav2Vec2ContentEncoder:
 
         return waveform.squeeze(0).numpy()
 
-    def encode(self, wav_path, layer=None):
+    def encode(self, wav_path):
         """Run wav2vec2 inference on a .wav file and return one layer's hidden state.
 
         Returns:
             np.ndarray of shape (T, 1024).
         """
-        layer = self.layer if layer is None else layer
         audio_array = self._load_audio(wav_path)
 
         inputs = self.feature_extractor(
@@ -86,7 +105,7 @@ class Wav2Vec2ContentEncoder:
         with torch.no_grad():
             outputs = self.model(input_values, output_hidden_states=True)
 
-        hidden_state = outputs.hidden_states[layer]  # (1, T, 1024)
+        hidden_state = outputs.hidden_states[self.layer]  # (1, T, 1024)
         return hidden_state.squeeze(0).cpu().numpy()
 
     def encode_all_layers(self, wav_path):

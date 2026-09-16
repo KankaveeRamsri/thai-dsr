@@ -3,17 +3,15 @@
 # Purpose:
 #   Extract content/phonetic embeddings from Thai speech audio using the
 #   pretrained wav2vec2 XLSR-53 model fine-tuned on Thai
-#   (airesearch/wav2vec2-large-xlsr-53-th), saving the hidden state of
-#   every transformer layer so downstream experiments can pick the layer
-#   that works best.
+#   (airesearch/wav2vec2-large-xlsr-53-th), saving the selected hidden state
+#   for training or all transformer layers for explicit layer experiments.
 #
 # Expected responsibilities:
 #   - Load audio from a given .wav path and resample to 16 kHz
 #   - Run the audio through the pretrained wav2vec2 model with
 #     output_hidden_states=True
-#   - Save each layer's hidden state as a separate .npy file in
-#     data/embeddings/
-#   - Print the shape of every layer so the outputs can be inspected
+#   - Save the layer selected in configs/train.yaml by default
+#   - Optionally save all layers for layer-selection experiments
 
 import argparse
 import os
@@ -23,8 +21,12 @@ import torch
 import torchaudio
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 
-# Pretrained Thai wav2vec2 XLSR-53 checkpoint on HuggingFace.
-MODEL_NAME = "airesearch/wav2vec2-large-xlsr-53-th"
+from src.utils.config import (
+    DEFAULT_MODEL_CONFIG_PATH,
+    DEFAULT_TRAIN_CONFIG_PATH,
+    get_selected_layer,
+    load_yaml_config,
+)
 
 # Target sample rate expected by the model.
 TARGET_SAMPLE_RATE = 16000
@@ -35,8 +37,9 @@ DEFAULT_OUTPUT_DIR = os.path.join("data", "embeddings")
 
 def load_model(device):
     """Load the pretrained feature extractor and wav2vec2 model onto `device`."""
-    feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(MODEL_NAME)
-    model = Wav2Vec2Model.from_pretrained(MODEL_NAME)
+    model_name = load_yaml_config(DEFAULT_MODEL_CONFIG_PATH)["encoder"]["content_model"]
+    feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
+    model = Wav2Vec2Model.from_pretrained(model_name)
     model.to(device)
     model.eval()  # inference mode: disables dropout, etc.
     return feature_extractor, model
@@ -83,13 +86,14 @@ def extract_all_hidden_states(wav_path, feature_extractor, model, device):
     return hidden_states
 
 
-def save_hidden_states(hidden_states, wav_path, output_dir):
-    """Save each layer's hidden state to its own .npy file and print its shape."""
+def save_hidden_states(hidden_states, wav_path, output_dir, layer=None):
+    """Save one selected layer, or every layer for layer-selection research."""
     os.makedirs(output_dir, exist_ok=True)
 
     utterance_id = os.path.splitext(os.path.basename(wav_path))[0]
-
-    for layer_idx, layer_output in enumerate(hidden_states):
+    layer_indices = range(len(hidden_states)) if layer is None else (layer,)
+    for layer_idx in layer_indices:
+        layer_output = hidden_states[layer_idx]
         # Move to CPU and drop the batch dimension before saving.
         layer_array = layer_output.squeeze(0).cpu().numpy()
 
@@ -117,13 +121,29 @@ def main():
         default=DEFAULT_OUTPUT_DIR,
         help=f"Directory to save .npy embeddings (default: {DEFAULT_OUTPUT_DIR})",
     )
+    parser.add_argument(
+        "--layer",
+        type=int,
+        default=None,
+        help="Layer to save (default: configs/train.yaml data.layer).",
+    )
+    parser.add_argument(
+        "--all-layers",
+        action="store_true",
+        help="Save all 25 layers for layer-selection experiments (uses much more disk).",
+    )
     args = parser.parse_args()
+
+    selected_layer = get_selected_layer(DEFAULT_TRAIN_CONFIG_PATH) if args.layer is None else args.layer
+    if not 0 <= selected_layer <= 24:
+        parser.error(f"--layer must be between 0 and 24, got {selected_layer}")
 
     # Use CUDA automatically when available, otherwise fall back to CPU.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    print(f"Loading model: {MODEL_NAME}")
+    model_name = load_yaml_config(DEFAULT_MODEL_CONFIG_PATH)["encoder"]["content_model"]
+    print(f"Loading model: {model_name}")
     feature_extractor, model = load_model(device)
 
     print(f"Extracting hidden states from: {args.input}")
@@ -132,8 +152,12 @@ def main():
     )
     print(f"Model produced {len(hidden_states)} hidden state layers (including input embeddings).")
 
-    save_hidden_states(hidden_states, args.input, args.output_dir)
-    print(f"Saved all layer embeddings to: {args.output_dir}")
+    layer_to_save = None if args.all_layers else selected_layer
+    save_hidden_states(hidden_states, args.input, args.output_dir, layer=layer_to_save)
+    if args.all_layers:
+        print(f"Saved all layer embeddings to: {args.output_dir}")
+    else:
+        print(f"Saved selected layer {selected_layer} embedding to: {args.output_dir}")
 
 
 if __name__ == "__main__":

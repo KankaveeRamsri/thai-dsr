@@ -18,7 +18,6 @@ import os
 import sys
 import time
 
-import librosa
 import numpy as np
 import soundfile as sf
 import torch
@@ -28,8 +27,15 @@ HIFIGAN_DIR = os.path.join(REPO_ROOT, "vendor", "hifi-gan")
 
 sys.path.insert(0, REPO_ROOT)
 from src.models.encoder import Wav2Vec2ContentEncoder  # noqa: E402
-from src.models.mapper import MapperModel  # noqa: E402
-from src.training.dataset import HOP_LENGTH, MEL_SAMPLE_RATE, interpolate_embedding  # noqa: E402
+from src.models.mapper import build_mapper_from_config  # noqa: E402
+from src.training.dataset import interpolate_embedding  # noqa: E402
+from src.utils.config import (  # noqa: E402
+    DEFAULT_MODEL_CONFIG_PATH,
+    DEFAULT_TRAIN_CONFIG_PATH,
+    get_selected_layer,
+    load_yaml_config,
+)
+from src.utils.mel import LOG_CLIP_VALUE, compute_mel  # noqa: E402
 
 # vendor/hifi-gan's models.py/env.py use bare top-level imports, so its
 # directory must be on sys.path to import them (same as scripts/test_hifigan.py).
@@ -37,15 +43,13 @@ sys.path.insert(0, HIFIGAN_DIR)
 from env import AttrDict  # noqa: E402
 from models import Generator  # noqa: E402
 
-DEFAULT_LAYER = 9
 DEFAULT_CHECKPOINT = os.path.join(REPO_ROOT, "results", "checkpoints", "best_mapper.pt")
-DEFAULT_HIFIGAN_MODEL = "UNIVERSAL_V1"
 DEFAULT_OUTPUT_DIR = os.path.join(REPO_ROOT, "results", "audio_samples")
 DEFAULT_DISTORTED_DIR = os.path.join(REPO_ROOT, "data", "distorted")
 
 # HiFi-GAN was trained on mel-spectrograms in roughly this range; the mapper's
 # log(mel + 1e-9) output can stray outside it, so clamp before vocoding.
-MEL_CLAMP_MIN = -11
+MEL_CLAMP_MIN = float(np.log(LOG_CLIP_VALUE))
 MEL_CLAMP_MAX = 2
 
 
@@ -57,17 +61,25 @@ def get_device():
     return torch.device("cpu")
 
 
-def load_mapper(checkpoint_path, device):
-    checkpoint = torch.load(checkpoint_path, map_location=device)
-    model = MapperModel().to(device)
+def load_mapper(checkpoint_path, device, model_config_path, train_config_path):
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
+    model_config = checkpoint.get("model_config") or load_yaml_config(model_config_path)
+    model = build_mapper_from_config(model_config).to(device)
     model.load_state_dict(checkpoint["model_state_dict"])
+
+    checkpoint_train_config = checkpoint.get("train_config") or checkpoint.get("config", {})
+    checkpoint_layer = checkpoint_train_config.get("data", {}).get("layer")
+    configured_layer = get_selected_layer(train_config_path)
+    if checkpoint_layer is not None and int(checkpoint_layer) != configured_layer:
+        raise ValueError(
+            "Checkpoint/config layer mismatch: "
+            f"checkpoint={checkpoint_layer}, configs/train.yaml={configured_layer}"
+        )
     model.eval()
     return model
 
 
-def load_hifigan(model_name, device):
-    model_dir = os.path.join(HIFIGAN_DIR, "checkpoints", model_name)
-
+def load_hifigan(model_dir, device):
     with open(os.path.join(model_dir, "config.json")) as f:
         config = AttrDict(json.load(f))
 
@@ -83,18 +95,11 @@ def load_hifigan(model_name, device):
 
 
 def compute_mel_frame_count(wav_path):
-    """Number of mel frames librosa would produce for this audio at MEL_SAMPLE_RATE.
-
-    Mirrors librosa's center=True STFT frame formula (1 + len(y) // hop_length)
-    used by DysarthricDataset._extract_clean_mel during training, so the mapper
-    receives an embedding interpolated to the same frame rate it was trained on.
-    """
+    """Compute the frame count using the same HiFi-GAN mel path as training."""
     audio, sample_rate = sf.read(wav_path, dtype="float32")
     if audio.ndim > 1:
         audio = audio.mean(axis=1)
-    if sample_rate != MEL_SAMPLE_RATE:
-        audio = librosa.resample(audio, orig_sr=sample_rate, target_sr=MEL_SAMPLE_RATE)
-    return 1 + len(audio) // HOP_LENGTH
+    return compute_mel(audio, sr=sample_rate).shape[1]
 
 
 def reconstruct(wav_path, output_dir, encoder, mapper, hifigan, hifigan_config, device):
@@ -165,8 +170,14 @@ def main():
         help=f"Directory of distorted .wav files to process in --batch mode (default: {DEFAULT_DISTORTED_DIR})",
     )
     parser.add_argument("--checkpoint", type=str, default=DEFAULT_CHECKPOINT, help="Mapper checkpoint path.")
-    parser.add_argument("--layer", type=int, default=DEFAULT_LAYER, help="wav2vec2 layer to extract.")
-    parser.add_argument("--hifigan_model", type=str, default=DEFAULT_HIFIGAN_MODEL, help="HiFi-GAN checkpoint folder name.")
+    parser.add_argument(
+        "--hifigan_model",
+        type=str,
+        default=None,
+        help="Optional HiFi-GAN folder name overriding configs/model.yaml.",
+    )
+    parser.add_argument("--train_config", type=str, default=os.fspath(DEFAULT_TRAIN_CONFIG_PATH))
+    parser.add_argument("--model_config", type=str, default=os.fspath(DEFAULT_MODEL_CONFIG_PATH))
     args = parser.parse_args()
 
     if not args.batch and args.input is None:
@@ -174,18 +185,38 @@ def main():
 
     device = get_device()
     print(f"Using device: {device}")
+    model_config = load_yaml_config(args.model_config)
+    vocoder_config = model_config["vocoder"]
+    if str(vocoder_config["type"]).lower() != "hifigan":
+        raise ValueError(f"Unsupported vocoder type: {vocoder_config['type']}")
 
     t0 = time.perf_counter()
-    encoder = Wav2Vec2ContentEncoder(layer=args.layer, device=device)
-    print(f"Loaded wav2vec2 encoder (layer {args.layer}) in {time.perf_counter() - t0:.2f}s")
+    configured_layer = get_selected_layer(args.train_config)
+    encoder = Wav2Vec2ContentEncoder(
+        device=device,
+        train_config_path=args.train_config,
+        model_config_path=args.model_config,
+    )
+    print(f"Loaded wav2vec2 encoder (layer {configured_layer}) in {time.perf_counter() - t0:.2f}s")
 
     t0 = time.perf_counter()
-    mapper = load_mapper(args.checkpoint, device)
+    mapper = load_mapper(args.checkpoint, device, args.model_config, args.train_config)
     print(f"Loaded mapper checkpoint from {args.checkpoint} in {time.perf_counter() - t0:.2f}s")
 
     t0 = time.perf_counter()
-    hifigan, hifigan_config = load_hifigan(args.hifigan_model, device)
-    print(f"Loaded HiFi-GAN ({args.hifigan_model}) in {time.perf_counter() - t0:.2f}s")
+    if args.hifigan_model:
+        hifigan_dir = os.path.join(HIFIGAN_DIR, "checkpoints", args.hifigan_model)
+    else:
+        hifigan_dir = vocoder_config["checkpoint"]
+        if not os.path.isabs(hifigan_dir):
+            hifigan_dir = os.path.join(REPO_ROOT, hifigan_dir)
+    hifigan, hifigan_config = load_hifigan(hifigan_dir, device)
+    if int(hifigan_config.sampling_rate) != int(vocoder_config["sample_rate"]):
+        raise ValueError(
+            "HiFi-GAN/config sample-rate mismatch: "
+            f"checkpoint={hifigan_config.sampling_rate}, config={vocoder_config['sample_rate']}"
+        )
+    print(f"Loaded HiFi-GAN ({hifigan_dir}) in {time.perf_counter() - t0:.2f}s")
 
     if args.batch:
         wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))

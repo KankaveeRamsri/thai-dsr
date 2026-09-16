@@ -14,17 +14,16 @@ optim:
   lr_scheduler: reduce_on_plateau  # e.g. reduce_on_plateau | cosine | step | null
 
 loss:
-  reconstruction_weight: 1.0   # weight for feature/waveform reconstruction loss
-  speaker_consistency_weight: 0.0  # weight for speaker-embedding preservation loss
+  reconstruction_weight: 1.0   # weight for mel reconstruction loss
 
 logging:
   log_dir: results/logs
   checkpoint_dir: results/checkpoints
-  log_every_n_steps: 50
+  log_interval: 10          # print one summary every N epochs
   save_every_n_epochs: 5
 
 runtime:
   device: auto        # auto | cuda | mps | cpu -- auto picks the best available
   num_workers: 4
   seed: 42
-  resume_from: null    # path to checkpoint to resume from
+  resume_checkpoint: null    # path to checkpoint to resume from

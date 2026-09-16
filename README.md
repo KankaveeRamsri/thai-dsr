@@ -55,12 +55,12 @@ preprocessing scripts and are git-ignored.
 1. **Generate distortions and embeddings**
    ```bash
    python -m src.preprocessing.distortion
-   python -m src.preprocessing.extract_embedding
+   python -m src.preprocessing.extract_embedding --input data/raw/<utterance>.wav
    python -m src.preprocessing.build_manifest
    ```
 2. **Train the model**
    ```bash
-   python -m src.training.train --config configs/train.yaml
+   python -m src.training.train --train-config configs/train.yaml
    ```
 3. **Run inference on new audio**
    ```bash
@@ -76,6 +76,16 @@ preprocessing scripts and are git-ignored.
 
 Config keys are documented inline in `configs/data.yaml`,
 `configs/model.yaml`, and `configs/train.yaml`.
+
+The training/inference wav2vec2 layer has one source of truth:
+`configs/train.yaml` under `data.layer`. New embedding extraction saves only
+that selected layer by default, using
+`{utterance_id}_layer{NN}.npy`. Pass `--all-layers` only for layer-selection
+experiments. Existing 25-layer caches remain compatible with
+`scripts/select_layer.py`.
+
+Train/validation/test assignments are made by utterance (never by augmented
+row) and saved in `data/splits.json` for reproducibility.
 
 ## Documentation
 
