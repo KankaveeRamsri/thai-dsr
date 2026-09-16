@@ -10,6 +10,7 @@
 #   - Aggregate metrics across a results/audio_samples/ folder or manifest
 #     and report summary statistics
 
+import argparse
 import json
 import os
 
@@ -74,19 +75,25 @@ def compute_snr(reference, estimate):
     return 10 * np.log10(signal_power / noise_power)
 
 
-def reconstructed_path(utterance_id, severity):
-    return os.path.join(RECONSTRUCTED_DIR, f"{utterance_id}_{severity}_reconstructed.wav")
+def reconstructed_path(utterance_id, severity, reconstructed_dir=RECONSTRUCTED_DIR):
+    return os.path.join(reconstructed_dir, f"{utterance_id}_{severity}_reconstructed.wav")
 
 
-def evaluate():
+def evaluate(
+    manifest_path=MANIFEST_PATH,
+    reconstructed_dir=RECONSTRUCTED_DIR,
+    severity=SEVERITY,
+):
     """Compute STOI/PESQ/SNR for distorted-vs-clean and reconstructed-vs-clean, per utterance."""
-    manifest = pd.read_csv(MANIFEST_PATH)
-    manifest = manifest[manifest["severity"] == SEVERITY].reset_index(drop=True)
+    manifest = pd.read_csv(manifest_path)
+    manifest = manifest[manifest["severity"] == severity].reset_index(drop=True)
 
     rows = []
     for _, row in manifest.iterrows():
         utterance_id = row["utterance_id"]
-        recon_path = reconstructed_path(utterance_id, row["severity"])
+        recon_path = reconstructed_path(
+            utterance_id, row["severity"], reconstructed_dir=reconstructed_dir
+        )
         if not os.path.exists(recon_path):
             print(f"WARNING: missing reconstructed file, skipping {utterance_id}: {recon_path}")
             continue
@@ -119,8 +126,8 @@ def summarize(df):
     return summary
 
 
-def print_summary_table(summary, n):
-    print(f"\nEvaluation summary (n={n} utterances, severity='{SEVERITY}')")
+def print_summary_table(summary, n, severity=SEVERITY):
+    print(f"\nEvaluation summary (n={n} utterances, severity='{severity}')")
     header = f"{'Metric':<10} {'Distorted (mean ± std)':<26} {'Reconstructed (mean ± std)':<26}"
     print(header)
     print("-" * len(header))
@@ -133,21 +140,38 @@ def print_summary_table(summary, n):
 
 
 def main():
-    df = evaluate()
+    parser = argparse.ArgumentParser(description="Evaluate reconstructed Thai speech.")
+    parser.add_argument("--manifest", default=MANIFEST_PATH)
+    parser.add_argument("--reconstructed_dir", default=RECONSTRUCTED_DIR)
+    parser.add_argument("--severity", default=SEVERITY)
+    parser.add_argument("--output_json", default=OUTPUT_JSON)
+    args = parser.parse_args()
+
+    df = evaluate(
+        manifest_path=args.manifest,
+        reconstructed_dir=args.reconstructed_dir,
+        severity=args.severity,
+    )
+    if df.empty:
+        raise ValueError(
+            f"No reconstructed files evaluated from: {args.reconstructed_dir}"
+        )
     summary = summarize(df)
-    print_summary_table(summary, len(df))
+    print_summary_table(summary, len(df), severity=args.severity)
 
     output = {
-        "severity": SEVERITY,
+        "severity": args.severity,
         "num_utterances": len(df),
         "per_utterance": df.to_dict(orient="records"),
         "summary": summary,
     }
 
-    os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
-    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+    output_dir = os.path.dirname(args.output_json)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+    with open(args.output_json, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    print(f"\nSaved metrics to: {OUTPUT_JSON}")
+    print(f"\nSaved metrics to: {args.output_json}")
 
 
 if __name__ == "__main__":
