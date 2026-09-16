@@ -83,10 +83,15 @@ def evaluate(
     manifest_path=MANIFEST_PATH,
     reconstructed_dir=RECONSTRUCTED_DIR,
     severity=SEVERITY,
+    utterance_ids=None,
 ):
     """Compute STOI/PESQ/SNR for distorted-vs-clean and reconstructed-vs-clean, per utterance."""
     manifest = pd.read_csv(manifest_path)
     manifest = manifest[manifest["severity"] == severity].reset_index(drop=True)
+    if utterance_ids is not None:
+        manifest = manifest[
+            manifest["utterance_id"].astype(str).isin(set(utterance_ids))
+        ].reset_index(drop=True)
 
     rows = []
     for _, row in manifest.iterrows():
@@ -145,12 +150,22 @@ def main():
     parser.add_argument("--reconstructed_dir", default=RECONSTRUCTED_DIR)
     parser.add_argument("--severity", default=SEVERITY)
     parser.add_argument("--output_json", default=OUTPUT_JSON)
+    parser.add_argument("--splits", default=None, help="Optional utterance split JSON.")
+    parser.add_argument("--split", choices=("train", "val", "test"), default=None)
     args = parser.parse_args()
+
+    utterance_ids = None
+    if args.splits or args.split:
+        if not (args.splits and args.split):
+            parser.error("--splits and --split must be provided together")
+        with open(args.splits, encoding="utf-8") as handle:
+            utterance_ids = json.load(handle)["splits"][args.split]
 
     df = evaluate(
         manifest_path=args.manifest,
         reconstructed_dir=args.reconstructed_dir,
         severity=args.severity,
+        utterance_ids=utterance_ids,
     )
     if df.empty:
         raise ValueError(

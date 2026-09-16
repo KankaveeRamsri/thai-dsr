@@ -12,6 +12,7 @@
 #   - Accept CLI args for input path, checkpoint path, output path
 
 import argparse
+import csv
 import glob
 import json
 import os
@@ -170,6 +171,9 @@ def main():
         help=f"Directory of distorted .wav files to process in --batch mode (default: {DEFAULT_DISTORTED_DIR})",
     )
     parser.add_argument("--checkpoint", type=str, default=DEFAULT_CHECKPOINT, help="Mapper checkpoint path.")
+    parser.add_argument("--manifest", type=str, default=None, help="Optional manifest used to select batch inputs.")
+    parser.add_argument("--splits", type=str, default=None, help="Optional utterance split JSON for batch filtering.")
+    parser.add_argument("--split", choices=("train", "val", "test"), default=None)
     parser.add_argument(
         "--hifigan_model",
         type=str,
@@ -219,8 +223,23 @@ def main():
     print(f"Loaded HiFi-GAN ({hifigan_dir}) in {time.perf_counter() - t0:.2f}s")
 
     if args.batch:
-        wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))
-        print(f"\nBatch mode: {len(wav_paths)} files found in {args.input_dir}")
+        if args.manifest:
+            selected_ids = None
+            if args.splits or args.split:
+                if not (args.splits and args.split):
+                    parser.error("--splits and --split must be provided together")
+                with open(args.splits, encoding="utf-8") as handle:
+                    selected_ids = set(json.load(handle)["splits"][args.split])
+            with open(args.manifest, encoding="utf-8", newline="") as handle:
+                rows = list(csv.DictReader(handle))
+            wav_paths = sorted({
+                row["distorted_path"] for row in rows
+                if selected_ids is None or row["utterance_id"] in selected_ids
+            })
+            print(f"\nBatch mode: {len(wav_paths)} files selected from {args.manifest}")
+        else:
+            wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))
+            print(f"\nBatch mode: {len(wav_paths)} files found in {args.input_dir}")
     else:
         wav_paths = [args.input]
 

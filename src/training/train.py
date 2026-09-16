@@ -235,10 +235,13 @@ def main():
     log_dir.mkdir(parents=True, exist_ok=True)
 
     paths = data_config["paths"]
-    severity_value = train_config["data"]["severity"]
+    train_data_config = train_config["data"]
+    manifest_path = train_data_config.get("manifest_path", paths["manifest_path"])
+    splits_path = train_data_config.get("splits_path", paths["splits_path"])
+    severity_value = train_data_config["severity"]
     severity = None if str(severity_value).lower() == "all" else severity_value
     dataset = DysarthricDataset(
-        manifest_path=project_path(paths["manifest_path"]),
+        manifest_path=project_path(manifest_path),
         embeddings_dir=project_path(paths["embeddings_dir"]) / "distorted",
         severity=severity,
         train_config_path=args.train_config,
@@ -257,7 +260,7 @@ def main():
         utterance_ids=utterance_ids,
         ratios=ratios,
         seed=int(split_config["seed"]),
-        output_path=project_path(paths["splits_path"]),
+        output_path=project_path(splits_path),
     )
     subsets = {
         name: Subset(dataset, row_indices_for_split(dataset.manifest, splits[name]))
@@ -296,6 +299,8 @@ def main():
     print_effective_config({
         "device": device,
         "severity": severity_value,
+        "manifest_path": manifest_path,
+        "splits_path": splits_path,
         "wav2vec2_layer": dataset.layer,
         "mapper_architecture": model_config["mapper"]["architecture"],
         "split_ratios": ratios,
@@ -314,7 +319,7 @@ def main():
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
     })
-    print(f"\nSplit assignments: {'wrote' if wrote_splits else 'reused'} {paths['splits_path']}")
+    print(f"\nSplit assignments: {'wrote' if wrote_splits else 'reused'} {splits_path}")
     for name in SPLIT_NAMES:
         print(
             f"  {name}: {len(splits[name])} utterance(s), "
@@ -378,7 +383,10 @@ def main():
         raise ValueError(
             f"No epochs ran: resume epoch {start_epoch} exceeds configured num_epochs {num_epochs}"
         )
-    plot_loss_curve(train_losses, val_losses, log_dir / "loss_curve.png")
+    loss_curve_path = log_dir / logging_config.get(
+        "loss_curve_filename", "loss_curve.png"
+    )
+    plot_loss_curve(train_losses, val_losses, loss_curve_path)
 
     best_checkpoint = torch.load(best_path, map_location=device, weights_only=True)
     mapper.load_state_dict(best_checkpoint["model_state_dict"])

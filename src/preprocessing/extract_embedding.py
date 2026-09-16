@@ -14,9 +14,11 @@
 #   - Optionally save all layers for layer-selection experiments
 
 import argparse
+import glob
 import os
 
 import numpy as np
+import soundfile as sf
 import torch
 import torchaudio
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
@@ -30,6 +32,7 @@ from src.utils.config import (
 
 # Target sample rate expected by the model.
 TARGET_SAMPLE_RATE = 16000
+NUM_HIDDEN_STATE_LAYERS = 25
 
 # Where per-layer embeddings get written.
 DEFAULT_OUTPUT_DIR = os.path.join("data", "embeddings")
@@ -47,7 +50,8 @@ def load_model(device):
 
 def load_audio(wav_path):
     """Load a .wav file and resample it to TARGET_SAMPLE_RATE if needed."""
-    waveform, sample_rate = torchaudio.load(wav_path)
+    audio_data, sample_rate = sf.read(wav_path, dtype="float32", always_2d=True)
+    waveform = torch.from_numpy(audio_data.T)
 
     # Collapse to mono by averaging channels, if the file is stereo.
     if waveform.shape[0] > 1:
@@ -105,15 +109,32 @@ def save_hidden_states(hidden_states, wav_path, output_dir, layer=None):
         np.save(out_path, layer_array)
 
 
+def cache_exists(wav_path, output_dir, layer=None):
+    """Return whether the requested cache format is already complete."""
+    utterance_id = os.path.splitext(os.path.basename(wav_path))[0]
+    layer_indices = range(NUM_HIDDEN_STATE_LAYERS) if layer is None else (layer,)
+    return all(
+        os.path.isfile(
+            os.path.join(output_dir, f"{utterance_id}_layer{layer_idx:02d}.npy")
+        )
+        for layer_idx in layer_indices
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Extract per-layer wav2vec2 (Thai XLSR-53) embeddings from a .wav file."
     )
-    parser.add_argument(
+    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group.add_argument(
         "--input",
         type=str,
-        required=True,
         help="Path to the input .wav file, e.g. path/to/audio.wav",
+    )
+    input_group.add_argument(
+        "--input_dir",
+        type=str,
+        help="Process every .wav file in this directory with one model load.",
     )
     parser.add_argument(
         "--output_dir",
@@ -138,6 +159,24 @@ def main():
     if not 0 <= selected_layer <= 24:
         parser.error(f"--layer must be between 0 and 24, got {selected_layer}")
 
+    layer_to_save = None if args.all_layers else selected_layer
+    if args.input_dir:
+        wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))
+        if not wav_paths:
+            parser.error(f"No .wav files found in {args.input_dir}")
+    else:
+        wav_paths = [args.input]
+
+    pending_paths = [
+        path for path in wav_paths
+        if not cache_exists(path, args.output_dir, layer=layer_to_save)
+    ]
+    skipped = len(wav_paths) - len(pending_paths)
+    print(f"Found {len(wav_paths)} input file(s); skipping {skipped} cached file(s)")
+    if not pending_paths:
+        print("All requested embeddings are already cached.")
+        return
+
     # Use CUDA automatically when available, otherwise fall back to CPU.
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
@@ -146,14 +185,14 @@ def main():
     print(f"Loading model: {model_name}")
     feature_extractor, model = load_model(device)
 
-    print(f"Extracting hidden states from: {args.input}")
-    hidden_states = extract_all_hidden_states(
-        args.input, feature_extractor, model, device
-    )
-    print(f"Model produced {len(hidden_states)} hidden state layers (including input embeddings).")
+    print(f"Extracting embeddings from {len(pending_paths)} uncached file(s)")
+    for index, wav_path in enumerate(pending_paths, start=1):
+        print(f"[{index}/{len(pending_paths)}] {wav_path}")
+        hidden_states = extract_all_hidden_states(
+            wav_path, feature_extractor, model, device
+        )
+        save_hidden_states(hidden_states, wav_path, args.output_dir, layer=layer_to_save)
 
-    layer_to_save = None if args.all_layers else selected_layer
-    save_hidden_states(hidden_states, args.input, args.output_dir, layer=layer_to_save)
     if args.all_layers:
         print(f"Saved all layer embeddings to: {args.output_dir}")
     else:

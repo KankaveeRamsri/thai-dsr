@@ -4,6 +4,8 @@
 data:
   severity: severe    # dysarthria severity level used for training (mild | moderate | severe)
   layer: 9              # wav2vec2 layer selected via scripts/select_layer.py
+  manifest_path: data/manifest_w5.csv
+  splits_path: data/splits_w5.json
 
 optim:
   batch_size: 4
@@ -19,11 +21,12 @@ loss:
 logging:
   log_dir: results/logs
   checkpoint_dir: results/checkpoints
+  loss_curve_filename: loss_curve_w5.png
   log_interval: 10          # print one summary every N epochs
-  save_every_n_epochs: 5
+  save_every_n_epochs: 10
 
 runtime:
   device: auto        # auto | cuda | mps | cpu -- auto picks the best available
   num_workers: 4
   seed: 42
-  resume_checkpoint: null    # path to checkpoint to resume from
+  resume_checkpoint: null    # set a checkpoint path only when resuming an interrupted run
