@@ -62,7 +62,7 @@ def get_device():
     return torch.device("cpu")
 
 
-def load_mapper(checkpoint_path, device, model_config_path, train_config_path):
+def load_mapper(checkpoint_path, device, model_config_path, train_config_path, layer=None):
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     model_config = checkpoint.get("model_config") or load_yaml_config(model_config_path)
     model = build_mapper_from_config(model_config).to(device)
@@ -70,7 +70,7 @@ def load_mapper(checkpoint_path, device, model_config_path, train_config_path):
 
     checkpoint_train_config = checkpoint.get("train_config") or checkpoint.get("config", {})
     checkpoint_layer = checkpoint_train_config.get("data", {}).get("layer")
-    configured_layer = get_selected_layer(train_config_path)
+    configured_layer = get_selected_layer(train_config_path) if layer is None else int(layer)
     if checkpoint_layer is not None and int(checkpoint_layer) != configured_layer:
         raise ValueError(
             "Checkpoint/config layer mismatch: "
@@ -174,6 +174,7 @@ def main():
     parser.add_argument("--manifest", type=str, default=None, help="Optional manifest used to select batch inputs.")
     parser.add_argument("--splits", type=str, default=None, help="Optional utterance split JSON for batch filtering.")
     parser.add_argument("--split", choices=("train", "val", "test"), default=None)
+    parser.add_argument("--layer", type=int, default=None, help="Override the wav2vec2 layer.")
     parser.add_argument(
         "--hifigan_model",
         type=str,
@@ -195,16 +196,20 @@ def main():
         raise ValueError(f"Unsupported vocoder type: {vocoder_config['type']}")
 
     t0 = time.perf_counter()
-    configured_layer = get_selected_layer(args.train_config)
+    configured_layer = get_selected_layer(args.train_config) if args.layer is None else args.layer
     encoder = Wav2Vec2ContentEncoder(
         device=device,
         train_config_path=args.train_config,
         model_config_path=args.model_config,
+        layer=configured_layer,
     )
     print(f"Loaded wav2vec2 encoder (layer {configured_layer}) in {time.perf_counter() - t0:.2f}s")
 
     t0 = time.perf_counter()
-    mapper = load_mapper(args.checkpoint, device, args.model_config, args.train_config)
+    mapper = load_mapper(
+        args.checkpoint, device, args.model_config, args.train_config,
+        layer=configured_layer,
+    )
     print(f"Loaded mapper checkpoint from {args.checkpoint} in {time.perf_counter() - t0:.2f}s")
 
     t0 = time.perf_counter()

@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Subset
+from tqdm import tqdm
 
 from src.models.mapper import build_mapper_from_config
 from src.training.dataset import DysarthricDataset, collate_fn
@@ -66,15 +67,16 @@ def masked_l1_loss(pred, target, lengths):
     return diff.sum() / (mask.sum() * mel_dim).clamp(min=1)
 
 
-def run_epoch(model, loader, device, reconstruction_weight, optimizer=None):
+def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc="epoch"):
     """Run one pass over a loader; train only when an optimizer is supplied."""
     is_train = optimizer is not None
     model.train(is_train)
     total_loss = 0.0
     total_samples = 0
 
+    progress_bar = tqdm(loader, desc=desc, leave=False)
     with torch.set_grad_enabled(is_train):
-        for embeddings, mels, lengths in loader:
+        for embeddings, mels, lengths in progress_bar:
             embeddings = embeddings.to(device)
             mels = mels.to(device)
             lengths = lengths.to(device)
@@ -89,6 +91,7 @@ def run_epoch(model, loader, device, reconstruction_weight, optimizer=None):
             batch_size = embeddings.size(0)
             total_loss += loss.item() * batch_size
             total_samples += batch_size
+            progress_bar.set_postfix(loss=f"{loss.item():.4f}")
 
     if total_samples == 0:
         raise ValueError("Cannot run an epoch with an empty data loader")
@@ -206,6 +209,10 @@ def parse_args():
     parser.add_argument("--num-workers", type=int, default=None, help="Temporary loader override.")
     parser.add_argument("--checkpoint-dir", default=None, help="Temporary output override.")
     parser.add_argument("--log-dir", default=None, help="Temporary output override.")
+    parser.add_argument("--layer", type=int, default=None, help="Override the wav2vec2 layer.")
+    parser.add_argument("--resume-checkpoint", default=None, help="Checkpoint to resume from.")
+    parser.add_argument("--best-checkpoint", default=None, help="Best-checkpoint output path.")
+    parser.add_argument("--loss-curve", default=None, help="Loss-curve output path.")
     return parser.parse_args()
 
 
@@ -214,6 +221,10 @@ def main():
     train_config = load_yaml_config(args.train_config)
     data_config = load_yaml_config(args.data_config)
     model_config = load_yaml_config(args.model_config)
+    if args.layer is not None:
+        if not 0 <= args.layer <= 24:
+            raise ValueError(f"layer must be between 0 and 24, got {args.layer}")
+        train_config["data"]["layer"] = args.layer
 
     runtime = train_config["runtime"]
     optim_config = train_config["optim"]
@@ -245,6 +256,7 @@ def main():
         embeddings_dir=project_path(paths["embeddings_dir"]) / "distorted",
         severity=severity,
         train_config_path=args.train_config,
+        layer=train_data_config["layer"],
     )
     if len(dataset) == 0:
         raise ValueError(f"No dataset rows found for severity={severity_value!r}")
@@ -315,7 +327,7 @@ def main():
         "num_workers": num_workers,
         "log_interval": log_interval,
         "save_every_n_epochs": save_interval,
-        "resume_checkpoint": runtime["resume_checkpoint"],
+        "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
     })
@@ -327,12 +339,17 @@ def main():
         )
     mapper.count_parameters()
 
-    best_path = checkpoint_dir / "best_mapper.pt"
+    best_path = (
+        project_path(args.best_checkpoint)
+        if args.best_checkpoint
+        else checkpoint_dir / "best_mapper.pt"
+    )
+    best_path.parent.mkdir(parents=True, exist_ok=True)
     best_val_loss = float("inf")
     train_losses = []
     val_losses = []
     start_epoch = 1
-    resume_checkpoint = runtime["resume_checkpoint"]
+    resume_checkpoint = args.resume_checkpoint or runtime["resume_checkpoint"]
     if resume_checkpoint:
         resume_path = project_path(resume_checkpoint)
         checkpoint = load_checkpoint(resume_path, mapper, optimizer, scheduler, device)
@@ -344,14 +361,24 @@ def main():
             torch.save(checkpoint, best_path)
         print(f"Resumed from {resume_path} at epoch {start_epoch}")
 
-    for epoch in range(start_epoch, num_epochs + 1):
+    epoch_bar = tqdm(range(start_epoch, num_epochs + 1), desc="Training")
+    for epoch in epoch_bar:
         train_loss = run_epoch(
-            mapper, train_loader, device, reconstruction_weight, optimizer=optimizer
+            mapper, train_loader, device, reconstruction_weight,
+            optimizer=optimizer, desc=f"Epoch {epoch}/{num_epochs} [train]",
         )
-        val_loss = run_epoch(mapper, val_loader, device, reconstruction_weight)
+        val_loss = run_epoch(
+            mapper, val_loader, device, reconstruction_weight,
+            desc=f"Epoch {epoch}/{num_epochs} [val]",
+        )
         step_scheduler(scheduler, scheduler_name, val_loss)
         train_losses.append(train_loss)
         val_losses.append(val_loss)
+        best_so_far = min(best_val_loss, val_loss)
+        epoch_bar.set_description(
+            f"Epoch {epoch}/{num_epochs} | train={train_loss:.3f} "
+            f"val={val_loss:.3f} best={best_so_far:.3f}"
+        )
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -364,7 +391,8 @@ def main():
             )
 
         if save_interval > 0 and epoch % save_interval == 0:
-            periodic_path = checkpoint_dir / f"mapper_epoch_{epoch:03d}.pt"
+            prefix = best_path.stem if args.best_checkpoint else "mapper"
+            periodic_path = checkpoint_dir / f"{prefix}_epoch_{epoch:03d}.pt"
             torch.save(
                 checkpoint_payload(
                     epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
@@ -383,8 +411,10 @@ def main():
         raise ValueError(
             f"No epochs ran: resume epoch {start_epoch} exceeds configured num_epochs {num_epochs}"
         )
-    loss_curve_path = log_dir / logging_config.get(
-        "loss_curve_filename", "loss_curve.png"
+    loss_curve_path = (
+        project_path(args.loss_curve)
+        if args.loss_curve
+        else log_dir / logging_config.get("loss_curve_filename", "loss_curve.png")
     )
     plot_loss_curve(train_losses, val_losses, loss_curve_path)
 

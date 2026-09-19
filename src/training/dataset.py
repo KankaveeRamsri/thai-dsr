@@ -47,9 +47,12 @@ class DysarthricDataset(Dataset):
         embeddings_dir=DISTORTED_EMBEDDINGS_DIR,
         severity=DEFAULT_SEVERITY,
         train_config_path=DEFAULT_TRAIN_CONFIG_PATH,
+        layer=None,
     ):
         self.embeddings_dir = os.fspath(embeddings_dir)
-        self.layer = get_selected_layer(train_config_path)
+        self.layer = (
+            get_selected_layer(train_config_path) if layer is None else int(layer)
+        )
 
         manifest = pd.read_csv(manifest_path)
         if severity is not None:

@@ -21,6 +21,7 @@ import numpy as np
 import soundfile as sf
 import torch
 import torchaudio
+from tqdm import tqdm
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 
 from src.utils.config import (
@@ -186,8 +187,10 @@ def main():
     feature_extractor, model = load_model(device)
 
     print(f"Extracting embeddings from {len(pending_paths)} uncached file(s)")
-    for index, wav_path in enumerate(pending_paths, start=1):
+    progress_bar = tqdm(pending_paths, desc="Extracting embeddings")
+    for index, wav_path in enumerate(progress_bar, start=1):
         print(f"[{index}/{len(pending_paths)}] {wav_path}")
+        progress_bar.set_postfix(file=os.path.basename(wav_path))
         hidden_states = extract_all_hidden_states(
             wav_path, feature_extractor, model, device
         )

@@ -43,8 +43,9 @@ class Wav2Vec2ContentEncoder:
         device=None,
         train_config_path=DEFAULT_TRAIN_CONFIG_PATH,
         model_config_path=DEFAULT_MODEL_CONFIG_PATH,
+        layer=None,
     ):
-        train_layer = get_selected_layer(train_config_path)
+        train_layer = get_selected_layer(train_config_path) if layer is None else int(layer)
         model_config = load_yaml_config(model_config_path)["encoder"]
         model_name = model_config["content_model"]
         freeze = bool(model_config["freeze"])

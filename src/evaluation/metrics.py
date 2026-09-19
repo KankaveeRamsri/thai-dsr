@@ -152,6 +152,7 @@ def main():
     parser.add_argument("--output_json", default=OUTPUT_JSON)
     parser.add_argument("--splits", default=None, help="Optional utterance split JSON.")
     parser.add_argument("--split", choices=("train", "val", "test"), default=None)
+    parser.add_argument("--checkpoint", default=None, help="Mapper checkpoint for validation loss.")
     args = parser.parse_args()
 
     utterance_ids = None
@@ -180,6 +181,12 @@ def main():
         "per_utterance": df.to_dict(orient="records"),
         "summary": summary,
     }
+    if args.checkpoint:
+        import torch
+
+        checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
+        output["val_loss"] = float(checkpoint["best_val_loss"])
+        output["best_epoch"] = int(checkpoint["epoch"])
 
     output_dir = os.path.dirname(args.output_json)
     if output_dir:
