@@ -52,7 +52,7 @@ for layer in "${LAYERS[@]}"; do
         --num-epochs "$EPOCHS" \
         --best-checkpoint "$checkpoint" \
         --loss-curve "$loss_curve" \
-        "${resume_args[@]}"
+        "${resume_args[@]+"${resume_args[@]}"}"
     else
       echo "Training for layer ${layer} already reached epoch ${EPOCHS}."
     fi
