@@ -1,0 +1,26 @@
+W5 Layer Analysis Summary
+=========================
+
+All five HuBERT layers (6, 8, 9, 10, and 12) were trained and evaluated
+on the Thai DSR task.
+
+Comparison
+----------
+
+Layer | Val Loss | Best Epoch | Reconstructed STOI | Reconstructed PESQ | Reconstructed SNR (dB)
+------|----------|------------|--------------------|--------------------|-----------------------
+6     | 1.2936   | 18         | 0.2210             | 1.0899             | -0.5090
+8     | 1.2852   | 22         | 0.2136             | 1.0979             | -0.6434
+9     | 1.2885   | 16         | 0.2152             | 1.0973             | -0.5651
+10    | 1.3115   | 24         | 0.1984             | 1.0930             | -0.6427
+12    | 1.3094   | 22         | 0.2265             | 1.0864             | -0.6166
+
+The validation-loss range is narrow (1.2852-1.3115), with an absolute
+difference of 0.0262 between the best and worst results.
+
+Conclusion
+----------
+
+Middle layers (6-12) perform similarly on Thai DSR.
+Layer 8 has marginally best val loss but layer 9 is
+retained as it has additional cosine similarity evidence.
