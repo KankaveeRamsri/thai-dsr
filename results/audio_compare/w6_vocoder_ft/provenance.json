@@ -1,0 +1,126 @@
+{
+  "device": "cpu",
+  "layer": 9,
+  "severity": "severe",
+  "mapper": "results/checkpoints/mapper_layer9.pt",
+  "mapper_sha256": "3020aede1039a41735c70a039c96bca27f2283b84d321236a8d6a83dbce7cf4b",
+  "checkpoints": {
+    "baseline": {
+      "path": "vendor/hifi-gan/checkpoints/UNIVERSAL_V1/g_02500000",
+      "sha256": "771eaf4876485a35e25577563d390c262e23c2421e4a8c929eacfde34a5b7a60"
+    },
+    "finetuned": {
+      "path": "results/checkpoints/hifigan_thai/g_00010000",
+      "sha256": "4b9e5cf7307f94853b2cfa528d359c0d7b6fa0bf4bcfa5d48420f9c1dd60fcac"
+    }
+  },
+  "selection": "Eight duration quantiles, ensuring both manifest speaker groups appear",
+  "speaker_limitation": "common_voice is a pooled label, not a verified speaker identity",
+  "metric_protocol": "Saved PCM_16 audio resampled to 16 kHz; shared-length truncation; no time/gain alignment",
+  "utterances": [
+    {
+      "utterance_id": "cv_0047",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0047.wav",
+      "distorted_path": "data/distorted_cv/cv_0047_severe.wav",
+      "severity": "severe",
+      "transcript": "นี่เพื่อนของคุณหรอ ?",
+      "duration_sec": "2.3952",
+      "distorted_sha256": "7d84198e2e4986c4b808a5aceef2bb7b8f44f746d68d5bc8c67ea4e59c0e7e96",
+      "embedding_sha256": "315684989aefe1e82e1821714e6ab80dc484c153ea14ef135818478d56d49d90",
+      "mel_sha256": "d6be025e4d6f4a0543633e16e300bbf20f2cdeee363d229fa5afef56aa96b138",
+      "mel_frames": 206
+    },
+    {
+      "utterance_id": "cv_0156",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0156.wav",
+      "distorted_path": "data/distorted_cv/cv_0156_severe.wav",
+      "severity": "severe",
+      "transcript": "การจราจรติดขัดทั้งเมือง",
+      "duration_sec": "2.9301",
+      "distorted_sha256": "38084769db77799345476853048987369c3e9956bc94afbcc16f29b65a4578ee",
+      "embedding_sha256": "b8c8b57ba6269481072815f39ae5015b66aa197b5bf0f2665699f60f329b14eb",
+      "mel_sha256": "464639c7fac1fff09543de8d773ca1684d1141daf1e14dde52a3f55a23953f83",
+      "mel_frames": 252
+    },
+    {
+      "utterance_id": "cv_0016",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0016.wav",
+      "distorted_path": "data/distorted_cv/cv_0016_severe.wav",
+      "severity": "severe",
+      "transcript": "ฉันเกือบจะแน่ใจแล้ว",
+      "duration_sec": "3.6808",
+      "distorted_sha256": "739fd65dfdb83f19158982e1079c39ca8ba33d92aa0e58c52ce8d9914f8d484d",
+      "embedding_sha256": "131c6bac4d919fbff14a054b932aebb0e4ed316712fbe2eb6c67e963642ba485",
+      "mel_sha256": "051c6c501f77bb3376cf4abd28ed636d9e938719f941777098990f8064bb9443",
+      "mel_frames": 317
+    },
+    {
+      "utterance_id": "cv_0141",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0141.wav",
+      "distorted_path": "data/distorted_cv/cv_0141_severe.wav",
+      "severity": "severe",
+      "transcript": "ตรงนี้ฉันเห็นและรู้อยู่แล้วหละ",
+      "duration_sec": "3.796",
+      "distorted_sha256": "b8707219962007347f8f5f7804d3fbf2460a238029da6bb31bf8fa199a87b83f",
+      "embedding_sha256": "3b3de48712e1cf1176ae722e7fb5f9b4d7b8cc11c7f3b3af8d7336c0e4cd0054",
+      "mel_sha256": "a9776fcc974ca67ffca2581a438e9c46acc8abd630966172eaa5ccf4f8fdb9f9",
+      "mel_frames": 326
+    },
+    {
+      "utterance_id": "cv_0173",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0173.wav",
+      "distorted_path": "data/distorted_cv/cv_0173_severe.wav",
+      "severity": "severe",
+      "transcript": "คุณเตรียมพร้อมสำหรับการตอบคำถามภูมิศาสตร์ในวันพรุ่งนี้?",
+      "duration_sec": "4.4838",
+      "distorted_sha256": "bab93f66ff2d14d21802e795abd82497cf8db9c7dcc5dcbea8129a0c02928906",
+      "embedding_sha256": "72dee02776841b5918af093e5a5dec8265df75be6198ed0b7951178a0bd7aa1e",
+      "mel_sha256": "012fefd4c5c2f9bf490be9815e5b7284398ecf7f8574a96c2bdf7df954cbf7c4",
+      "mel_frames": 386
+    },
+    {
+      "utterance_id": "007_วันนี้อากาศร้อนมาก",
+      "speaker_id": "spk001",
+      "clean_path": "data/raw/007_วันนี้อากาศร้อนมาก.wav",
+      "distorted_path": "data/distorted/007_วันนี้อากาศร้อนมาก_severe.wav",
+      "severity": "severe",
+      "transcript": "วันนี้อากาศร้อนมาก",
+      "duration_sec": "4.8814",
+      "distorted_sha256": "0060a5afe62df342a46aad683e882858a14cb6302642e774a773fff422fadb59",
+      "embedding_sha256": "50bbc4c8bc8bde49e499fdf5dcfe7bd6ef4b4736a820bf8dc826585150622b86",
+      "mel_sha256": "1a6b6b4658b8f20582c715b78ab53f8529eb9cb415cb0d64c661e9df48f6528f",
+      "mel_frames": 420
+    },
+    {
+      "utterance_id": "cv_0129",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0129.wav",
+      "distorted_path": "data/distorted_cv/cv_0129_severe.wav",
+      "severity": "severe",
+      "transcript": "จัดตั้งจังหวัดกาฬสินธุ์ โดยแยกจากจังหวัดมหาสารคาม",
+      "duration_sec": "5.2066",
+      "distorted_sha256": "033d495cce294d3c4adbc2600da60997df3e43dc94cd8b2b6df00e3e1a4483fd",
+      "embedding_sha256": "9752f1f5c51bd2dd5f5295c02cb3dec489719828283cbe09e674e28d486c439c",
+      "mel_sha256": "9b4c7c8157cfd56bbd5c467a631626b2e0a59624b0882007f13d81da13c4ebaf",
+      "mel_frames": 448
+    },
+    {
+      "utterance_id": "cv_0097",
+      "speaker_id": "common_voice",
+      "clean_path": "data/common_voice/cv_0097.wav",
+      "distorted_path": "data/distorted_cv/cv_0097_severe.wav",
+      "severity": "severe",
+      "transcript": "เพลงนั้น ในขณะที่ทางเทคนิคแล้วเป็นเพลงวอลทซ์ ก็ฟังแล้วเหมือนคนเมาเล่นทูบาที่เข้าไปเล่นในส่วนเครื่องเคาะจังหวะของวงออร์เคสตร้า",
+      "duration_sec": "7.8243",
+      "distorted_sha256": "c92cfe2ed4e49291340d315637c9a408735e422f0e805c2f0beb033479e8c1ca",
+      "embedding_sha256": "54cba5c639555c295a9687a4ed8b4be9adc57094626aedc424f809a724394807",
+      "mel_sha256": "3ce1ff53f5182921cd96c10d366fc1ae83a09343f06184f077caae65a0b157e8",
+      "mel_frames": 673
+    }
+  ]
+}

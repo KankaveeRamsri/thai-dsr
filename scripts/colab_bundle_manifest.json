@@ -1,0 +1,4330 @@
+{
+  "files": [
+    {
+      "path": "data/common_voice/cv_0000.wav",
+      "bytes": 151340,
+      "sha256": "9547294a165f2905e48b1880fcb3bd5731b040b6e97c1f9b05a5b9d003dd0d92"
+    },
+    {
+      "path": "data/common_voice/cv_0001.wav",
+      "bytes": 107564,
+      "sha256": "e835d751a913e3ac8debfb515349093daef768e21a2572ee6d3cd2071be92066"
+    },
+    {
+      "path": "data/common_voice/cv_0002.wav",
+      "bytes": 73004,
+      "sha256": "e4105ab40aa9ebb06cfafe619533b804e7be9dda3e68bbc705b233fca5318950"
+    },
+    {
+      "path": "data/common_voice/cv_0003.wav",
+      "bytes": 87596,
+      "sha256": "8fd41af59deb8a7038f8ae7ace8ce33dfed33083519679a13cff8d30ab304abb"
+    },
+    {
+      "path": "data/common_voice/cv_0004.wav",
+      "bytes": 92972,
+      "sha256": "e35033923a629d0369fc4ca6ee099e82ec1dec35052c4aaba74e9272403bad9c"
+    },
+    {
+      "path": "data/common_voice/cv_0005.wav",
+      "bytes": 108332,
+      "sha256": "5f153a47511458773a1d7dedfc3c619ace444ac8ac07137d68bbc76539c1b5b6"
+    },
+    {
+      "path": "data/common_voice/cv_0006.wav",
+      "bytes": 144428,
+      "sha256": "18764d69067353dd1e3d6f6c48fbf3d48b6b79fbd65bdca78ac2c9da45772713"
+    },
+    {
+      "path": "data/common_voice/cv_0007.wav",
+      "bytes": 90668,
+      "sha256": "120466357b7a5a44ce93dc2300ff14ab65983671cabbb0a2afe6e6d7a4bc74f2"
+    },
+    {
+      "path": "data/common_voice/cv_0008.wav",
+      "bytes": 116012,
+      "sha256": "c26f076e1b3e66fe75bca058fe641de85fd02744b4bcc4a1cd696f656b3290fe"
+    },
+    {
+      "path": "data/common_voice/cv_0009.wav",
+      "bytes": 109100,
+      "sha256": "56825ce378e9c14d9e624c1ca89a9e4628b74f26c6a2d52ca35129da07f564a9"
+    },
+    {
+      "path": "data/common_voice/cv_0010.wav",
+      "bytes": 73772,
+      "sha256": "10d43cba79e5e927cda4cb0ab9c64b55af8dd87d04ae4c94d9f68e4bcf871775"
+    },
+    {
+      "path": "data/common_voice/cv_0011.wav",
+      "bytes": 99116,
+      "sha256": "52e93dd52a1f65ab32f26dc25ffc712641e8dbb97f16bde85a2a5002f58f09ae"
+    },
+    {
+      "path": "data/common_voice/cv_0012.wav",
+      "bytes": 118316,
+      "sha256": "eba3fc94a15908b51d2d231ffff628f9ef8cf850eec96e5c1559ec818e3e1b96"
+    },
+    {
+      "path": "data/common_voice/cv_0013.wav",
+      "bytes": 116012,
+      "sha256": "8cb0597d78c96ff3200b5fcde931a62616b5370759f5380e510c49f52cd81ede"
+    },
+    {
+      "path": "data/common_voice/cv_0014.wav",
+      "bytes": 162092,
+      "sha256": "c599564e027341452a3429bcf4d7f2065c9058c0a4d2c3a77d75f4772be410b6"
+    },
+    {
+      "path": "data/common_voice/cv_0015.wav",
+      "bytes": 131372,
+      "sha256": "480af892bb9da99aaedc4301e94a4d6aeb5e858bbf8d9788c929add865d69144"
+    },
+    {
+      "path": "data/common_voice/cv_0016.wav",
+      "bytes": 104492,
+      "sha256": "5eaf48e62ce98fd063507b8d9395cf213781f7f5634276795d0c8e1013363d92"
+    },
+    {
+      "path": "data/common_voice/cv_0017.wav",
+      "bytes": 119852,
+      "sha256": "5f1cd3f22e804bc30ce17b7fe8e3bc79dd17fb490a47a212b2193348b53476f5"
+    },
+    {
+      "path": "data/common_voice/cv_0018.wav",
+      "bytes": 187436,
+      "sha256": "a9d878037ae638d2362175e7175ccfe96fb9e4ffd4a0d5d9b36c5a72b367d615"
+    },
+    {
+      "path": "data/common_voice/cv_0019.wav",
+      "bytes": 129836,
+      "sha256": "bcd376577d30a5abd12ae867df89358c2fe95a7ef74b6d847b8569a3d6e8bd5c"
+    },
+    {
+      "path": "data/common_voice/cv_0020.wav",
+      "bytes": 169772,
+      "sha256": "3c08d35cbeb81a5a337da4f619c6b0e124a81c9349b980330020bc92d0ad5c31"
+    },
+    {
+      "path": "data/common_voice/cv_0021.wav",
+      "bytes": 99116,
+      "sha256": "6580afaa46d61c50bce68995e5ccbc2fca165787f8eadf67b75f28b26a77de19"
+    },
+    {
+      "path": "data/common_voice/cv_0022.wav",
+      "bytes": 172076,
+      "sha256": "4411ef49b654b48633cc848ad4ec56e872863e7511aa0814fa3fcbb38e658ac8"
+    },
+    {
+      "path": "data/common_voice/cv_0023.wav",
+      "bytes": 139052,
+      "sha256": "39ab4de950499bbe2ab3c98ff1c533192f2362573a9d429d57b8e2f0c988d413"
+    },
+    {
+      "path": "data/common_voice/cv_0024.wav",
+      "bytes": 279596,
+      "sha256": "25e7275ee700594fbed91affbcb1611dc8edb20a9aa4549fa62f59ffb83e2a85"
+    },
+    {
+      "path": "data/common_voice/cv_0025.wav",
+      "bytes": 87596,
+      "sha256": "0ef2313ef7a3f09ba779d12063baec6b98274ccfc8e523031284da6e222cb4be"
+    },
+    {
+      "path": "data/common_voice/cv_0026.wav",
+      "bytes": 130604,
+      "sha256": "3349290a589a4fc418a79771476cb9b9db3636a7dc251ca4b85a20521315ac75"
+    },
+    {
+      "path": "data/common_voice/cv_0027.wav",
+      "bytes": 135212,
+      "sha256": "22f0b7a687f1837e482513e7ba3c44a28171fd4413b82075d1f7321f399f0d9a"
+    },
+    {
+      "path": "data/common_voice/cv_0028.wav",
+      "bytes": 121388,
+      "sha256": "5d1fa336bfc78317607ba10c21dddbeec4c4df17c50e4eac26444bc607775cee"
+    },
+    {
+      "path": "data/common_voice/cv_0029.wav",
+      "bytes": 79916,
+      "sha256": "ef08e91b6b819a0b556ac0c901901dffe0588f9b990f8b4917d65833557f43f5"
+    },
+    {
+      "path": "data/common_voice/cv_0030.wav",
+      "bytes": 188972,
+      "sha256": "abda7f0c2fdd450d28f9f641ad978f6193f0f32431e4ac4ee1c21aac3d8da59d"
+    },
+    {
+      "path": "data/common_voice/cv_0031.wav",
+      "bytes": 145196,
+      "sha256": "ef3db26f7f90a2912878c0193d34cf44aa904b2cd8df7d40802df30003e9140d"
+    },
+    {
+      "path": "data/common_voice/cv_0032.wav",
+      "bytes": 181292,
+      "sha256": "fc69da0d82b8063fc10f5629ae89b34c529fee0bfe1f2a42f3b3cd0b543972f2"
+    },
+    {
+      "path": "data/common_voice/cv_0033.wav",
+      "bytes": 169772,
+      "sha256": "6ba422ff3473107adeb4d9fe32bf0fe8bd898dcb9841c03defa7dcdf9c3b4583"
+    },
+    {
+      "path": "data/common_voice/cv_0034.wav",
+      "bytes": 214316,
+      "sha256": "452e911aaef142b9783bf1830a51dccd8b75ef422c5d1c2567a2e7718913232e"
+    },
+    {
+      "path": "data/common_voice/cv_0035.wav",
+      "bytes": 118316,
+      "sha256": "88aa1d41fddd691224275536cb4a47e3747acd5791a4339424e7653c48e8223b"
+    },
+    {
+      "path": "data/common_voice/cv_0036.wav",
+      "bytes": 191276,
+      "sha256": "eddc5ad61711d81f95b34a5cc198f25bc1e55a0a2745152b07d24c0f4cfa1835"
+    },
+    {
+      "path": "data/common_voice/cv_0037.wav",
+      "bytes": 146732,
+      "sha256": "fb7b569b7a8ea71702e5c74ef721c7f3cde3ca846060df5835f0b968d79a828b"
+    },
+    {
+      "path": "data/common_voice/cv_0038.wav",
+      "bytes": 133676,
+      "sha256": "fd6fcef92bf78aad8f62ba6d9fb5ef81d520275b897feccb1747c9c477ac452d"
+    },
+    {
+      "path": "data/common_voice/cv_0039.wav",
+      "bytes": 181292,
+      "sha256": "25ea0d89ba3f1e1e54709712da2a59ef2637ad87240270c3b4e8e2bc748736c7"
+    },
+    {
+      "path": "data/common_voice/cv_0040.wav",
+      "bytes": 108332,
+      "sha256": "38ca9bcfe044513b71b0f88420f77cfb423d05dd8246aa63e204973b8472d87f"
+    },
+    {
+      "path": "data/common_voice/cv_0041.wav",
+      "bytes": 91436,
+      "sha256": "37e8c82c4c17f4861653350e838676f8b8b2ca696f0293a745072395305b4674"
+    },
+    {
+      "path": "data/common_voice/cv_0042.wav",
+      "bytes": 135212,
+      "sha256": "70d79626c202b87b697bb475345927779630eaee278ca250e23108d01fbe0fe5"
+    },
+    {
+      "path": "data/common_voice/cv_0043.wav",
+      "bytes": 152876,
+      "sha256": "53cd5159d0ea13b1f4ff9a740c8584b9099e43df2aab14c2b473a2f67cd4736f"
+    },
+    {
+      "path": "data/common_voice/cv_0044.wav",
+      "bytes": 79148,
+      "sha256": "70f3ff9d0b11994e20caf1e446ec62ee61356505c9d6b624e293006af8b59763"
+    },
+    {
+      "path": "data/common_voice/cv_0045.wav",
+      "bytes": 128300,
+      "sha256": "3c4021190de27b292ab727d404df78e65fc87cdd21dd6d3e163ad5429032a707"
+    },
+    {
+      "path": "data/common_voice/cv_0046.wav",
+      "bytes": 145964,
+      "sha256": "2d66f7b9159ecb845725a8091df036f24e21da553a6b9025968ce18b9d5139f4"
+    },
+    {
+      "path": "data/common_voice/cv_0047.wav",
+      "bytes": 73772,
+      "sha256": "4bb274de61e7dd87eb0fb264d661d30e7fe63a7ce33fb5b4ad23549469b288c8"
+    },
+    {
+      "path": "data/common_voice/cv_0048.wav",
+      "bytes": 81452,
+      "sha256": "e74bcbf2160d9cbcaf6fb7abde98ccdfb1822cb608cd987f7de019fa20f25f9c"
+    },
+    {
+      "path": "data/common_voice/cv_0049.wav",
+      "bytes": 156716,
+      "sha256": "a1012bc18b7dfe144592e9888e84e47e45706dd43c8b52fbff627eac01f6e11e"
+    },
+    {
+      "path": "data/common_voice/cv_0050.wav",
+      "bytes": 91436,
+      "sha256": "68b4093ad2a0eae263f4a9c89e1f170ce71a3834b21adf9af14c3bf5104980b4"
+    },
+    {
+      "path": "data/common_voice/cv_0051.wav",
+      "bytes": 129836,
+      "sha256": "4a50254904814f00a399eabbd5f9590a37657d19c0dd74c40318f010709bc932"
+    },
+    {
+      "path": "data/common_voice/cv_0052.wav",
+      "bytes": 119852,
+      "sha256": "3af5954a3e884478fb8ad2aab52d49681cad01df44e960983e730d7729bf1437"
+    },
+    {
+      "path": "data/common_voice/cv_0053.wav",
+      "bytes": 89132,
+      "sha256": "6a321178a766a3ad71cbc9773d88e3f5ea0010f25cc974df6ca14fec31b33059"
+    },
+    {
+      "path": "data/common_voice/cv_0054.wav",
+      "bytes": 116012,
+      "sha256": "27704ed89f7dd7d726de7407331ffec381a2b97ce3db25325a9a3989044729c0"
+    },
+    {
+      "path": "data/common_voice/cv_0055.wav",
+      "bytes": 162092,
+      "sha256": "9ffb16d12cac391a6156f700d70ce8f5bf824ad49c101d4c492897c00d6fdbcf"
+    },
+    {
+      "path": "data/common_voice/cv_0056.wav",
+      "bytes": 237356,
+      "sha256": "6ecfa6f9c3a890f40deaf0dc17bbd3b950f8ead4420d1b6ef079134983e1d5e3"
+    },
+    {
+      "path": "data/common_voice/cv_0057.wav",
+      "bytes": 142124,
+      "sha256": "eef51334c793fb460cf4f9b04d54a5b9934900bfed8a07c799d8d01d83867760"
+    },
+    {
+      "path": "data/common_voice/cv_0058.wav",
+      "bytes": 182828,
+      "sha256": "b9a6d95cbd323e404379e97b3f7e5ac9456ff89fac2421ee369cbca26b171b94"
+    },
+    {
+      "path": "data/common_voice/cv_0059.wav",
+      "bytes": 174380,
+      "sha256": "c8c725ca8b34e1aa16c23760c28dc6e14099de18bf8c268e9703370ae9842646"
+    },
+    {
+      "path": "data/common_voice/cv_0060.wav",
+      "bytes": 162092,
+      "sha256": "c921d020115cb1cac5a79b8b746762b8a99e9970afcf9f5e310f69061ac9ff10"
+    },
+    {
+      "path": "data/common_voice/cv_0061.wav",
+      "bytes": 140588,
+      "sha256": "0e94bb9f493704e34d26e3f1a51533273e79023399a0c6a1cbc73ecd551478ab"
+    },
+    {
+      "path": "data/common_voice/cv_0062.wav",
+      "bytes": 228908,
+      "sha256": "746770364163d99ebccb5417c034d044995bdc415c565200585a842bf4a96003"
+    },
+    {
+      "path": "data/common_voice/cv_0063.wav",
+      "bytes": 107564,
+      "sha256": "faa7ff791b7d23884e731918a2fcae002f5d64fdce84229504598125ccdf9e8f"
+    },
+    {
+      "path": "data/common_voice/cv_0064.wav",
+      "bytes": 142124,
+      "sha256": "05ddf23c28b3537a5de1641c09b82aca3031a86685ae617a54527280c821bfca"
+    },
+    {
+      "path": "data/common_voice/cv_0065.wav",
+      "bytes": 118316,
+      "sha256": "0d5875d395037c917ab98a9471c439349506df59d11a4944a8f50bcc7caefca3"
+    },
+    {
+      "path": "data/common_voice/cv_0066.wav",
+      "bytes": 145964,
+      "sha256": "2528d79bcb944a49d548eb415ef5dce9d305367f1b07b626913b29bdcfde8f7c"
+    },
+    {
+      "path": "data/common_voice/cv_0067.wav",
+      "bytes": 161324,
+      "sha256": "1f6cb7ff27082140d943dfd1f8c5c040009d4663548d83b45a232ed463a4f8e9"
+    },
+    {
+      "path": "data/common_voice/cv_0068.wav",
+      "bytes": 241196,
+      "sha256": "3d8c67e2918b796dfbf052dc71fc038f72961d5458d2a4eba566beefc1eea069"
+    },
+    {
+      "path": "data/common_voice/cv_0069.wav",
+      "bytes": 240428,
+      "sha256": "5815129b7f0d2f4896cd1b3e5721043ee06dfd718bcf40f67cead5a41fe3631f"
+    },
+    {
+      "path": "data/common_voice/cv_0070.wav",
+      "bytes": 162092,
+      "sha256": "52ad44ad8ff4780c055b7b9bfdaae8478dc576417c2f44160e9720c3b0227fc7"
+    },
+    {
+      "path": "data/common_voice/cv_0071.wav",
+      "bytes": 69164,
+      "sha256": "1462c4ba8a5b43478f595cc9c9c84e6a4e85f79d3e5fc5b87f0847202546557e"
+    },
+    {
+      "path": "data/common_voice/cv_0072.wav",
+      "bytes": 111404,
+      "sha256": "c330fa7c6e9f4344fbf776e73a061854ce7768c5825357fa6e766600d03b1439"
+    },
+    {
+      "path": "data/common_voice/cv_0073.wav",
+      "bytes": 155180,
+      "sha256": "62437b459327bae6bba6ef761b9261d68f0c472d45c4a6328abe638a097f2630"
+    },
+    {
+      "path": "data/common_voice/cv_0074.wav",
+      "bytes": 154412,
+      "sha256": "ab734cfc6373af32357e7909d37a19445a239151a05b959a447a2f13fa94437e"
+    },
+    {
+      "path": "data/common_voice/cv_0075.wav",
+      "bytes": 165932,
+      "sha256": "a271c3797cd83dec20ead27ede232f8c1b8e4764646dc897e569c7cf4afaac1c"
+    },
+    {
+      "path": "data/common_voice/cv_0076.wav",
+      "bytes": 102956,
+      "sha256": "c0e6277fb0ca6c796424fda5126662a5f3067ed03225efb5cea977d81bf72a8f"
+    },
+    {
+      "path": "data/common_voice/cv_0077.wav",
+      "bytes": 129836,
+      "sha256": "71c44aefafe2d2a0759e01e0558da2d5165cd816220976a456e58752c26d4978"
+    },
+    {
+      "path": "data/common_voice/cv_0078.wav",
+      "bytes": 121388,
+      "sha256": "b8baf1e428875d42361ed6bcfb04cecf7911ae4d7195fc06034e8220b2fcc7f4"
+    },
+    {
+      "path": "data/common_voice/cv_0079.wav",
+      "bytes": 126764,
+      "sha256": "708809c572d1f51b44ee32188863548435be111fa5000ef2b1b518fbeaf4bedd"
+    },
+    {
+      "path": "data/common_voice/cv_0080.wav",
+      "bytes": 168236,
+      "sha256": "f915c767fae5dca7b62b31bbd0c7898fceaa22805f858bec0da7f6307edc47bc"
+    },
+    {
+      "path": "data/common_voice/cv_0081.wav",
+      "bytes": 129836,
+      "sha256": "71302d0ed435671311c100ae10fbcbf228cf657f411455cf288c207373c1d3b3"
+    },
+    {
+      "path": "data/common_voice/cv_0082.wav",
+      "bytes": 145196,
+      "sha256": "844808edcae042a77caa95de54aa620ac749876993ba178c740d17482529b607"
+    },
+    {
+      "path": "data/common_voice/cv_0083.wav",
+      "bytes": 132140,
+      "sha256": "bae28647c3e60ca95258fd2615ce784688a35c8c8c3742a966b2d040a8142cc4"
+    },
+    {
+      "path": "data/common_voice/cv_0084.wav",
+      "bytes": 165932,
+      "sha256": "74e08554fa37319ddf611a7489b08c00dedd848c82571ee3c4a7eeaff45011da"
+    },
+    {
+      "path": "data/common_voice/cv_0085.wav",
+      "bytes": 200492,
+      "sha256": "a22ae1e9e72e8e77e3c1bfe80ac32e7590f37391bddd2478ebca2b2bdadda11e"
+    },
+    {
+      "path": "data/common_voice/cv_0086.wav",
+      "bytes": 191276,
+      "sha256": "cb1a6c97b80dd135b876ee6eff454702ed6340373930fcd5bb07aab17defeb6d"
+    },
+    {
+      "path": "data/common_voice/cv_0087.wav",
+      "bytes": 226604,
+      "sha256": "a4bf60b0237f31c13615e7bb364ebb0834a4566ca8536d2068708ee624a2f74d"
+    },
+    {
+      "path": "data/common_voice/cv_0088.wav",
+      "bytes": 114476,
+      "sha256": "94840f2a9bd9b2775e2794a0c138a8e72136bd7c510c71dda1509d99a896eda4"
+    },
+    {
+      "path": "data/common_voice/cv_0089.wav",
+      "bytes": 208172,
+      "sha256": "293405e52fac37fe1cd1af95f959392bbaabc3622b1c0da3ce49f4fec4d6c695"
+    },
+    {
+      "path": "data/common_voice/cv_0090.wav",
+      "bytes": 123692,
+      "sha256": "84a4c1da7f92640d4bfb6526fa1110690b0a30be99034182278d9440592f3901"
+    },
+    {
+      "path": "data/common_voice/cv_0091.wav",
+      "bytes": 95276,
+      "sha256": "43541a0777584b30986b50a493cbd0e2732e3993257695f5983f2c99c4073e9a"
+    },
+    {
+      "path": "data/common_voice/cv_0092.wav",
+      "bytes": 128300,
+      "sha256": "cc9f1645f183205ad6c2901665defd18b9aeb8e46d45eac9fe6bf156ee912286"
+    },
+    {
+      "path": "data/common_voice/cv_0093.wav",
+      "bytes": 172844,
+      "sha256": "f7643c5fa5987f9343979f095f57a1e2cbf157c159f22bbb8e0991b1d6110be8"
+    },
+    {
+      "path": "data/common_voice/cv_0094.wav",
+      "bytes": 205868,
+      "sha256": "dd6b7610be38e4253038cf16c27056dfdeef04bbf54ccd83d53956159f3fadbc"
+    },
+    {
+      "path": "data/common_voice/cv_0095.wav",
+      "bytes": 119852,
+      "sha256": "10bfc0c57bd35497fce8ec833ffb944a0352ffc38f6b698f0097d9c27b71f559"
+    },
+    {
+      "path": "data/common_voice/cv_0096.wav",
+      "bytes": 116012,
+      "sha256": "d869f20d97ba2a35986c359b2e7768c3742867e4f5c628922fb0183d2027cac0"
+    },
+    {
+      "path": "data/common_voice/cv_0097.wav",
+      "bytes": 271148,
+      "sha256": "338209e2c35496d56f16b72cc2b3f80ad63860216ac1a3911f5bcf983d72a625"
+    },
+    {
+      "path": "data/common_voice/cv_0098.wav",
+      "bytes": 148268,
+      "sha256": "c33cbb2f3f96dd3a07c527a30861400863e9fb83e4e7db2da023edd7ed2aa340"
+    },
+    {
+      "path": "data/common_voice/cv_0099.wav",
+      "bytes": 233900,
+      "sha256": "2b771684d98bc0396af428daa7bdf1f48c2fed9a281856200d5a69a3c5eeb2c3"
+    },
+    {
+      "path": "data/common_voice/cv_0100.wav",
+      "bytes": 146348,
+      "sha256": "1864b39800490bc8de9f913ba8f4d1e11d20fa993e315bb45e675993a82b6bc9"
+    },
+    {
+      "path": "data/common_voice/cv_0101.wav",
+      "bytes": 101420,
+      "sha256": "c1ead0a1c1ab864c0582cd4b044d67b5a56649598c5f00fcdc41173beef38798"
+    },
+    {
+      "path": "data/common_voice/cv_0102.wav",
+      "bytes": 190124,
+      "sha256": "1433a81cd0a5dd89928f99dd88a30e466f29b115cd190405686ef0b84840ee31"
+    },
+    {
+      "path": "data/common_voice/cv_0103.wav",
+      "bytes": 101420,
+      "sha256": "ebe26b31c38498d97482449cc73da7da3364364bf246a4b87baab41dcc1ca0a7"
+    },
+    {
+      "path": "data/common_voice/cv_0104.wav",
+      "bytes": 144044,
+      "sha256": "eda5cae7ab1e854147c1a738608cf42c522affb38328af6888b691081bdefb28"
+    },
+    {
+      "path": "data/common_voice/cv_0105.wav",
+      "bytes": 72620,
+      "sha256": "bc434063bf43e3f787bdbbdd6f8010f8a05de69fd339d63a8ba46a03cb231d1f"
+    },
+    {
+      "path": "data/common_voice/cv_0106.wav",
+      "bytes": 259244,
+      "sha256": "48d84751ac82b05bd387b3d6376e255a2aa24bd8047db93bd85d5e4953a724b9"
+    },
+    {
+      "path": "data/common_voice/cv_0107.wav",
+      "bytes": 99116,
+      "sha256": "145d6833140220059a0dce336d3f861958b2846e40a90de25e21e17199a16962"
+    },
+    {
+      "path": "data/common_voice/cv_0108.wav",
+      "bytes": 220076,
+      "sha256": "ac58627b8f3c273ad8c5f5fcfe97edbdce8e080314617bfdd80607c05eadfb23"
+    },
+    {
+      "path": "data/common_voice/cv_0109.wav",
+      "bytes": 97964,
+      "sha256": "d6a485b10709904eda028e9ef42db40affcdf70d76632d7e1b5dedf8747e149b"
+    },
+    {
+      "path": "data/common_voice/cv_0110.wav",
+      "bytes": 172844,
+      "sha256": "92d090982b133fe3aaf184457e609056dbbc43884edc4889885f7144577b919d"
+    },
+    {
+      "path": "data/common_voice/cv_0111.wav",
+      "bytes": 93356,
+      "sha256": "1b0f8f5ce690f2ca5ffaaa453ecdb6f9ccdd73de1e71359c8e7df52a6612cdca"
+    },
+    {
+      "path": "data/common_voice/cv_0112.wav",
+      "bytes": 168236,
+      "sha256": "42999f609286e12cffbeb6491eae5ac0b9b2a53a9c81ed6708fcd7b604468b49"
+    },
+    {
+      "path": "data/common_voice/cv_0113.wav",
+      "bytes": 314540,
+      "sha256": "b2cb8397f81ef4c6a4ce5448b93c581502a03d746a5507943bee66f180b4a1b3"
+    },
+    {
+      "path": "data/common_voice/cv_0114.wav",
+      "bytes": 112940,
+      "sha256": "75e290c346ffe15a2b54b74f294157428a8a9b2987edb93630935f1b34920680"
+    },
+    {
+      "path": "data/common_voice/cv_0115.wav",
+      "bytes": 150956,
+      "sha256": "c415aab358eb2f3418663a667eb08538784118cd37e201e774f762ea319c529e"
+    },
+    {
+      "path": "data/common_voice/cv_0116.wav",
+      "bytes": 84140,
+      "sha256": "eb5c508ba549b097928e0afa93f4e5943db4d3a8dfeccae000bc25bd9232ad9e"
+    },
+    {
+      "path": "data/common_voice/cv_0117.wav",
+      "bytes": 86444,
+      "sha256": "68595639e082c69f84fe4a1e139ed9c12d39dcf1f0a4e579141590a56cf779a0"
+    },
+    {
+      "path": "data/common_voice/cv_0118.wav",
+      "bytes": 84140,
+      "sha256": "2bec66f21e44e240102e5e50e56af987da97f7e2bbf843f685cffcf4744d2347"
+    },
+    {
+      "path": "data/common_voice/cv_0119.wav",
+      "bytes": 86444,
+      "sha256": "d26a162d0f92022e00b7e46ecd67c080b1191b83fc35dbc705205334ad8fec0f"
+    },
+    {
+      "path": "data/common_voice/cv_0120.wav",
+      "bytes": 95660,
+      "sha256": "dee01bae6333ec2867cf1c1caaf8dac5dc839716274f7479c2133925dd61e16f"
+    },
+    {
+      "path": "data/common_voice/cv_0121.wav",
+      "bytes": 74924,
+      "sha256": "0eeda9cba4a85bbc3427df4b0cdd80be56fef622ca3bba9a8732e156904b3497"
+    },
+    {
+      "path": "data/common_voice/cv_0122.wav",
+      "bytes": 84140,
+      "sha256": "2b34b7497876823645a75dfdcccee9a51217c72815b78294568eac6508c29758"
+    },
+    {
+      "path": "data/common_voice/cv_0123.wav",
+      "bytes": 133676,
+      "sha256": "28d030aafa69c197f0e20e5ff9de84d0324dde849650086cbdb50e4bbf1ed83f"
+    },
+    {
+      "path": "data/common_voice/cv_0124.wav",
+      "bytes": 130220,
+      "sha256": "833694f39d7826089e7b26ff258a5540f0cba02f5462881ac23d2ee8d054f968"
+    },
+    {
+      "path": "data/common_voice/cv_0125.wav",
+      "bytes": 99116,
+      "sha256": "a72047f2582f83b21fc058c133a842400c98318db7796647c261200c4e2045d2"
+    },
+    {
+      "path": "data/common_voice/cv_0126.wav",
+      "bytes": 121004,
+      "sha256": "0dc123ea627365fb7e8b0ab1bff273caf22ddfa3086a1fd74c54b65ea60de6df"
+    },
+    {
+      "path": "data/common_voice/cv_0127.wav",
+      "bytes": 139436,
+      "sha256": "89ef6e9aa5f4cb19dc3e53528e9d2c5f52de964d250804c13c856dd328e687c5"
+    },
+    {
+      "path": "data/common_voice/cv_0128.wav",
+      "bytes": 78380,
+      "sha256": "459662c2c038ecf58f355422a4f594a6cad99c84c660c279d11e7e3fe17aca3e"
+    },
+    {
+      "path": "data/common_voice/cv_0129.wav",
+      "bytes": 159020,
+      "sha256": "c9dba76cf693147ca5d56ec6e90c99b162da8fafc934e9f4eee82ca5752baf32"
+    },
+    {
+      "path": "data/common_voice/cv_0130.wav",
+      "bytes": 103724,
+      "sha256": "e09dd08ebebb101a41e6c115929a9dffd50098493fbec3ce75be762d2097f6d8"
+    },
+    {
+      "path": "data/common_voice/cv_0131.wav",
+      "bytes": 110636,
+      "sha256": "cd0044e27545830c665747a0e637dd68b7717c6ac1dad2378ebbeb8a7a0c365d"
+    },
+    {
+      "path": "data/common_voice/cv_0132.wav",
+      "bytes": 155564,
+      "sha256": "91f6f03b33a30d474ba0136e8e5077ba7097269a2e62d47e039f9fbb0b168985"
+    },
+    {
+      "path": "data/common_voice/cv_0133.wav",
+      "bytes": 159020,
+      "sha256": "ccd1ffdadbb208de3fe371e11d5cbfeb9fc980046523ae24bd0c8ac94821c650"
+    },
+    {
+      "path": "data/common_voice/cv_0134.wav",
+      "bytes": 87596,
+      "sha256": "4311e493444e6d1e41e1698d14bc4f6a5e30e9238645b17d9bf3050131636a16"
+    },
+    {
+      "path": "data/common_voice/cv_0135.wav",
+      "bytes": 335276,
+      "sha256": "9717160d1eb2b615998a91eb35fff84b72f559147106a88e46e048e81700ded6"
+    },
+    {
+      "path": "data/common_voice/cv_0136.wav",
+      "bytes": 132524,
+      "sha256": "040811c992cc214934f4a388c473c0955f0ffdd15e1fa0780dd7aec270f56b23"
+    },
+    {
+      "path": "data/common_voice/cv_0137.wav",
+      "bytes": 195884,
+      "sha256": "dd81649102a4a2cc7cbe1b2242a89a3c03984269dcb60e772c2b46893d49532d"
+    },
+    {
+      "path": "data/common_voice/cv_0138.wav",
+      "bytes": 87596,
+      "sha256": "dbf8d9c098d7b6f75a3fba10eadc6e7c4b1317f14f7a5306a7100a971bb833e5"
+    },
+    {
+      "path": "data/common_voice/cv_0139.wav",
+      "bytes": 69164,
+      "sha256": "4eb929d86924acd90a47e1e70efea7092cec2a9745fbc5e04121a345393c7a56"
+    },
+    {
+      "path": "data/common_voice/cv_0140.wav",
+      "bytes": 99116,
+      "sha256": "db6719fb28f3a26167a9dcabb0ec79bca4eec626656b0885ab807a6abad40997"
+    },
+    {
+      "path": "data/common_voice/cv_0141.wav",
+      "bytes": 112940,
+      "sha256": "67e3c571e5caaf3780372434ba927c26cbac08bd21db2ef846315702638fa3b2"
+    },
+    {
+      "path": "data/common_voice/cv_0142.wav",
+      "bytes": 141740,
+      "sha256": "03dc101ea065287d9b2f396529adb82936aa0a84a313d9f051a474292ab27ea6"
+    },
+    {
+      "path": "data/common_voice/cv_0143.wav",
+      "bytes": 191276,
+      "sha256": "2ed4363dbb8b71ed5c7b2bb95c7d6ecf3cf3b3d33a685c1f4d271f0515892b1b"
+    },
+    {
+      "path": "data/common_voice/cv_0144.wav",
+      "bytes": 173996,
+      "sha256": "aa57dc3ddfcc61526a985de516c0f81c19b6d054a2141e2a219f85ab0de4feda"
+    },
+    {
+      "path": "data/common_voice/cv_0145.wav",
+      "bytes": 233900,
+      "sha256": "88dbbf5cf002a97ad405686f183a5a67a6e949112a99ae68dc418d478950c645"
+    },
+    {
+      "path": "data/common_voice/cv_0146.wav",
+      "bytes": 193580,
+      "sha256": "e55b94ede12e1c9a56dfbbc6c6f1e6a1b2a5c44765a67368de97913810426cbb"
+    },
+    {
+      "path": "data/common_voice/cv_0147.wav",
+      "bytes": 161324,
+      "sha256": "6220498cda89ac706a444f836d694c095ab5fe177a0ed42e55cd22d59860d5ad"
+    },
+    {
+      "path": "data/common_voice/cv_0148.wav",
+      "bytes": 161324,
+      "sha256": "6e5f7e917d81acf414d7615dc33f7eb073c47f39680bbc15085beba1d38edac4"
+    },
+    {
+      "path": "data/common_voice/cv_0149.wav",
+      "bytes": 176300,
+      "sha256": "a2b87eee54b395523c54785ff166c42db315b82f469595f50aee016f399e7772"
+    },
+    {
+      "path": "data/common_voice/cv_0150.wav",
+      "bytes": 135980,
+      "sha256": "5cf39b8b5d8def4c98267fb6fbf6333cf2829de5861973a6dcca32a0d1c72a4d"
+    },
+    {
+      "path": "data/common_voice/cv_0151.wav",
+      "bytes": 184364,
+      "sha256": "eff8d0e664ade43bfe2a5ce3e693f415654a146622a17e63ce94eff1782d60a1"
+    },
+    {
+      "path": "data/common_voice/cv_0152.wav",
+      "bytes": 135980,
+      "sha256": "f79d4ebaa51d767f058f79ad993d5121d25535fa1edf8134bd7d760f75e06a70"
+    },
+    {
+      "path": "data/common_voice/cv_0153.wav",
+      "bytes": 126764,
+      "sha256": "c682376424c86edfb6d230ac2f5f4c6e206c551d8e4a4d2dadc5492e7ea55a1b"
+    },
+    {
+      "path": "data/common_voice/cv_0154.wav",
+      "bytes": 84140,
+      "sha256": "ff750b19a7cb5a677c5ef286729656e44c1590ad289d57bcdfe761e264d1e3ef"
+    },
+    {
+      "path": "data/common_voice/cv_0155.wav",
+      "bytes": 103724,
+      "sha256": "372a44329a8efffc4dc150cc6fabff7b97577de78d9eadb6de46462feb16a938"
+    },
+    {
+      "path": "data/common_voice/cv_0156.wav",
+      "bytes": 87596,
+      "sha256": "d0a95312ac63c80ad29b39efd6c4ce07dfa9399765fdf4cf27f675d605727780"
+    },
+    {
+      "path": "data/common_voice/cv_0157.wav",
+      "bytes": 150956,
+      "sha256": "13a3bff778499155816b2b8128ba08c810e7ca12c013d60ef19e14f939c09420"
+    },
+    {
+      "path": "data/common_voice/cv_0158.wav",
+      "bytes": 161324,
+      "sha256": "255e2aa041b209b1ccf099a53885bb57284400189b79f8deecb3f2602badd8f8"
+    },
+    {
+      "path": "data/common_voice/cv_0159.wav",
+      "bytes": 248876,
+      "sha256": "2a38c2e9947b59f80228f430408cad35734cecf4d96c0c7ff2859c5ee6837e30"
+    },
+    {
+      "path": "data/common_voice/cv_0160.wav",
+      "bytes": 137132,
+      "sha256": "8c043786e9812a84537671202ea6109f1dfc04ff9dbe309a03e2e953c605a91f"
+    },
+    {
+      "path": "data/common_voice/cv_0161.wav",
+      "bytes": 101420,
+      "sha256": "b5959488d5b11b9ce49b0d67643310d554e00c2417adcc7f7a8bbe00b9fb53a3"
+    },
+    {
+      "path": "data/common_voice/cv_0162.wav",
+      "bytes": 156716,
+      "sha256": "df0a84f67c2fe3ff992edc8d683b83bb32500a55db1b4353780ce2de8df0fadc"
+    },
+    {
+      "path": "data/common_voice/cv_0163.wav",
+      "bytes": 76076,
+      "sha256": "802c54ee396dbe06f6db06d5321a30d7bdd87d4613e565720d536192f8741625"
+    },
+    {
+      "path": "data/common_voice/cv_0164.wav",
+      "bytes": 144044,
+      "sha256": "d9e42914d398b1af4d98864d21bdc9adc6716104b61d79e01c4b3bc281a080e9"
+    },
+    {
+      "path": "data/common_voice/cv_0165.wav",
+      "bytes": 107180,
+      "sha256": "68b4e3bb7aa8cbdb046daf83eb61491f26e4f3666649cf15e8a84926e08bb615"
+    },
+    {
+      "path": "data/common_voice/cv_0166.wav",
+      "bytes": 190124,
+      "sha256": "578a755708d3cad1fc97aad29483762220a2224ca57b8bb322581c7ff66b109e"
+    },
+    {
+      "path": "data/common_voice/cv_0167.wav",
+      "bytes": 167084,
+      "sha256": "d8b24cbff68b7631b1b780fc02534a1208c1b85e72576e38ab3b425d3075226f"
+    },
+    {
+      "path": "data/common_voice/cv_0168.wav",
+      "bytes": 124460,
+      "sha256": "4a0098a264724edc3c9d199a133d116284f40fb61c59ee3fdcf833c1cedaa7b9"
+    },
+    {
+      "path": "data/common_voice/cv_0169.wav",
+      "bytes": 139436,
+      "sha256": "9e58db2904257199bbdb38c4b66d0fc8ac97db357cf34abd28121c14c0016afc"
+    },
+    {
+      "path": "data/common_voice/cv_0170.wav",
+      "bytes": 126764,
+      "sha256": "6aa6bb083094ea2b440c15957bcdb48f0a23e3a8a368a63338deadbb2d100e15"
+    },
+    {
+      "path": "data/common_voice/cv_0171.wav",
+      "bytes": 92204,
+      "sha256": "f24dd06143c20cc10dd37df0650995dc8224c14942c9249b3d48483fd0064875"
+    },
+    {
+      "path": "data/common_voice/cv_0172.wav",
+      "bytes": 74924,
+      "sha256": "b9704c3a2792fcb97c475ece731cd950d94fb803e69326b6028a9e26fc10deba"
+    },
+    {
+      "path": "data/common_voice/cv_0173.wav",
+      "bytes": 145196,
+      "sha256": "08347527ca3da0dff1c364f1a1e62483c91348d2c10ff330a9688829cf6d0892"
+    },
+    {
+      "path": "data/common_voice/cv_0174.wav",
+      "bytes": 115244,
+      "sha256": "6c391ff35c07d4ac55f4899c16e69502814cde2ab10373a5769fe1cf72637168"
+    },
+    {
+      "path": "data/common_voice/cv_0175.wav",
+      "bytes": 80684,
+      "sha256": "c6d7ae560dfa254082e30a18360d09ac699fff51f44feb994a0d5b01e987547f"
+    },
+    {
+      "path": "data/common_voice/cv_0176.wav",
+      "bytes": 121004,
+      "sha256": "b231b28aeffcf94c87e5315933da1fba985fd5946fa5c2d75e1bd8352da7236d"
+    },
+    {
+      "path": "data/common_voice/cv_0177.wav",
+      "bytes": 121004,
+      "sha256": "e06a192fd98bfb8c35dc90cd9c88b0e59204745be07953190f2facc229288bb6"
+    },
+    {
+      "path": "data/common_voice/cv_0178.wav",
+      "bytes": 110636,
+      "sha256": "f2a9e20b95210fb166fc842c5f32f1d767dd5ea1e422bd0e06f1c3a0498089d5"
+    },
+    {
+      "path": "data/common_voice/cv_0179.wav",
+      "bytes": 110636,
+      "sha256": "df36a4a7f360e2fc3eb4ecdf0f511133dc507c4d484cc6744126c32a38904c49"
+    },
+    {
+      "path": "data/common_voice/cv_0180.wav",
+      "bytes": 116396,
+      "sha256": "89afe01e9a767d835f599b065f943b23a1dc675b1fee0ca3a300fac7dcb48b76"
+    },
+    {
+      "path": "data/common_voice/cv_0181.wav",
+      "bytes": 126764,
+      "sha256": "bf61dc653396a064f68f7087981f5ed1c4df4aa89a31308fcb4273e78728f5dd"
+    },
+    {
+      "path": "data/common_voice/cv_0182.wav",
+      "bytes": 74924,
+      "sha256": "44c9c3b77f671aa011ad3325424cfea61df258785a709c83ecc05744abdf631d"
+    },
+    {
+      "path": "data/common_voice/cv_0183.wav",
+      "bytes": 109484,
+      "sha256": "1ed1d42096f83b5fd6a7a961410489b6b3a628d447a3ffc2b6ad10b96d85f16d"
+    },
+    {
+      "path": "data/common_voice/cv_0184.wav",
+      "bytes": 72620,
+      "sha256": "0bdfc41732d0671544d41c13fedc11c6a24e1c9d6be5b344d8d624552489a615"
+    },
+    {
+      "path": "data/common_voice/cv_0185.wav",
+      "bytes": 139436,
+      "sha256": "a23b424000522d95c13f54f8e46be0d58211806b9740817722b4a1dd87da7e63"
+    },
+    {
+      "path": "data/common_voice/cv_0186.wav",
+      "bytes": 101420,
+      "sha256": "35182af746d94d8046f91e7f892dbea429c09c9f9bb7761255905bf0515ee80a"
+    },
+    {
+      "path": "data/common_voice/cv_0187.wav",
+      "bytes": 92204,
+      "sha256": "ee99ecf89231005e0ce7f49319bd5fe0cb6d5d5f487152f027d51673c9acb8c2"
+    },
+    {
+      "path": "data/common_voice/cv_0188.wav",
+      "bytes": 185516,
+      "sha256": "c81f16a1c9f82aa321b702b9d7cd350b43a0694b2f671bea8c50525de6940ffa"
+    },
+    {
+      "path": "data/common_voice/cv_0189.wav",
+      "bytes": 159020,
+      "sha256": "afcbacf00d841eb3cf1933d92c7605ba72a2de600851f3a207d3bbd5490239d3"
+    },
+    {
+      "path": "data/common_voice/cv_0190.wav",
+      "bytes": 110636,
+      "sha256": "24b991c56291f1e1c1d254b8944c231c00ae965a625b60cafa34b3782d4b3d23"
+    },
+    {
+      "path": "data/common_voice/cv_0191.wav",
+      "bytes": 127916,
+      "sha256": "ab8591ba27329dad87c59910c7f0c5e106f232c8632bb589089b217574e1550f"
+    },
+    {
+      "path": "data/common_voice/cv_0192.wav",
+      "bytes": 124460,
+      "sha256": "5559e1af31c1e2995a6caaad1cb14f3236e9b85e706926d47de735f0b3bc0e4c"
+    },
+    {
+      "path": "data/common_voice/cv_0193.wav",
+      "bytes": 141740,
+      "sha256": "e08b581a1eab1eee2bb5c19bc384fe55c0caaaf72d56c8efedab92bc25d39cac"
+    },
+    {
+      "path": "data/common_voice/cv_0194.wav",
+      "bytes": 178604,
+      "sha256": "f47e39f93c8fda966290358e91d01286016e31a8297090a73ea1dc912004cf8e"
+    },
+    {
+      "path": "data/common_voice/cv_0195.wav",
+      "bytes": 185516,
+      "sha256": "072a59422f28473eceb59b8e4ffa241b0482d2069ccd0a9120a534e9e8285a83"
+    },
+    {
+      "path": "data/common_voice/cv_0196.wav",
+      "bytes": 81836,
+      "sha256": "d9a4831294d943432a80c6360153dca5c95ea78848afe87653707d8818d63eb8"
+    },
+    {
+      "path": "data/common_voice/cv_0197.wav",
+      "bytes": 154412,
+      "sha256": "f32937ed1b81d1f510a0688ab778e727a7944e5b151e7016bebf81193b87f845"
+    },
+    {
+      "path": "data/common_voice/cv_0198.wav",
+      "bytes": 155564,
+      "sha256": "434fc271c5849bffebe5c4ec0b308fa4bb088ee2c5db961a15d3efa7d69e2fe2"
+    },
+    {
+      "path": "data/common_voice/cv_0199.wav",
+      "bytes": 173996,
+      "sha256": "c446d8eb34b0892b2ae5734e62697c2edce5774ae15e653af471921180b55106"
+    },
+    {
+      "path": "data/distorted/001_วันนี้ฉะฉันรู้สึกดีมาก_severe.wav",
+      "bytes": 165272,
+      "sha256": "43cbc5f0b01ae7a2e886ea46afc8879ae774942da088edf3a0bc5b1ea67c4df8"
+    },
+    {
+      "path": "data/distorted/002_ขอน้ำหนึ่งแก้วได้ไหม_severe.wav",
+      "bytes": 183296,
+      "sha256": "626aed85c2ddb44c76b81478851acfe909383d6302ca1ba147c087f14e3f8fe8"
+    },
+    {
+      "path": "data/distorted/003_ฉันอยู่ที่บ้านนะ_severe.wav",
+      "bytes": 176718,
+      "sha256": "4427dd9e17daf5f13e284837e3d40f6004ddb84b0477cb7bbe9b03c0428300bd"
+    },
+    {
+      "path": "data/distorted/004_หิวข้าวแล้ว_severe.wav",
+      "bytes": 190406,
+      "sha256": "32b9d3fdf1df6a370365522fb9eaeec9d3699ee00036d8131afcb6ba3f251af6"
+    },
+    {
+      "path": "data/distorted/005_ขอบคุณมากนะครับ_severe.wav",
+      "bytes": 153304,
+      "sha256": "8f19531be00274c281cde3d58c709f35ef641dcb1c361f7f3dc098e96271ad61"
+    },
+    {
+      "path": "data/distorted/006_ช่วยฉันด้วยได้ไหม_severe.wav",
+      "bytes": 183498,
+      "sha256": "f431d3032d922e2ab732e345c47a58eeab208231a943270d008f3e9e0683ac07"
+    },
+    {
+      "path": "data/distorted/007_วันนี้อากาศร้อนมาก_severe.wav",
+      "bytes": 156250,
+      "sha256": "0060a5afe62df342a46aad683e882858a14cb6302642e774a773fff422fadb59"
+    },
+    {
+      "path": "data/distorted/008_ฉันชื่อกันต์กวี_severe.wav",
+      "bytes": 163852,
+      "sha256": "4e2dfec39377940f5e978832f8b59811bff31593bfb957597d176067ede17b06"
+    },
+    {
+      "path": "data/distorted/009_โทรหาหมอให้ทีได้ไหม_severe.wav",
+      "bytes": 174012,
+      "sha256": "2dc50ef2cea638834023ceda80e5edc12c809eee75fc5fa85f6154ad777f7b80"
+    },
+    {
+      "path": "data/distorted/010_ฉันต้องการความช่วยเหลือ_severe.wav",
+      "bytes": 154380,
+      "sha256": "36aa292c4d33f204c006b9d0566af811f10b85a91af5b9c692b33b7ae7816c08"
+    },
+    {
+      "path": "data/distorted_cv/cv_0000_severe.wav",
+      "bytes": 167948,
+      "sha256": "c594da7640bd218711015d3f82291c0385555b9a2a0fd875d465187f5b72cc53"
+    },
+    {
+      "path": "data/distorted_cv/cv_0001_severe.wav",
+      "bytes": 126144,
+      "sha256": "fa306e2c7dfe6db31dfc40fdd8b66813ffaca3e85d23791f8675094f04270c1d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0002_severe.wav",
+      "bytes": 78410,
+      "sha256": "56aa5b270aed5b99a5fbb7eff2c6f5abd8b602bb79a402e4574ff75b195352d6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0003_severe.wav",
+      "bytes": 98720,
+      "sha256": "b2dde8aa46a00b7d3e6b0851ce9ef353f9fae74f64a455fc21db4b50dafbabe8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0004_severe.wav",
+      "bytes": 85984,
+      "sha256": "120e02cd725d055bee1c4c4a5d6dc6455ca73dec9c70e2cabf8f4e4b2695ca36"
+    },
+    {
+      "path": "data/distorted_cv/cv_0005_severe.wav",
+      "bytes": 112394,
+      "sha256": "9e15734811ff9f30e6f5badde2c3566678ae56a81a30d56ce303389c4186880d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0006_severe.wav",
+      "bytes": 153818,
+      "sha256": "3f592fbf0befb2485681d40643ea71d0afa01e9fc0b99cc2a77eceb625f8390d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0007_severe.wav",
+      "bytes": 104502,
+      "sha256": "d90c4e3677fb5cf5107ad16ac29626e9a72fb91e76dfed8423bdafc443fe378c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0008_severe.wav",
+      "bytes": 110134,
+      "sha256": "1e4b51cb0ff7aca9d944ef556a8dd04b167416906e50a9059e7d25c43d2e9641"
+    },
+    {
+      "path": "data/distorted_cv/cv_0009_severe.wav",
+      "bytes": 140798,
+      "sha256": "15b133977bf57758723dc03a37f9c856dd511ed241cfed40c326507db68b6136"
+    },
+    {
+      "path": "data/distorted_cv/cv_0010_severe.wav",
+      "bytes": 80844,
+      "sha256": "d42e8556252d13f45c6405c31842e1ec5a1f3259bd97515d4dedefa0c7870baf"
+    },
+    {
+      "path": "data/distorted_cv/cv_0011_severe.wav",
+      "bytes": 112368,
+      "sha256": "722c7fca6b03c45c97ceca72730d7d52a0480f4e4ac972a42d0cabc0e2ae2dc5"
+    },
+    {
+      "path": "data/distorted_cv/cv_0012_severe.wav",
+      "bytes": 124730,
+      "sha256": "39bed46a093e130a6201fec612822ef28cf99a7cc9ed6d2480136a60a04c9481"
+    },
+    {
+      "path": "data/distorted_cv/cv_0013_severe.wav",
+      "bytes": 120004,
+      "sha256": "b6483a1ee62b1f25f3c4408c448a9775312afc8221c1b23c05021cb013f08749"
+    },
+    {
+      "path": "data/distorted_cv/cv_0014_severe.wav",
+      "bytes": 178300,
+      "sha256": "125f64e50f7a96050a5df9dfb6aa69dba088a325de23caff77a6305ad980e4b8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0015_severe.wav",
+      "bytes": 153104,
+      "sha256": "89a3e35bdf475b5dd5c4d98fff83bc7a63782def16d9b6a3932b582c5d53f0b7"
+    },
+    {
+      "path": "data/distorted_cv/cv_0016_severe.wav",
+      "bytes": 117828,
+      "sha256": "739fd65dfdb83f19158982e1079c39ca8ba33d92aa0e58c52ce8d9914f8d484d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0017_severe.wav",
+      "bytes": 134786,
+      "sha256": "28eed5bf7335be4aba56465e95277c0217106d557f6d031999bf3d2d2059f774"
+    },
+    {
+      "path": "data/distorted_cv/cv_0018_severe.wav",
+      "bytes": 170162,
+      "sha256": "1f99daaaf5320facd6900b6a6bbb846b9c56fb4857e49e6b9aba779857669081"
+    },
+    {
+      "path": "data/distorted_cv/cv_0019_severe.wav",
+      "bytes": 134432,
+      "sha256": "9fe18516429e3f32e8be448a8d85f5ef1f9c8790f849d6d383b7f2769330a2f9"
+    },
+    {
+      "path": "data/distorted_cv/cv_0020_severe.wav",
+      "bytes": 186018,
+      "sha256": "f52ac982948f0cd2547a72a35cd753b8465cf6b858e3377c628a6946c7182bdf"
+    },
+    {
+      "path": "data/distorted_cv/cv_0021_severe.wav",
+      "bytes": 91980,
+      "sha256": "8ae05293ebc084aaeaa1323132fcfe2128c237e9772c0ab11071d9b888fda8b6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0022_severe.wav",
+      "bytes": 186962,
+      "sha256": "8a3460620bcc4bba75de18a36c697b5b4b9a49fb4ffb6f83081480aa86ccd7c0"
+    },
+    {
+      "path": "data/distorted_cv/cv_0023_severe.wav",
+      "bytes": 139114,
+      "sha256": "098fa3709cd5a83ebb4c350b1f618bcbc5e41f265fffccb32a73b8fa1e891a36"
+    },
+    {
+      "path": "data/distorted_cv/cv_0024_severe.wav",
+      "bytes": 318860,
+      "sha256": "207f7cd8989856b21c72ef42175ce7e3265983f4a3c4868c76b8f573eb816b13"
+    },
+    {
+      "path": "data/distorted_cv/cv_0025_severe.wav",
+      "bytes": 87754,
+      "sha256": "0828e3dfcdc172aac73e99f67bc160bc63f98a86264c5b200254a9df91fd8946"
+    },
+    {
+      "path": "data/distorted_cv/cv_0026_severe.wav",
+      "bytes": 119558,
+      "sha256": "6334dd07dee696ca37f9021d8d4e8c4b1c8adb1c34fce1688bee4a9d604cee99"
+    },
+    {
+      "path": "data/distorted_cv/cv_0027_severe.wav",
+      "bytes": 141378,
+      "sha256": "1ad3a6dcc5f08f4806cc01e101dcefc0fc035c474d43783fab7db808bcfdb491"
+    },
+    {
+      "path": "data/distorted_cv/cv_0028_severe.wav",
+      "bytes": 117174,
+      "sha256": "6a859c311affa8efaf14e6e5ec06b2ff22ce0580ebcd47ec0588232a9f6e25a2"
+    },
+    {
+      "path": "data/distorted_cv/cv_0029_severe.wav",
+      "bytes": 68202,
+      "sha256": "5eecec90b8804ae36cd4a416fe0cbddb2e1f518f51d8f6e966cb285283ba4321"
+    },
+    {
+      "path": "data/distorted_cv/cv_0030_severe.wav",
+      "bytes": 219566,
+      "sha256": "9e5bc2e2292828c0dd2fc5669f64c662d756ee41c8f36f6a8214a8296be93d8a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0031_severe.wav",
+      "bytes": 154292,
+      "sha256": "ef35562b3add34e98c717471853c0d7f69c0d1b9e7ccc0702bc7652ee1ddbf5c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0032_severe.wav",
+      "bytes": 195932,
+      "sha256": "97f4c0d482fb5c4761f1e872f593d3808a541201180467be9f1845c44df8de77"
+    },
+    {
+      "path": "data/distorted_cv/cv_0033_severe.wav",
+      "bytes": 209534,
+      "sha256": "1f48a00b77faf77af7782138b53504ca0df28c3af05d8b3ef1f20a44517e9b72"
+    },
+    {
+      "path": "data/distorted_cv/cv_0034_severe.wav",
+      "bytes": 217800,
+      "sha256": "b6d4e4107efc343d5cd9fc755b2be4e7ab97550125b9ec2897b594414e53ef50"
+    },
+    {
+      "path": "data/distorted_cv/cv_0035_severe.wav",
+      "bytes": 107996,
+      "sha256": "110439fc23471297069a0045c1acf7f16e892d252f4bb7de3746d4fdc7f003d8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0036_severe.wav",
+      "bytes": 194728,
+      "sha256": "d73a785685eec7602b10bd2dd99bf9e4b01af3877886120352088ccbb15ba569"
+    },
+    {
+      "path": "data/distorted_cv/cv_0037_severe.wav",
+      "bytes": 177210,
+      "sha256": "c0d012f95705cb22082fdf179644ced112337f4096a7cdaa7355cd145143aeb1"
+    },
+    {
+      "path": "data/distorted_cv/cv_0038_severe.wav",
+      "bytes": 123762,
+      "sha256": "02a85490da99f474465b6bca8518e58ab67006c3f480829e84adfd5b91f087c5"
+    },
+    {
+      "path": "data/distorted_cv/cv_0039_severe.wav",
+      "bytes": 188898,
+      "sha256": "87e057131b1d9d4957bb71bee18eb1fb1b1ba29888dc219de441a8fb4e34cd40"
+    },
+    {
+      "path": "data/distorted_cv/cv_0040_severe.wav",
+      "bytes": 115956,
+      "sha256": "f40d4555902d857360af0ad7f92db47b1a623ea9ca3f5dc0dfb8738e3d505dd0"
+    },
+    {
+      "path": "data/distorted_cv/cv_0041_severe.wav",
+      "bytes": 93466,
+      "sha256": "1e00d766daabbea8758226787040631a4076dd9e95ae90f4b5ea8c332797f9d0"
+    },
+    {
+      "path": "data/distorted_cv/cv_0042_severe.wav",
+      "bytes": 127986,
+      "sha256": "19914346ab077347abda6914a838a5b8fb9d087f5eb880a334d75c253d93be52"
+    },
+    {
+      "path": "data/distorted_cv/cv_0043_severe.wav",
+      "bytes": 157966,
+      "sha256": "9a77621b0c159b983199e4f2766c900945ac13c48a2b4024ecaf37e9ac51ab4a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0044_severe.wav",
+      "bytes": 77976,
+      "sha256": "b14ac4bd714c93fa637f2695be05ddfeb4ad847d603fa5daf255c568e2b8ce44"
+    },
+    {
+      "path": "data/distorted_cv/cv_0045_severe.wav",
+      "bytes": 136362,
+      "sha256": "1be616ac75597b9fd5170a9338db5092bdb697541bd519b436ed5f3fb933eee8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0046_severe.wav",
+      "bytes": 155378,
+      "sha256": "63e4fe917a3b274160280829e73ab3e0b96242e0a940bdaaca007d5c3254e962"
+    },
+    {
+      "path": "data/distorted_cv/cv_0047_severe.wav",
+      "bytes": 76692,
+      "sha256": "7d84198e2e4986c4b808a5aceef2bb7b8f44f746d68d5bc8c67ea4e59c0e7e96"
+    },
+    {
+      "path": "data/distorted_cv/cv_0048_severe.wav",
+      "bytes": 87458,
+      "sha256": "bb1be875ee333ef66d85c5295534a94f1f9c309d739b4020065319f1a84a0089"
+    },
+    {
+      "path": "data/distorted_cv/cv_0049_severe.wav",
+      "bytes": 163778,
+      "sha256": "7ab3aef7aae621ce6dedec44033613ce30387f45a0c534fd8ece9a33f2f7ad27"
+    },
+    {
+      "path": "data/distorted_cv/cv_0050_severe.wav",
+      "bytes": 104970,
+      "sha256": "339595c632e190695160a87d282bfb22e6ad1a59f4455df965de51ca44835889"
+    },
+    {
+      "path": "data/distorted_cv/cv_0051_severe.wav",
+      "bytes": 145700,
+      "sha256": "abab4ea9bedebff50d6a5260c469d0442e25ae7f6044e3d294901fd09f039495"
+    },
+    {
+      "path": "data/distorted_cv/cv_0052_severe.wav",
+      "bytes": 118224,
+      "sha256": "06a17b863a2b3720059ec5478ee4c4c8699da501b4ebbc9a5fc5bc06cd90cbf3"
+    },
+    {
+      "path": "data/distorted_cv/cv_0053_severe.wav",
+      "bytes": 95504,
+      "sha256": "c1f888fe85b91f2a71459076d9784e0d6c0ed291fa0f0d658219084972803a56"
+    },
+    {
+      "path": "data/distorted_cv/cv_0054_severe.wav",
+      "bytes": 117528,
+      "sha256": "95b0e0446aae2f33750de4c1197f04b0ea86e88cd1962c8410b48b8749ca534b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0055_severe.wav",
+      "bytes": 170510,
+      "sha256": "74467eb78b0303084cf28d0e3d49f1992b0ee736b7536f86e6d80401f3be38a4"
+    },
+    {
+      "path": "data/distorted_cv/cv_0056_severe.wav",
+      "bytes": 251564,
+      "sha256": "bf544b128f1541c1c47245d30f9b18cef23e050e46bd2cc4bcfb7c9d918269b4"
+    },
+    {
+      "path": "data/distorted_cv/cv_0057_severe.wav",
+      "bytes": 155154,
+      "sha256": "5f8216dfedc84efb1ffc0c2d974c27cc4d42740bae493ba8ef05a1199baeeba9"
+    },
+    {
+      "path": "data/distorted_cv/cv_0058_severe.wav",
+      "bytes": 195854,
+      "sha256": "a40abd4437bec80978832878858d820d4e682fbae54e9f1e7420873ea6bbb2e6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0059_severe.wav",
+      "bytes": 199842,
+      "sha256": "034dcfe75e97b9afe54bebac4748ac0b4d0698c1a5c2feae6f9cb44598470b3f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0060_severe.wav",
+      "bytes": 149662,
+      "sha256": "514616d2444613c49923fd46db337a70a414c3a2623a2272c8613c8b9e33c2b2"
+    },
+    {
+      "path": "data/distorted_cv/cv_0061_severe.wav",
+      "bytes": 158468,
+      "sha256": "945fbfd8b60ad7c4cf97915e1a236baa4c40b07dcd4a75b62913e563059de318"
+    },
+    {
+      "path": "data/distorted_cv/cv_0062_severe.wav",
+      "bytes": 223392,
+      "sha256": "0e68801782453fdab3f637114a7683bdf6025925a2cab8352aa55af47f911972"
+    },
+    {
+      "path": "data/distorted_cv/cv_0063_severe.wav",
+      "bytes": 114356,
+      "sha256": "1949d601cb7dbebef183c01788c292152b2de8e8b90ca5b2aa4c6f1f6fe8168d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0064_severe.wav",
+      "bytes": 154642,
+      "sha256": "c22157f747fabb3eee4d103dda377914313663a52aebe11f83d0fd41a0e1e3c6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0065_severe.wav",
+      "bytes": 118422,
+      "sha256": "547ae161d16cf495f38fc237b8e3c42bc6b483832ec0018bdd5a87d6fc6e8a28"
+    },
+    {
+      "path": "data/distorted_cv/cv_0066_severe.wav",
+      "bytes": 163648,
+      "sha256": "68ff72a20d6a5d930a2590d2873eca996bb65744b4275bb1a9214d04ff22b5da"
+    },
+    {
+      "path": "data/distorted_cv/cv_0067_severe.wav",
+      "bytes": 178296,
+      "sha256": "339a3a99ec1e83bfbae20cc8ae2857a5e34b8eb7d68a054fd0870aa67b0eed5c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0068_severe.wav",
+      "bytes": 263548,
+      "sha256": "4b88a69552991f98439cb8ece991d1b031704b0d15b3501a2637f10e51960604"
+    },
+    {
+      "path": "data/distorted_cv/cv_0069_severe.wav",
+      "bytes": 261614,
+      "sha256": "554781f5dc8df82baa8eb4fb2230e0b65ff4d988e366c8d85640fb50980b7f14"
+    },
+    {
+      "path": "data/distorted_cv/cv_0070_severe.wav",
+      "bytes": 179528,
+      "sha256": "c715d34cd8e1f3ae8dc7c07fb68573f7a7dbf370fafbe686cbb3469567e859fd"
+    },
+    {
+      "path": "data/distorted_cv/cv_0071_severe.wav",
+      "bytes": 69908,
+      "sha256": "f11c9bfcc64bad0d93534888847742ff36f432a59681747da9dd9542ee5ae994"
+    },
+    {
+      "path": "data/distorted_cv/cv_0072_severe.wav",
+      "bytes": 136316,
+      "sha256": "cc906268f755e802a5225dd421065b479c0292b375d90c481b6c24611e6baafb"
+    },
+    {
+      "path": "data/distorted_cv/cv_0073_severe.wav",
+      "bytes": 172638,
+      "sha256": "80c811d3f8eef7faa576761c6a1dce45fae23b3cbda23b74195f6f0ae8d5a294"
+    },
+    {
+      "path": "data/distorted_cv/cv_0074_severe.wav",
+      "bytes": 157406,
+      "sha256": "757a944ff49a1833197a4131e4e9e171f56cce7326e0cbc3495529ea24eab9b5"
+    },
+    {
+      "path": "data/distorted_cv/cv_0075_severe.wav",
+      "bytes": 201004,
+      "sha256": "9b856ce34e2cf64eadfd6331109d0bb128ba06e18c1b23e6969f6eb82eba2ec6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0076_severe.wav",
+      "bytes": 109414,
+      "sha256": "83005b880e889d3fcabcfee0cc59b9dcac9aec2a03d99356f6e45a54e1fa9d09"
+    },
+    {
+      "path": "data/distorted_cv/cv_0077_severe.wav",
+      "bytes": 129008,
+      "sha256": "0fe85ca05f9b94d6fd65bd70901f7e9bb020bbd2492b4342059576be8a239799"
+    },
+    {
+      "path": "data/distorted_cv/cv_0078_severe.wav",
+      "bytes": 122124,
+      "sha256": "508eb516a4560c94dcb8788c25877885a836828d779e8c192951234860ff9701"
+    },
+    {
+      "path": "data/distorted_cv/cv_0079_severe.wav",
+      "bytes": 119470,
+      "sha256": "40a53c4f8ef1da9a23d4579e7373c84c48ebc6f74c3838b321640128aec8e85f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0080_severe.wav",
+      "bytes": 189892,
+      "sha256": "cefc85612b4e88ccf1147ca82a407a674684ac04d17f8c227467427508a53ace"
+    },
+    {
+      "path": "data/distorted_cv/cv_0081_severe.wav",
+      "bytes": 123682,
+      "sha256": "025ff02501768c3b8bf2daccb995163f300e3e8e7cd1f3e42728a292475f2182"
+    },
+    {
+      "path": "data/distorted_cv/cv_0082_severe.wav",
+      "bytes": 151872,
+      "sha256": "d536153865b55cafe6e47a4fdf5809e13c6a26a1f77522db452a160b67b8e260"
+    },
+    {
+      "path": "data/distorted_cv/cv_0083_severe.wav",
+      "bytes": 139360,
+      "sha256": "c0fa21d77ca2448bf9a947ca1e09f340741e7e6004ba0de5d5743691dcc92aa3"
+    },
+    {
+      "path": "data/distorted_cv/cv_0084_severe.wav",
+      "bytes": 172780,
+      "sha256": "9367eac7b64156350fa1067728920b9cee7231eb09668edb3b6f3b461e284773"
+    },
+    {
+      "path": "data/distorted_cv/cv_0085_severe.wav",
+      "bytes": 225446,
+      "sha256": "0a534f28fe39faa8fe24a94595a8e51f17cc66fa35a30c4aad27f06c75be335a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0086_severe.wav",
+      "bytes": 210262,
+      "sha256": "241bd4a084767db8e4280ee147c0d56671904cdedd9d2a140df5df7398cce31e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0087_severe.wav",
+      "bytes": 254212,
+      "sha256": "6abb780e0ac374f85548a9befde26dcd3c0298c6b275c79ad4bc7a21efee8a41"
+    },
+    {
+      "path": "data/distorted_cv/cv_0088_severe.wav",
+      "bytes": 122600,
+      "sha256": "0315e6a92605be975c93b8a4613fc777d503952a318b9c769e8a0b32d6eed4cf"
+    },
+    {
+      "path": "data/distorted_cv/cv_0089_severe.wav",
+      "bytes": 198544,
+      "sha256": "be1af2a3294b7ee44c95b103c35bac42b943b74da268dd48bec8e752d9344b12"
+    },
+    {
+      "path": "data/distorted_cv/cv_0090_severe.wav",
+      "bytes": 139798,
+      "sha256": "d5299c931e83bd706f190d7b9f8f6aaab123a61562ba4c49309aa5aeea820e9f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0091_severe.wav",
+      "bytes": 102446,
+      "sha256": "e85ad1c19e13e0d62afff4b04eb8d173461a506a900090f45e5bc3c6af665259"
+    },
+    {
+      "path": "data/distorted_cv/cv_0092_severe.wav",
+      "bytes": 128904,
+      "sha256": "17be1f1456aa11cd1f29852a12bc396f3245c5a085bc1e3e9afb4ee9649c878e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0093_severe.wav",
+      "bytes": 173108,
+      "sha256": "47f270603fe2858e761683dffa447db524453512cf1ae462730d7644e63ae713"
+    },
+    {
+      "path": "data/distorted_cv/cv_0094_severe.wav",
+      "bytes": 235404,
+      "sha256": "adc2e43c4d62dcfe3d1435a8cb369898b3ea1a6979d8ac7f31f65ac06fcbfdb9"
+    },
+    {
+      "path": "data/distorted_cv/cv_0095_severe.wav",
+      "bytes": 120124,
+      "sha256": "5e23444227012753ecdac34ce007095522ce18c71f85e949e0cc15f35bca1113"
+    },
+    {
+      "path": "data/distorted_cv/cv_0096_severe.wav",
+      "bytes": 115230,
+      "sha256": "31149d891e7d8cbf53f38fa5e5990474e64d0c25a451c2ec1114deff3914b87c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0097_severe.wav",
+      "bytes": 250420,
+      "sha256": "c92cfe2ed4e49291340d315637c9a408735e422f0e805c2f0beb033479e8c1ca"
+    },
+    {
+      "path": "data/distorted_cv/cv_0098_severe.wav",
+      "bytes": 151198,
+      "sha256": "7886f1d3450748a4b809ed70ca2d091a572d8c8d47e068a431d30230124ba268"
+    },
+    {
+      "path": "data/distorted_cv/cv_0099_severe.wav",
+      "bytes": 264152,
+      "sha256": "dfe1ca66755d1f18261b888393ac22910a9777bfdeb43aa8e6239c8f834fb700"
+    },
+    {
+      "path": "data/distorted_cv/cv_0100_severe.wav",
+      "bytes": 151370,
+      "sha256": "e8f3e9e5d226a6ea6a9d11e1639bd581386bd98841f781daf9fee77cab1905d6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0101_severe.wav",
+      "bytes": 109124,
+      "sha256": "d2c948bfbd486d0f8c0579d6943bb55c577e21aba79522132e9ad7ed659b7c53"
+    },
+    {
+      "path": "data/distorted_cv/cv_0102_severe.wav",
+      "bytes": 214262,
+      "sha256": "69890b450b60cbdd0d0cee2899c085626686ae11a9bffc3e96a3fa3cd86cf70a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0103_severe.wav",
+      "bytes": 113240,
+      "sha256": "c717722bbf80ca0be15552219090ebc6111064ca427d8195a19b3a12cfa5a149"
+    },
+    {
+      "path": "data/distorted_cv/cv_0104_severe.wav",
+      "bytes": 157616,
+      "sha256": "aa27f31ad817f76556170ef395df8dc94efd1ae570ea5e44a72ad52b396f7b2e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0105_severe.wav",
+      "bytes": 87428,
+      "sha256": "dc13930b76be3e0ad864b30a94f9e5d52944895de6aacd2b1fcad7b24af353fc"
+    },
+    {
+      "path": "data/distorted_cv/cv_0106_severe.wav",
+      "bytes": 247736,
+      "sha256": "2e8323830a588e966ef8df0cb292d1870d7b11205cb190298cc7e9d154391d14"
+    },
+    {
+      "path": "data/distorted_cv/cv_0107_severe.wav",
+      "bytes": 98534,
+      "sha256": "e8f96915ab016b4f6e6a9879c7d90a5cf99426d51cbd6852d8d4008843a485f7"
+    },
+    {
+      "path": "data/distorted_cv/cv_0108_severe.wav",
+      "bytes": 216354,
+      "sha256": "614bde389f169a121b400c4067846400dc1054c8430eda523bf9dfde1cf8c7a2"
+    },
+    {
+      "path": "data/distorted_cv/cv_0109_severe.wav",
+      "bytes": 93842,
+      "sha256": "20134ecc7cb5af8bb3e035b22f7f5848ac6cdd1f057e70b1d0f436f7a1b86100"
+    },
+    {
+      "path": "data/distorted_cv/cv_0110_severe.wav",
+      "bytes": 184756,
+      "sha256": "bfc30b537bb997cc584cb4864a1f5edd037c68a407e56dad670f8d622c8ec689"
+    },
+    {
+      "path": "data/distorted_cv/cv_0111_severe.wav",
+      "bytes": 97018,
+      "sha256": "9f070a3715571bfbdcff95023dcca6fd63f7df7dfc8bebfad7730831172e82bd"
+    },
+    {
+      "path": "data/distorted_cv/cv_0112_severe.wav",
+      "bytes": 174754,
+      "sha256": "a5e29c0109733c1cf96a72819de63f4d59d4ea27a01d183df731a9e889b79aa1"
+    },
+    {
+      "path": "data/distorted_cv/cv_0113_severe.wav",
+      "bytes": 328216,
+      "sha256": "50137fae1447c6022c36645449dfeb0da049329e58813a28145be317a91c910c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0114_severe.wav",
+      "bytes": 120148,
+      "sha256": "34ed5bedd571532ce3f7f7a5e687d2217203de16862f1aca97290d42213a12e4"
+    },
+    {
+      "path": "data/distorted_cv/cv_0115_severe.wav",
+      "bytes": 143852,
+      "sha256": "f153d71399bcf97bfdff59639c8b3a2102b4a2aef1b2898064ad7120b86f9e48"
+    },
+    {
+      "path": "data/distorted_cv/cv_0116_severe.wav",
+      "bytes": 89164,
+      "sha256": "70b609452355c8e34fbc3b8f5dcc06e50bb668751767e41ee155960eb048f315"
+    },
+    {
+      "path": "data/distorted_cv/cv_0117_severe.wav",
+      "bytes": 90302,
+      "sha256": "e2c8d153318302ad35228d230cb9f899ea87dd38520ba67aa45b61845d77248c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0118_severe.wav",
+      "bytes": 91940,
+      "sha256": "986d495b335786199bcc07105e14d998c6a8526b516226a4769221431b4807a3"
+    },
+    {
+      "path": "data/distorted_cv/cv_0119_severe.wav",
+      "bytes": 97302,
+      "sha256": "38d158c869e022fba931b028ae67721ea10e4017eb953a35f2ec5669f7444f0b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0120_severe.wav",
+      "bytes": 111832,
+      "sha256": "cf8f5a3b0fde18ff3b159b19e999c575b138c70c2ef8d1e9cbbb6234cebd0931"
+    },
+    {
+      "path": "data/distorted_cv/cv_0121_severe.wav",
+      "bytes": 80982,
+      "sha256": "ef0de6b9834ba03d65edf567e48e27ec5e007a54673461fb260954039728b02f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0122_severe.wav",
+      "bytes": 87380,
+      "sha256": "f97aff4a66aa073bccdbce0b3c4e30b4391715e2660935cd56b43f5d7649376e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0123_severe.wav",
+      "bytes": 146068,
+      "sha256": "5ac7eb5744596c983bf8dd9c097519737c5fb34b0852e40391bbf89c856f2f3f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0124_severe.wav",
+      "bytes": 134562,
+      "sha256": "72881b7c4917ec5eeaf75d527ab0d77c174d31f5301703644ea20053ab985cd0"
+    },
+    {
+      "path": "data/distorted_cv/cv_0125_severe.wav",
+      "bytes": 104264,
+      "sha256": "60d4a0ac494b23de435cf5013719c2d5b16cc119a38fc1adc02139e23d881c06"
+    },
+    {
+      "path": "data/distorted_cv/cv_0126_severe.wav",
+      "bytes": 157274,
+      "sha256": "b0caeeb6fa34c5fff6833b3cd84d8afef13318129e7eb5ec748549bd1cb9b9a8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0127_severe.wav",
+      "bytes": 152468,
+      "sha256": "67bcaa9b35c8c6c2888ab82d2c3ffcfff726914431d3d155dbffee9505c635a0"
+    },
+    {
+      "path": "data/distorted_cv/cv_0128_severe.wav",
+      "bytes": 70516,
+      "sha256": "1179b40ed7d9099267d877c08d30d05dc46180af830e1eb17487b5b83988a20e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0129_severe.wav",
+      "bytes": 166656,
+      "sha256": "033d495cce294d3c4adbc2600da60997df3e43dc94cd8b2b6df00e3e1a4483fd"
+    },
+    {
+      "path": "data/distorted_cv/cv_0130_severe.wav",
+      "bytes": 112350,
+      "sha256": "5cdaf7754e85022f167f5044a8bcf57970c6970eac789d6abe5d4d43c7cabc08"
+    },
+    {
+      "path": "data/distorted_cv/cv_0131_severe.wav",
+      "bytes": 121328,
+      "sha256": "f49ffc72bb0e18c2240649f75462df88176019b7213e8af319d670565c790697"
+    },
+    {
+      "path": "data/distorted_cv/cv_0132_severe.wav",
+      "bytes": 182098,
+      "sha256": "0df443114c38b1736720bea2c6f551db41eae1aeba6519644bdcb20190a6506b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0133_severe.wav",
+      "bytes": 169808,
+      "sha256": "f5ee609a48a515e1e6034dc1349e2e5f27b605c6ba0d99fb76ce59f62fd27334"
+    },
+    {
+      "path": "data/distorted_cv/cv_0134_severe.wav",
+      "bytes": 106724,
+      "sha256": "cf0cac0f43ee5cac102cab9748b2f61cdc26c8db496fb9d8dc79da423fbad682"
+    },
+    {
+      "path": "data/distorted_cv/cv_0135_severe.wav",
+      "bytes": 306508,
+      "sha256": "430f4e34561e073fbb786e825b5c683b16192e260604d3a41f762c48c9f1792c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0136_severe.wav",
+      "bytes": 126492,
+      "sha256": "4e163c26f8ad47043c57b5b53ffb9db3724c4e0e2c8c9494bb91553f79af3afa"
+    },
+    {
+      "path": "data/distorted_cv/cv_0137_severe.wav",
+      "bytes": 201456,
+      "sha256": "fdb88c420a986c6ec5d2d255471829ca06bc9e751a192929c71c985d98218bbf"
+    },
+    {
+      "path": "data/distorted_cv/cv_0138_severe.wav",
+      "bytes": 78914,
+      "sha256": "845dcc4091c1bb918d5e4051374a55b447b82d3a2b299b76410ef4b0f5196ec6"
+    },
+    {
+      "path": "data/distorted_cv/cv_0139_severe.wav",
+      "bytes": 71422,
+      "sha256": "451f00bb5bded637c90d59d882c921f2f63543cd6bcc96ab3b8ae5fff23edb47"
+    },
+    {
+      "path": "data/distorted_cv/cv_0140_severe.wav",
+      "bytes": 85664,
+      "sha256": "bb5b471d2ad0f7164f6c3816fcf41307c871836a7e786788c6c2c992fd5ca92d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0141_severe.wav",
+      "bytes": 121516,
+      "sha256": "b8707219962007347f8f5f7804d3fbf2460a238029da6bb31bf8fa199a87b83f"
+    },
+    {
+      "path": "data/distorted_cv/cv_0142_severe.wav",
+      "bytes": 139658,
+      "sha256": "fa0b7157beb1914c01f03d4cfe7ef33d38bf30e05c5683cb01c4092d75ac611a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0143_severe.wav",
+      "bytes": 213560,
+      "sha256": "9e425ee1548670b90a8fd0d10cd53b969937fbc7aa7e379952fc3735abe58271"
+    },
+    {
+      "path": "data/distorted_cv/cv_0144_severe.wav",
+      "bytes": 164416,
+      "sha256": "484ed8dd9e8a9bb7cce9486b17f7199cc2cd5d48448efe0b9d50e1453b54fc2b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0145_severe.wav",
+      "bytes": 261878,
+      "sha256": "f4a7c70180a775629bd265df5dc174449920e4a44db97b35e7073ee4259cd1fe"
+    },
+    {
+      "path": "data/distorted_cv/cv_0146_severe.wav",
+      "bytes": 201492,
+      "sha256": "9a80851833032c73bbd42796a56098a6b44cb15d1991cbe16f4701d2b7427cf5"
+    },
+    {
+      "path": "data/distorted_cv/cv_0147_severe.wav",
+      "bytes": 163160,
+      "sha256": "0a6ec5aec47696b49f0d4b421efcdbacaa302f95dbda762b6d9825952e86f0eb"
+    },
+    {
+      "path": "data/distorted_cv/cv_0148_severe.wav",
+      "bytes": 180608,
+      "sha256": "e64a75acbdb21de196e436875f7ee7f022af8db975e4df0268a13bbe124d7575"
+    },
+    {
+      "path": "data/distorted_cv/cv_0149_severe.wav",
+      "bytes": 168628,
+      "sha256": "eb72e05d8f6fea5fdced09284beb9fbca70c21153073e2fe9a17eb419431ce0d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0150_severe.wav",
+      "bytes": 139870,
+      "sha256": "a3a29624c6348485acde5aed857de0535a7dca5d17d3a3ea911fd267c6c4da21"
+    },
+    {
+      "path": "data/distorted_cv/cv_0151_severe.wav",
+      "bytes": 194676,
+      "sha256": "fd0be58768c2c5eb16ef05a580f30aa9d188cbf017813885cc76683806d6ce05"
+    },
+    {
+      "path": "data/distorted_cv/cv_0152_severe.wav",
+      "bytes": 134540,
+      "sha256": "cad1210716c0be4522ea84cc6587bdaa2cc91f9b165d9f06d6b030ea1c6feddb"
+    },
+    {
+      "path": "data/distorted_cv/cv_0153_severe.wav",
+      "bytes": 134866,
+      "sha256": "1deb6f31d48bef77d1b4758b705c1abf66855e45cd72c0ac2399374807279ab4"
+    },
+    {
+      "path": "data/distorted_cv/cv_0154_severe.wav",
+      "bytes": 98974,
+      "sha256": "5d8c9e4b37d0f8190b5a3c5a9ab1030db8e1a01f5242de563f090f3564b493ad"
+    },
+    {
+      "path": "data/distorted_cv/cv_0155_severe.wav",
+      "bytes": 126730,
+      "sha256": "cc697a5c0614ffccfc0bd1e02699dd5b14b4bfa71a28e4ee3aef8373a4d0ad81"
+    },
+    {
+      "path": "data/distorted_cv/cv_0156_severe.wav",
+      "bytes": 93806,
+      "sha256": "38084769db77799345476853048987369c3e9956bc94afbcc16f29b65a4578ee"
+    },
+    {
+      "path": "data/distorted_cv/cv_0157_severe.wav",
+      "bytes": 155774,
+      "sha256": "83d8603d831c827e821905af2b239be61205cc6ed62781aa6eeb9cbc4fb7b031"
+    },
+    {
+      "path": "data/distorted_cv/cv_0158_severe.wav",
+      "bytes": 172472,
+      "sha256": "929fcb3c5789bcaa7b1ad1404310a716e7202e9317aed56260d7dce6b30e8fb1"
+    },
+    {
+      "path": "data/distorted_cv/cv_0159_severe.wav",
+      "bytes": 250228,
+      "sha256": "afc3fc91ff3b479af45df7b554a272a6d6cc0c5c319754d79a088f730cba5bdf"
+    },
+    {
+      "path": "data/distorted_cv/cv_0160_severe.wav",
+      "bytes": 146644,
+      "sha256": "7448d07c7e2cdde53436ad9af5d3507d5ca5cbb19b99dc63bf1b25a7825ae311"
+    },
+    {
+      "path": "data/distorted_cv/cv_0161_severe.wav",
+      "bytes": 109710,
+      "sha256": "f320d4595563d95bb512ad0000624bdb9a5c71b9cc6c457b4d18efd7204517c2"
+    },
+    {
+      "path": "data/distorted_cv/cv_0162_severe.wav",
+      "bytes": 167272,
+      "sha256": "de99fa19cccfa9cc2049225bff888d45a86f517c1ba4c7199233e71e383e2e0c"
+    },
+    {
+      "path": "data/distorted_cv/cv_0163_severe.wav",
+      "bytes": 90736,
+      "sha256": "a83e9f71370cae8d61f4f662350f883e480e231d9ed942b9e12b76a658c87c3e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0164_severe.wav",
+      "bytes": 143228,
+      "sha256": "038079cb97d909da34b41d537c6d9cfc8e535a48e990ae15bc06094a4be502d1"
+    },
+    {
+      "path": "data/distorted_cv/cv_0165_severe.wav",
+      "bytes": 127028,
+      "sha256": "6e3b5823228dc288cc1605ae1572362d5df1cd314aae98f835a55fb979a7ee67"
+    },
+    {
+      "path": "data/distorted_cv/cv_0166_severe.wav",
+      "bytes": 206100,
+      "sha256": "34a4f34a0f4a2c26c779aceb331cbc42d940694bf407f638a004af528fb5c8bc"
+    },
+    {
+      "path": "data/distorted_cv/cv_0167_severe.wav",
+      "bytes": 189092,
+      "sha256": "49195970bea3da2152044fd02542bb6cc8226b7956159fc88f87fcc93f573e4b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0168_severe.wav",
+      "bytes": 126882,
+      "sha256": "ee91513eab0a2a753fcebb096dc2cf77bc6dbf75ba3f233a0859a8767ece4427"
+    },
+    {
+      "path": "data/distorted_cv/cv_0169_severe.wav",
+      "bytes": 158954,
+      "sha256": "5c8be41752701bfd5c19b630da861bfeafd7034f64c8309992bfe692e06f73af"
+    },
+    {
+      "path": "data/distorted_cv/cv_0170_severe.wav",
+      "bytes": 136780,
+      "sha256": "a5dbf25c9b03a0cb76d6b227fa26a8d3112b70e80e3a976182a55992b0c8af00"
+    },
+    {
+      "path": "data/distorted_cv/cv_0171_severe.wav",
+      "bytes": 100452,
+      "sha256": "a97f37801c0ea2937fef843fb7b97eee5469a12ba2296ab01384b5c943703a1d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0172_severe.wav",
+      "bytes": 80726,
+      "sha256": "397efadd072c71c3d089c6eaf72cc7bef56613c17d742ee80501a51da15863fa"
+    },
+    {
+      "path": "data/distorted_cv/cv_0173_severe.wav",
+      "bytes": 143526,
+      "sha256": "bab93f66ff2d14d21802e795abd82497cf8db9c7dcc5dcbea8129a0c02928906"
+    },
+    {
+      "path": "data/distorted_cv/cv_0174_severe.wav",
+      "bytes": 124660,
+      "sha256": "a274dedede4717e74649fe13fa32340be93c6408166bda91cb5067e932746334"
+    },
+    {
+      "path": "data/distorted_cv/cv_0175_severe.wav",
+      "bytes": 77428,
+      "sha256": "ad680955726973b90217090fd0265d3b86e48a5e7626bfc8bfb752b8cef3cf0d"
+    },
+    {
+      "path": "data/distorted_cv/cv_0176_severe.wav",
+      "bytes": 141324,
+      "sha256": "7e917842b3e11f9baffe7eb14857ad1a11f3f82977f8ea1631e5927ec4e4b812"
+    },
+    {
+      "path": "data/distorted_cv/cv_0177_severe.wav",
+      "bytes": 143140,
+      "sha256": "f529b58d61175213fa60c6c3cd1a25a3d99d81a28a22c827541df84a16dc0457"
+    },
+    {
+      "path": "data/distorted_cv/cv_0178_severe.wav",
+      "bytes": 119432,
+      "sha256": "b95c6191686837712b2ad5e0a4ef2997a93a206284aac6f82d9e875f38b84d30"
+    },
+    {
+      "path": "data/distorted_cv/cv_0179_severe.wav",
+      "bytes": 106766,
+      "sha256": "1eee7442083b4c3dca07b536fadcfca867cd43c7004b0db9c8d8a58af381d5ca"
+    },
+    {
+      "path": "data/distorted_cv/cv_0180_severe.wav",
+      "bytes": 120960,
+      "sha256": "4331ade80f4e82db4268ecd4f2ef3c8d0c185cfbbe1b49db0d813598092b5f8a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0181_severe.wav",
+      "bytes": 127178,
+      "sha256": "fcabe05e4590c7209c8b88bf56a639693eb52c65f8f6554222f740ba59c3f5a8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0182_severe.wav",
+      "bytes": 70862,
+      "sha256": "c1d9b3d012892ebe037c195f65d73e06c18401caa0d1b47534fedfe0fc88aced"
+    },
+    {
+      "path": "data/distorted_cv/cv_0183_severe.wav",
+      "bytes": 129846,
+      "sha256": "6ecd4d74595cf93b6ae0acbc8e89762f3976b11c67f702f21da55ef0ec6a69bc"
+    },
+    {
+      "path": "data/distorted_cv/cv_0184_severe.wav",
+      "bytes": 65182,
+      "sha256": "6a51a4347105bbd0bbc12d913311dbdf88829303a49a0b4457253d06f93e2945"
+    },
+    {
+      "path": "data/distorted_cv/cv_0185_severe.wav",
+      "bytes": 146822,
+      "sha256": "3eac0673674b840fe2ddb955a1781282f362419ba177266c787c37ba7ed43901"
+    },
+    {
+      "path": "data/distorted_cv/cv_0186_severe.wav",
+      "bytes": 111444,
+      "sha256": "c08e77609a788b554a5f4c495f2c4970ee369dab258fed58b2f5ed254c5b9187"
+    },
+    {
+      "path": "data/distorted_cv/cv_0187_severe.wav",
+      "bytes": 103416,
+      "sha256": "ac7cdd82983b6bbbc6877c90e88e541e1b3c50f044f0c5047149616ce51f9c56"
+    },
+    {
+      "path": "data/distorted_cv/cv_0188_severe.wav",
+      "bytes": 171908,
+      "sha256": "86af975c3a05c9c7c33304c8ea80ee06dc9802d600a4c07fa67e6241641056d1"
+    },
+    {
+      "path": "data/distorted_cv/cv_0189_severe.wav",
+      "bytes": 192730,
+      "sha256": "d3469ff1380fcd446db817a3a3d65addd2891af5c77b24936d0b77663fe806b8"
+    },
+    {
+      "path": "data/distorted_cv/cv_0190_severe.wav",
+      "bytes": 105122,
+      "sha256": "93315e52724fea46cca9c3790398c12633a09e6a97f64655afabba9184877e41"
+    },
+    {
+      "path": "data/distorted_cv/cv_0191_severe.wav",
+      "bytes": 129920,
+      "sha256": "673a3ae859b47d5e732ad1028949aa3f822d209222bf457b72a5979a5c3ecc7b"
+    },
+    {
+      "path": "data/distorted_cv/cv_0192_severe.wav",
+      "bytes": 132816,
+      "sha256": "8f7218e6b38ef60fee4838801694d03a7c026197415aaa5a0570cc37005f022e"
+    },
+    {
+      "path": "data/distorted_cv/cv_0193_severe.wav",
+      "bytes": 185828,
+      "sha256": "8245502a374b29072c0f42361f8ed447da78ce416f4f10bf3264c9652a829360"
+    },
+    {
+      "path": "data/distorted_cv/cv_0194_severe.wav",
+      "bytes": 187698,
+      "sha256": "58a9d4103b075aacf8a669e73e0b36c9b9ed316aa3bb78619c7a341e1ca54189"
+    },
+    {
+      "path": "data/distorted_cv/cv_0195_severe.wav",
+      "bytes": 182868,
+      "sha256": "7ab1406ba2d720b3d988ee90580ad8a971ef91683ac5dadf95348b9f01171a9a"
+    },
+    {
+      "path": "data/distorted_cv/cv_0196_severe.wav",
+      "bytes": 76814,
+      "sha256": "6de5e43638c4c4def50f02d7c9a35f8e5d046cf7555033dfbc4c54b8a7fdbd96"
+    },
+    {
+      "path": "data/distorted_cv/cv_0197_severe.wav",
+      "bytes": 149976,
+      "sha256": "09801a18e9234fb49071ba1620255f7b3bb6ce974595d2187c25d4c3bddaf5a7"
+    },
+    {
+      "path": "data/distorted_cv/cv_0198_severe.wav",
+      "bytes": 166802,
+      "sha256": "9710150834c767a06e08461342869486cff7322834a6837265e93a89cf0ab2a5"
+    },
+    {
+      "path": "data/distorted_cv/cv_0199_severe.wav",
+      "bytes": 181764,
+      "sha256": "199c7f2be04beb50221f13e40a0339bf576ed9da042fc8ba948462832e57b92a"
+    },
+    {
+      "path": "data/hifigan_finetune/index.json",
+      "bytes": 62089,
+      "sha256": "236c6bb4c6b12ec876975001d6876206d4584baf7315d6c4169bee958893d674"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0000.npy",
+      "bytes": 137728,
+      "sha256": "363ea272da35a64fa994f9c4934a88636827541a03f001f22ae0f567f5f30a8f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0001.npy",
+      "bytes": 137728,
+      "sha256": "3c59c7a334413b2c83096cfa0b1cb654ab2ac7cc8dcae7f795a97074b30a54e0"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0002.npy",
+      "bytes": 137728,
+      "sha256": "1750f525d31f6b15c0b95da8854879425fb773fd0e621ebc57c399a7a02360f4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0003.npy",
+      "bytes": 137728,
+      "sha256": "fe1cd107959386130f2ec44d5015e120104c39db5f6a07e7ee410c198251e5a1"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0004.npy",
+      "bytes": 137728,
+      "sha256": "10d9467fcc28ec05d954e294278a60e6168279253232f1f5ee35fcc4f5bf09e4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0005.npy",
+      "bytes": 137728,
+      "sha256": "33150ba928beeb624d7fbae5e6263e7b09d4f59e3ac87b586e6e63b7883cc1fd"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0006.npy",
+      "bytes": 137728,
+      "sha256": "0b3029a367d8cbcbee8e1ac2d708426ebf118bf7b7c33dd42c27256fc7f93d35"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0007.npy",
+      "bytes": 137728,
+      "sha256": "5ae8aa0fd8562ce5bef16bb47758be31ab9806ac034c4a09652667f497033776"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0008.npy",
+      "bytes": 137728,
+      "sha256": "3be9ae5a2dd9be9369624ddf558c3b755ab0dcf96d4d7cd2907b674425de89e2"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0009.npy",
+      "bytes": 137728,
+      "sha256": "6a12ce6d4f0348ecb89b1623d2795e3e085ef6a1542a6222553bd66136b0d03f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0010.npy",
+      "bytes": 130368,
+      "sha256": "bd789e1bfeb170196a331abf008ce1141d8d4b06f14ca030374af4e30acec83b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0011.npy",
+      "bytes": 92608,
+      "sha256": "ced9a1f039b0d041112b0c414270d772ad33f474a7e16901fa34a420111b86fc"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0012.npy",
+      "bytes": 62848,
+      "sha256": "cd5ede422e9b762b42de1b6308cb5fbce0532caaac36f03aaf85835289ad8531"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0013.npy",
+      "bytes": 75328,
+      "sha256": "221388d9224fbfa08bdc20ad6b31ba4b4f49ace1b3c7258bab1f416472f5f566"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0014.npy",
+      "bytes": 80128,
+      "sha256": "cc1413e679ddf0f40aecb3acc834ab6c14f61156bee475ba1b885bab4894c840"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0015.npy",
+      "bytes": 93248,
+      "sha256": "cba1e3c881bd458fa7231b2d4fbebb7a5a71803c1f47671220280110e22ffd27"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0016.npy",
+      "bytes": 124288,
+      "sha256": "cf8b8b2c53f38d64b8afaf5f66dc30361beca1d1e54d9e6bfcefc7930664722c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0017.npy",
+      "bytes": 77888,
+      "sha256": "deb67df2bdc0f6d4ce300910b46fb3d1670138563b0fdae7d88d88172804799d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0018.npy",
+      "bytes": 99968,
+      "sha256": "122203108d5aee4ac333a65603e7baa435256c30db3f9d5fe6858ada8490971a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0019.npy",
+      "bytes": 93888,
+      "sha256": "cacdc8101cc6e660d2772a7c143ee8236e93770be44bb73f1e82b15224d47afb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0020.npy",
+      "bytes": 63488,
+      "sha256": "72febc1c88968c7cb0a8badb1401535ee1ea265825e4bf01559095edd988994b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0021.npy",
+      "bytes": 85248,
+      "sha256": "49dd116572eaa72d0f2b252a2189ce04f3fb369b227d693443727f9c91f65eec"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0022.npy",
+      "bytes": 101888,
+      "sha256": "2b86395ca4acf046240089631c9615ee99f696f071d8f9fb091f530cd16d1014"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0023.npy",
+      "bytes": 99968,
+      "sha256": "90b4d9474475d5ee529170a122b01daf1093e4fa0d5e62c2e5bf21e1e5d817b5"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0024.npy",
+      "bytes": 139648,
+      "sha256": "8474e34cebc961d8957273f7bc712c2a4e4e0c0f519dfb47b87e958ece5442c0"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0025.npy",
+      "bytes": 113088,
+      "sha256": "3592746d02c504b0da0b98b107e44a2dc826ee28f4af5390e8f1b72192fb1f94"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0026.npy",
+      "bytes": 90048,
+      "sha256": "ea188454c3650429c9c662d89601df1f0bbd19e07c8af72435e338b742e36923"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0027.npy",
+      "bytes": 103168,
+      "sha256": "9046990f9b1c92870265ea2ac0fa31b985ffef068373616ec5b91b291c871e0e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0028.npy",
+      "bytes": 161408,
+      "sha256": "3c9611016c0d4cbe7dc93a286600e7e02d2a367702e4f05ce66ff5b309cfb5ab"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0029.npy",
+      "bytes": 111808,
+      "sha256": "c0467b81254d40b39b98df3590ac51f6c79d969cd57f2731345bad51e77bf2ef"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0030.npy",
+      "bytes": 146048,
+      "sha256": "1772d0cb56a6485e2e444f1aaf7fa72bdd58d2777a1442d15e8a6ef0a97e7b7a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0031.npy",
+      "bytes": 85248,
+      "sha256": "b46534185479f91e1f752c0fe09a610011f0113115e2582ddb6ca22d81b515c4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0032.npy",
+      "bytes": 148288,
+      "sha256": "fc2bddeb7dc151fc36638b6a11f811472e827af79fa630da9667bec47618c3fa"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0033.npy",
+      "bytes": 119808,
+      "sha256": "cd430a08e9a86791d48efcb1422b6b8f290d1834e6863a8a4d2916fbc461bac1"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0034.npy",
+      "bytes": 240768,
+      "sha256": "e7596cf52d56f20f44ba28033f1e5099e4b3ff6596aa99006d9d7095e03c4ad3"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0035.npy",
+      "bytes": 75328,
+      "sha256": "9b74d4c3a2135dbb6282707db2aec7a57726969ce0c4b12244b6f6745b544b99"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0036.npy",
+      "bytes": 112448,
+      "sha256": "6df7df35372dde93dc6dd28dc54f9c0cdfa6b0555a20f3c98e8acc36677044df"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0037.npy",
+      "bytes": 116288,
+      "sha256": "631b3d0bee968bd42f1d13d86a7e7ef53d59e2e837607e70cf164e0557b98a23"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0038.npy",
+      "bytes": 104448,
+      "sha256": "4a4476a677819dad0141eef028b98b1d0a1e6736a5dffc631b516b02ffcea953"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0039.npy",
+      "bytes": 68608,
+      "sha256": "cf3f1a9a9ab4983b3086665649764af906bd39df33a0be2561f74ff3483e3c14"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0040.npy",
+      "bytes": 162688,
+      "sha256": "fbb4028ba19b7a116fa511370110159d83f6517caedefd92c29ba16044c7cd4f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0041.npy",
+      "bytes": 124928,
+      "sha256": "5aed20a481d787ec6bb9bb0b23d7d4973d41ab9d59fd4353b172ad3dd860e85d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0042.npy",
+      "bytes": 155968,
+      "sha256": "14bf083c975f1dd957faff531aa3de7df0b6f3f75bb2f0cba2131eb9e0f8373d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0043.npy",
+      "bytes": 146048,
+      "sha256": "6662bcb496922df5f0aec3c91607905b916407687050ff688df12e49c87081cd"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0044.npy",
+      "bytes": 184448,
+      "sha256": "e7f3ba55cc982f299fda27dd8f7bb462ee27e92ed7332b9927dcaa17a105b41a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0045.npy",
+      "bytes": 101888,
+      "sha256": "c893aee98c73d56f227c0c07afacef5efca9e406db937c9792b749e8cf4ece11"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0046.npy",
+      "bytes": 164608,
+      "sha256": "ac6b8fadb66d4cb8a2965b3f089eae2f2cbfe8a282725822988c8055d5131674"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0047.npy",
+      "bytes": 126208,
+      "sha256": "4d096b7bc55858f51aeb8865fc8d9b578e316921854c0072d8f8c0f9725c1444"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0048.npy",
+      "bytes": 115008,
+      "sha256": "c2854d1b11421f28ee234477ca8247f762e867cf98e39faf1a2b5f0967f4e53b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0049.npy",
+      "bytes": 155968,
+      "sha256": "8a52d03f2ef18a3ae8fc1207684b871e194342c388c6a7fb7da3a1cbb35dcc67"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0050.npy",
+      "bytes": 93248,
+      "sha256": "04289f4f9cca6e21b62e6e5c947db44999ca79e6be2b6d038ec3fe5bda6e796b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0051.npy",
+      "bytes": 78528,
+      "sha256": "4ce437a5dcddcaa70c45102c02ba3cce682347e45ca5869f488525b2d86c8a1a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0052.npy",
+      "bytes": 116288,
+      "sha256": "abe0278297664afe0eaad45557816ba93882a36320fff9b3ce48c8752971022f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0053.npy",
+      "bytes": 131648,
+      "sha256": "6a24e78aeab84ebaca472d7210e8f11e29097812c8e12999b77d79c28bdf839f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0054.npy",
+      "bytes": 67968,
+      "sha256": "f8978778d4a265483033e3f3c1200ddc6cae8ccde9381e119f7fa139a57cbdda"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0055.npy",
+      "bytes": 110528,
+      "sha256": "63b77745ca5682e01453df6b977d0a354641f5cafa3a248c47fedd3699c751bd"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0056.npy",
+      "bytes": 125568,
+      "sha256": "064323d5ca5e07fab74b7c1093a7504800355d5bc8a94be3872a0b4ddc95905e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0057.npy",
+      "bytes": 63488,
+      "sha256": "c08653ff8ab55bbb8966d9ead991f92f59f8c915bdc1f109ed2b1dde1d991174"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0058.npy",
+      "bytes": 70208,
+      "sha256": "298bdf8d1e8e74a235c70699e0e865c7895fedda10564149b41c772814abb40c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0059.npy",
+      "bytes": 134848,
+      "sha256": "52b97052a7a90a437c60aeef9f54aa1b3190f6c56b097cb7ee5b0ddc40cbd8ae"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0060.npy",
+      "bytes": 78528,
+      "sha256": "437a5485344d93fdb5c17ef4ced955f7a2684c2891dc27611031e8027441b2d0"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0061.npy",
+      "bytes": 111808,
+      "sha256": "e747cc99cf47be10a62b0957e5e890358703aff8d1209695f18709097abc8816"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0062.npy",
+      "bytes": 103168,
+      "sha256": "d2e862ce9eacb762b7fa4b5803a01fb81fa030e7d313a23cc39ed1a19525c0f5"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0063.npy",
+      "bytes": 76608,
+      "sha256": "4e6cb223fe66bda4dd3e277b4bd9a6ec87a5f1633d283b2bdac04a369decef82"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0064.npy",
+      "bytes": 99968,
+      "sha256": "f2570406311f8adc595193c3c0c772ee85c1eefefd13c0651f70609d5d0e3abd"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0065.npy",
+      "bytes": 139648,
+      "sha256": "955eb8017ab78c03e317d68f5d92ce20c9fbb9c060025a57c07528ed79a31e86"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0066.npy",
+      "bytes": 204288,
+      "sha256": "9dd4451b6c9774cc638898e26d3afecd16d99341a9f91fdebe44b6231d687587"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0067.npy",
+      "bytes": 122368,
+      "sha256": "f94f8ab3efc5a5f9f2fa486af61f664b4c5775f4217709ab854b84a70fb0139f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0068.npy",
+      "bytes": 157248,
+      "sha256": "951b32752def2e295ab840797a5082a5600073192899bd85b8facd0f2ff56e8b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0069.npy",
+      "bytes": 150208,
+      "sha256": "93f5a0000209cf2445fbd21f9f8032b8c2e252ed3788914681ba7bfc08d160e9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0070.npy",
+      "bytes": 139648,
+      "sha256": "44a4befc810fc16dd3731ad338402e4a116c80bbe4e2604138338f5013faa4a0"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0071.npy",
+      "bytes": 121088,
+      "sha256": "f7db9d90f4ded827aa39cb6bfdd83b3f1444c7aba88cfd4f38d7e142a91c12db"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0072.npy",
+      "bytes": 197248,
+      "sha256": "d6b2b8d19a87fe1fd68be4126efc61f1de5e36d93bf56d269fa530b425c38b05"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0073.npy",
+      "bytes": 92608,
+      "sha256": "4aa1a57eb1f6a14f58d0fb49fe445131004f812177d9b7fdec982af64b62a9b4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0074.npy",
+      "bytes": 122368,
+      "sha256": "66b43658ac15c4433b31334d6fb3f42b9437db7e1b51f120e01191fc792f2199"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0075.npy",
+      "bytes": 101888,
+      "sha256": "ead8d64baf7c4a5a5a03c7e6763e59dc8388fbb858c8c63a8182b2c079d9dd6a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0076.npy",
+      "bytes": 125568,
+      "sha256": "97d976dd6d31290d03326d48500df2b3a0d26213d7a3fda472d1f0d5fcc31c84"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0077.npy",
+      "bytes": 139008,
+      "sha256": "a90e8e620e56c31fec360c0e0487e7be4b604c5319d5876601970f6fb7917419"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0078.npy",
+      "bytes": 207808,
+      "sha256": "9a7f3adda4bf0750956b89b44cf931610083f97a054aa8971e7843734223dcb8"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0079.npy",
+      "bytes": 207168,
+      "sha256": "9b837b393d5c4c5e2feff51066c0f8635ac14ccc3adbb77991bdbea4467e56bb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0080.npy",
+      "bytes": 139648,
+      "sha256": "de2e75024c26cc9d0a3aff6700d20fea4d9f97629adabc997ca85f97c6917066"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0081.npy",
+      "bytes": 59648,
+      "sha256": "a4c2f4ec160f01a2be8cefa60b4db7c12b2896617682425383ed606a67d3792b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0082.npy",
+      "bytes": 95808,
+      "sha256": "e6207e1e6267faa9b5e84b4e834a08373c27b48cdc6912a7a93cae6c6758e8b3"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0083.npy",
+      "bytes": 133568,
+      "sha256": "0ca7905c2fe6f02dbc38612da3f3775b753621c5f3258925c416c845bd3ae3a7"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0084.npy",
+      "bytes": 132928,
+      "sha256": "339e2b1aa8ca6ec0acc7c437a15257fb081190e2ce50e9d39ec631c0c3c77382"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0085.npy",
+      "bytes": 142848,
+      "sha256": "a88dc3ade5ee3439f31fb8d73e95f75e5806ac87f3deaa5dbd74f8a0251b6608"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0086.npy",
+      "bytes": 88768,
+      "sha256": "3b7ae691fcda65682acabf96d2d32f941c1ec68ae00597745fe8556c5597feda"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0087.npy",
+      "bytes": 111808,
+      "sha256": "2733e46e515722ff303c7c9cfbd1ab8d636df90af75467fa1fb7f0817d49b497"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0088.npy",
+      "bytes": 104448,
+      "sha256": "d6c193b3e6c03bbf9e0fdc8b8b4c049589415b5dacda87edd660fb2f9c3a65d5"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0089.npy",
+      "bytes": 109248,
+      "sha256": "62e713ff1644f6c78b44dcc79d7b8a25b9b2ff3456fc9b878ff25e8b44827323"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0090.npy",
+      "bytes": 144768,
+      "sha256": "b27e60badeb764db549ebb7d22c05a374923df50d105930bb9cee11793e42b58"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0091.npy",
+      "bytes": 111808,
+      "sha256": "c5d780a71ff1166c36e7c3eae7127da1f2052ae8ec3f855fd0b8a0430f8d4574"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0092.npy",
+      "bytes": 124928,
+      "sha256": "1d9f9535f51e4024054a849c596cbd339c0e2bfc605e3a199a5162043c9994c3"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0093.npy",
+      "bytes": 113728,
+      "sha256": "ea6456f07fc4aaeabe1ad36de1f32f51fc9afa7fe28f4ebb12824cdcfd962fcd"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0094.npy",
+      "bytes": 142848,
+      "sha256": "46d579e0a427bbeb105e232cb4fc9b1427a26b3f054c86f85195650868555a6f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0095.npy",
+      "bytes": 172608,
+      "sha256": "320a81c1e5a8257690220f1e96d1b27cb82adcc05557ffb4a814d26787332687"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0096.npy",
+      "bytes": 164608,
+      "sha256": "f5158b7ff0d66453707e347e766feb9d73e4f222adae64fcec70501a98d46c37"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0097.npy",
+      "bytes": 195008,
+      "sha256": "fbbd8de8d7bf55ee33acfc27f9d86415feab21c6f3427ee43e4dea04048b3f02"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0098.npy",
+      "bytes": 98688,
+      "sha256": "01944e904a0630d6e32bf86d24ed644d5bb468ed7c0e6e6a3912fb23fd0107ab"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0099.npy",
+      "bytes": 179328,
+      "sha256": "c7a9a3d69803e90502b161806c1a812f540fbab42bb6ff1ae9468fb2967dc91f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0100.npy",
+      "bytes": 106368,
+      "sha256": "aeadb61b6deb853e376c059b8fba14f1e8824a68f1be672f7a27e7f8739308b4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0101.npy",
+      "bytes": 82048,
+      "sha256": "540a95a515b671ea4e4de87cc59c72fefdb5a6a30336923811fac1445a034140"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0102.npy",
+      "bytes": 110528,
+      "sha256": "103db7d033f324e9870224ee43b06802a1de74d37e20da867a0a51e8983c271b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0103.npy",
+      "bytes": 148928,
+      "sha256": "2c8e0e32e5543ddb7d9fb9b8e8ff1688bf28f45ae7dafb111690f03dab882b4d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0104.npy",
+      "bytes": 177408,
+      "sha256": "f1f56aa2570767d623d9b2704eda730afdcb2142ca1de2c01d0a0a3e2087d383"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0105.npy",
+      "bytes": 103168,
+      "sha256": "46aa2ff0c4d4d400cfc5427305203698004c1ffa05ebb9ceb3b4f568be0a9666"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0106.npy",
+      "bytes": 99968,
+      "sha256": "c2a63ff1afc06cfc4fd48f42a788819ca3616873111866448a8e01b177a800c9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0107.npy",
+      "bytes": 233408,
+      "sha256": "b58f4d69c3eb63f324b84db741b660989e0b50669c6a0c7d74d35f87a4a0e73d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0108.npy",
+      "bytes": 127488,
+      "sha256": "b47c6c9ea2d71c93b96b3f163df17948001597a1614dd7f447440044f09cd036"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0109.npy",
+      "bytes": 201408,
+      "sha256": "fa3f57627eb7ba3e2e1ae17f5fbc5447ab311120c55ed0e0eec2fd79fc4c0367"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0110.npy",
+      "bytes": 125888,
+      "sha256": "339951d0a8c77e0bd87bb68535530dbd7c827eaddb71085fe1974797e8633c9b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0111.npy",
+      "bytes": 87168,
+      "sha256": "6c15d178770f31e29bd215bf30534b6090e70942cf3fade59565092419ac77fc"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0112.npy",
+      "bytes": 163648,
+      "sha256": "6bd607837ff433a64816a245e281e143cc571c6492529dfe393f906d657512b8"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0113.npy",
+      "bytes": 87168,
+      "sha256": "d346bd4f8f0634072ee589dc0ae70e29d3e20c354e209096f4b9deb54b137413"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0114.npy",
+      "bytes": 123968,
+      "sha256": "0e35c9ae1a87776c2696107d4aaff6332d6e5f0b49ea39950fbdf6ba7abf9f41"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0115.npy",
+      "bytes": 62528,
+      "sha256": "cef3a7eaf08641074aab73096ea38a811678be6c2ce3db290722b98035311837"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0116.npy",
+      "bytes": 223168,
+      "sha256": "7b868c6f66b181c556f8ef5bac8f1ec7bb7366f5e3c18171ef2b350775dde7e4"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0117.npy",
+      "bytes": 85248,
+      "sha256": "e21ccd6c56f7a2821bb74e74a286a94f6e674658cbb1525e60278d09cd7b3627"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0118.npy",
+      "bytes": 189568,
+      "sha256": "792dfc9940c43cba8229d2b3a8d092ae4fa3779e430dd97088416359fa82ef34"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0119.npy",
+      "bytes": 84288,
+      "sha256": "b1e1c70a9257215ed9e7f3e5833ee8a7de885ef17492f6debad2a6270dc5e19e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0120.npy",
+      "bytes": 148928,
+      "sha256": "ed310c3946e39eb4476ee01a17f0a02f27124853b468181ff1a10ab5c2460a0f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0121.npy",
+      "bytes": 80448,
+      "sha256": "f682d19bb2ed994e15bef0f13533196779e2733ff623e93e239cad50131fa746"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0122.npy",
+      "bytes": 144768,
+      "sha256": "3ab375e02a96cd2194241ae40fe90e2a77a7097bee2cfb81e4892a25c2132493"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0123.npy",
+      "bytes": 270848,
+      "sha256": "e23309cdf3d75fea1899a3dcf7c546466866059f390a764391966155c7e377fe"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0124.npy",
+      "bytes": 97088,
+      "sha256": "5d85ee04a270751ab1a8ab27906b25cebbf345d279db1bf562ede67e22868b17"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0125.npy",
+      "bytes": 130048,
+      "sha256": "4f07df9b4c522dec435c9517034a711595f49c563a56885273b3ec45957acc57"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0126.npy",
+      "bytes": 72448,
+      "sha256": "db38cd25b6814755038662bfce4e321362f9400a55d7f80ad57a9b045eec9753"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0127.npy",
+      "bytes": 74368,
+      "sha256": "f6e7f8f5807917053ab1817198fc9dad583472d92b474d542d4c4e59fd6b44ce"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0128.npy",
+      "bytes": 72448,
+      "sha256": "61ae8a613ae18a77cef660db23889fb0452b01bb1be02b212861a41713eb0fef"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0129.npy",
+      "bytes": 74368,
+      "sha256": "f8f073ed984dd53ca7459e02ac8b5ce97974374796a6e870ab278e80802e395f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0130.npy",
+      "bytes": 82368,
+      "sha256": "85c90d862e1708c5a6e51f6666849269f0879ae8d63542e9db9ad1c38e88dd89"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0131.npy",
+      "bytes": 64448,
+      "sha256": "5de0b07bb235f4951a5764a85f032e0896bbce45c73c569e4f00a194b979379d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0132.npy",
+      "bytes": 72448,
+      "sha256": "f030b847ba1e2885f3dd464cbdb7e28312d75d968dbff8b631734dffdb76bf92"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0133.npy",
+      "bytes": 115008,
+      "sha256": "8cb89767662e8529e7a3b959bf336f589035b036d82603c736a9e01dc335a3d2"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0134.npy",
+      "bytes": 112128,
+      "sha256": "a9e5f38b5e25590c741c59b4bcc5af797f263d406b5cb865fae4b565b0ce6ccb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0135.npy",
+      "bytes": 85248,
+      "sha256": "16b297e87e6c7c575176f7df532a908fe9927b57362566d06d9c915888371a6f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0136.npy",
+      "bytes": 104128,
+      "sha256": "a2988b9ec90a356cca44c602faaaa499a01a2ca52aad02633bd40f687437583d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0137.npy",
+      "bytes": 120128,
+      "sha256": "4a26dd3784671b18c0f85bafa5782a03da8270c99508d234d6a3299e599e28c2"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0138.npy",
+      "bytes": 67328,
+      "sha256": "0b4a3ef33b68da382ede670d6a1aea79f5d7171223618fa48d2f1c25d92e6cae"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0139.npy",
+      "bytes": 136768,
+      "sha256": "f54ab7326e9e57bc48df76ba3a85ccb81121c17b9dd9165caa8c4a37e2c446a7"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0140.npy",
+      "bytes": 89408,
+      "sha256": "f1aa181ff147e8eb82db8b133e2558254fb6badf460b9d0e66c35252faadf021"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0141.npy",
+      "bytes": 95168,
+      "sha256": "a0c2f441f02fa15c6d0347443b740110ae37397fcd70eb76604b759f4a0cae61"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0142.npy",
+      "bytes": 133888,
+      "sha256": "1a00f5dba41646ec6c966efb42c052b951e305752a6b379d13cc820ebbbc7421"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0143.npy",
+      "bytes": 136768,
+      "sha256": "b79ce930ef87c0ca95a16183bad46854aff72efc724b2c788bcc15891bf218df"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0144.npy",
+      "bytes": 75328,
+      "sha256": "9ea88abafbf1af5d13cf3d14915a0516bb57f79508f43981ac71759f579fea4a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0145.npy",
+      "bytes": 288768,
+      "sha256": "18c7ede8006ffaf25bac381bd7f419df81f75ca29ebc502d8c8ccbfb69531e23"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0146.npy",
+      "bytes": 114048,
+      "sha256": "e5b1ade3dbc5bd3e0d478479f6d445248b9690c741c6e32f2539771207cf396f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0147.npy",
+      "bytes": 168768,
+      "sha256": "da4448836449dc867312a1cd3e719b8079953f8f20334c760495283a1bdb4aaa"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0148.npy",
+      "bytes": 75328,
+      "sha256": "ee36d11282bb2acdf96af0f327fbb3c6d7c5bd812016ce8f9b63514499189768"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0149.npy",
+      "bytes": 59648,
+      "sha256": "b4e68ccc7c5b00f6bd1b721f636891b57a05fcc6ad484642562720c2082f2d12"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0150.npy",
+      "bytes": 85248,
+      "sha256": "052b6d4f1526b627d38fb7f744ff7ecbadf6129a531cecfe9b1c94ef417cc08e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0151.npy",
+      "bytes": 97088,
+      "sha256": "bea913788adaa30d17252446c89d6c3406db464976a775461d95dc00217d6c17"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0152.npy",
+      "bytes": 122048,
+      "sha256": "fd7c77df97a04971559e26f912b54453840fcf7fc7ecb481ab8fc248771915a9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0153.npy",
+      "bytes": 164608,
+      "sha256": "d4483674b0e6dee9c4aeff66ba95b61d0cc0a5a3718de2d946d15a19321a4f84"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0154.npy",
+      "bytes": 149888,
+      "sha256": "9e1287df165858faaafcd0f13f2cee50b16f1a6e04648020fa4c5e0d00034c3f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0155.npy",
+      "bytes": 201408,
+      "sha256": "f0e4ea240dd484178c31e215d4afbdecbc33d28ef0ffa598e1d699578bef2c4a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0156.npy",
+      "bytes": 166528,
+      "sha256": "300684c226c58007369f3e710bb7d7343c7e29d20558c8fb42c86cf1bab3f169"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0157.npy",
+      "bytes": 139008,
+      "sha256": "132c4c63b20791e23b7424f70e356c8a41fc3ee650c60fa5ba56b34bbca388cf"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0158.npy",
+      "bytes": 139008,
+      "sha256": "99224b6d5d67b5b1c1d34992c0529508138aa8403071c4d3091b91b7b47a15f6"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0159.npy",
+      "bytes": 151808,
+      "sha256": "ee56f1a48dbeb27ad0d5bace872d6e68ef100d8310486abea0f1801fce283cff"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0160.npy",
+      "bytes": 116928,
+      "sha256": "d101a39a2a1e4e1fdb1dbbd1926fcdca9207deda9c0b9a22967824e2e7b84ba9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0161.npy",
+      "bytes": 158848,
+      "sha256": "9caa75f78140b8e734de6c4e4b000d2885b439424c60ab01a91b3c56c389b64f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0162.npy",
+      "bytes": 116928,
+      "sha256": "0cc4436fe2e5642fbf87223c7e2f71595f31d18a44eb3214a88133290ff3852b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0163.npy",
+      "bytes": 109248,
+      "sha256": "f38d0eb2d3026c11f43343e1a5f8415379c3174eb26b3a082b6b82a44d127a13"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0164.npy",
+      "bytes": 72448,
+      "sha256": "0997e8e7beda6b00158bc81f2ee97dfd03d777f3fdb1b2e85a1e5f28f4b53412"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0165.npy",
+      "bytes": 89408,
+      "sha256": "2cacede82a8fb6a867c4927b4f2d029ffe4a74a4940f776708d6842f0e000e74"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0166.npy",
+      "bytes": 75328,
+      "sha256": "a47919038d5671e16a097d8375b94ab884800269e8339c8fc870c153801fda12"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0167.npy",
+      "bytes": 130048,
+      "sha256": "93bd7e16d6eac56d63cf48a1b0f49f29e90119860ba8fa01e696dc0eefa62251"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0168.npy",
+      "bytes": 139008,
+      "sha256": "a71db6dda34847e061227c5897e69f0413fffae5b46017141c6ac942f9c1169c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0169.npy",
+      "bytes": 214208,
+      "sha256": "533e0f090630901d8382a7876a970787e2790211e14b923749070e3a83263b6a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0170.npy",
+      "bytes": 117888,
+      "sha256": "fa3d8f0001d762e350163bd06544b47bedb95dbf392deb8057690b3bed42a72a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0171.npy",
+      "bytes": 87168,
+      "sha256": "342f5d1635ac534cc39ece0ecf4ab17e609114a4e5f66d7ec89135ca009fa04e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0172.npy",
+      "bytes": 134848,
+      "sha256": "95da4989548bf22268d99a89c1ef4fd6d8f1ec8263d34445bf7f1de5f244b68a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0173.npy",
+      "bytes": 65408,
+      "sha256": "44739fcad6d9c151cc5fee9fe399df03e6c207cf421d4f5a8d76b5723ce03216"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0174.npy",
+      "bytes": 123968,
+      "sha256": "f487289af59735be47a48b0a99b73b6dc140a3c5b9f54e914ccf2f1d5f3cd1fb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0175.npy",
+      "bytes": 92288,
+      "sha256": "3530349df89d03f167fdc4e28bb80d52081028715159802b1b0169ae36a49531"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0176.npy",
+      "bytes": 163648,
+      "sha256": "db6d1ad6ea7c0ab17de01ff734a4e3d93c6180f6c613d246545eec1d7cc44205"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0177.npy",
+      "bytes": 143808,
+      "sha256": "5b9ab7bea4f903bd50e075a884f4e70de615dcf26a5e00c0f4ebe242897b68fb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0178.npy",
+      "bytes": 107008,
+      "sha256": "209789d7e14e2f5af5165f9a9ea2b4dfb4cf62c12220e63aa39d4c2abe1a5da9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0179.npy",
+      "bytes": 120128,
+      "sha256": "b93c3e3fb6d11eabbc7aad64fc92b0ba1a5215d279ce8f77427caa04a7d92df3"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0180.npy",
+      "bytes": 109248,
+      "sha256": "7da97b3bbaa37a8b9005c68c4ff2f5d3ebd22688e5a6966dc156e7302756f505"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0181.npy",
+      "bytes": 79488,
+      "sha256": "ca06b0589ec40943f5a164c0173c8c151269ec66a1199754d6f621259ebfbfed"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0182.npy",
+      "bytes": 64448,
+      "sha256": "4a4cb90c9e62a8b955d7483fbeb3e76f82e7938e62b74c77ff888fe58a737f95"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0183.npy",
+      "bytes": 124928,
+      "sha256": "a8ef62ee2460847028af9b56795a33851eb5c0588d7e075df479da933a8c61e3"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0184.npy",
+      "bytes": 99328,
+      "sha256": "2c47278e469d7c8ce629a8f159e807197ff515387b0d65a25245f603d510dfd6"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0185.npy",
+      "bytes": 69568,
+      "sha256": "cc02a6ba5d87c2abd2d636922972ab9c077b412a5ff93233a2fae39116ac633c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0186.npy",
+      "bytes": 104128,
+      "sha256": "6bc222986a8100c1b8eb4975ad42f3ccd8a4422067eda7732fd11fc6a897b54c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0187.npy",
+      "bytes": 104128,
+      "sha256": "ce53887939a5c5e11683b5b31250086a319c4dc55cdc74581183301c4f376b9b"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0188.npy",
+      "bytes": 95168,
+      "sha256": "26405f15787e9c44ef0b8a0ce4b26c8b4c22b84691a227673e0a8242cdfa26f2"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0189.npy",
+      "bytes": 95168,
+      "sha256": "6e0f310d11f969c89eca04134f967b40218fcd4ca0ebad54ad59cb86dea7e66d"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0190.npy",
+      "bytes": 100288,
+      "sha256": "0fc4d6789d37bfeb75e0d1a52a20605e5a502d42fa14ed6cd8d5f231ce21249e"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0191.npy",
+      "bytes": 109248,
+      "sha256": "a174ff668c34b1eefb3ebb833baaea8eab806124f5421dd28077aeb8d1340f09"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0192.npy",
+      "bytes": 64448,
+      "sha256": "ed881f4bacbe2225c1a7e3d6ee7281630a56048fc197cca54acf2af78ebf0736"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0193.npy",
+      "bytes": 94208,
+      "sha256": "cc46b63436b9b24a53b47f9508e188dc0c035acb4b2cf24ec5b4e708ebf6f2cf"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0194.npy",
+      "bytes": 62528,
+      "sha256": "b7e19b8e4a2a3a28fff37f62e88b143c2fa1b02a4a9e408d6ed5069e5fe60303"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0195.npy",
+      "bytes": 120128,
+      "sha256": "2ca64690d93970467d17301bdc16b1a36325234a7949eecdd1f3b97b94f54c3a"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0196.npy",
+      "bytes": 87168,
+      "sha256": "14ff02eceb53c602e32ec56069ee3f4c146fff83c29346f13b8c1aa7f5116e5c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0197.npy",
+      "bytes": 79488,
+      "sha256": "999819341c3a59e1fc6a7c3f336c8f0eebd2cdca3c59712dce31c5a6b5b30426"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0198.npy",
+      "bytes": 159808,
+      "sha256": "2887e2eae4d41a27fabc2bc490fbf0356d2de1a2d2353ef3be24537d54c6a132"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0199.npy",
+      "bytes": 136768,
+      "sha256": "0b677af0f3a8c9f56ac24e0b5f5a3f3fc27c5ec641b4064a066af51501b6200f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0200.npy",
+      "bytes": 95168,
+      "sha256": "b8ff2581751f026f385d6375d3e668e821342c56ce083d16e2f981cada850600"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0201.npy",
+      "bytes": 110208,
+      "sha256": "b9278d6eea523c20c9fd2129e0f840d5eccfcd8ed0cc832a8b463a08ec9dad2f"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0202.npy",
+      "bytes": 107008,
+      "sha256": "91afa07c5b315dba021b230d1304853d1bd44e7727d8bd578d9e83cf0025ff64"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0203.npy",
+      "bytes": 122048,
+      "sha256": "abb231f6a6f4bd4f42daa7778db253ee9893c993eda97c0f8383a8f4ea6932da"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0204.npy",
+      "bytes": 153728,
+      "sha256": "1cb26f6a7c22f3be356a6aa6758b100e325d4741f1ac70a637bb7c760448f7fb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0205.npy",
+      "bytes": 159808,
+      "sha256": "7707381a92e0f96d710130099b256b5aa680b0a7092274dee29a488f09ee24e9"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0206.npy",
+      "bytes": 70528,
+      "sha256": "461b92c6769c53c753da6d4d13bcffd74c4130cdf39247f8e8f992e42d5b7fcb"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0207.npy",
+      "bytes": 132928,
+      "sha256": "767f942ebd90aa8f99fed865c11043eda20ccf7ff6eeabee88ef3c3bb2fb2d21"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0208.npy",
+      "bytes": 133888,
+      "sha256": "be26cca29ff1f3f6c23c5d264d4bcd0f43fb1271e75342e403547c8b2ba1827c"
+    },
+    {
+      "path": "data/hifigan_finetune/mels/0209.npy",
+      "bytes": 149888,
+      "sha256": "069e1670d19eddae611c32fb3acc38ee338d929a750484cee8de35fbcc832a3f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0000.npy",
+      "bytes": 441128,
+      "sha256": "82c3d5f3da8c269c673de9b9febf3139b6cec723a1212131058688025c7ebcde"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0001.npy",
+      "bytes": 441128,
+      "sha256": "e148f41515c7580a7bf128151f8501caef02e1fb8d524bdeafc57a7ed2a4cb7c"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0002.npy",
+      "bytes": 441128,
+      "sha256": "32622cfdff0b99136346c1b05f03e8363d4973cc7996f7071cc7e621f3f2d8fe"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0003.npy",
+      "bytes": 441128,
+      "sha256": "df1ead83d531e47b5176dd02b0a9365d1457bb5e2927a4f33f86573f9611b471"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0004.npy",
+      "bytes": 441128,
+      "sha256": "26fa53a517422185e534a9eff9b91bbe9d9f91ab806dce4556ddaaa6eddc2a60"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0005.npy",
+      "bytes": 441128,
+      "sha256": "1a73d18b52a9dcb78227a7904e5594c7c9ef02f4cbcd4367610aaf1ebbbb64f9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0006.npy",
+      "bytes": 441128,
+      "sha256": "cb49218a25bcf690f67556417fb4c2baed40a71ecdf70de67da999a1b0706504"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0007.npy",
+      "bytes": 441128,
+      "sha256": "8054cb9f5b721c08d88e55e2046b7ac2ecfd5d5d59f03162049a58940f080b60"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0008.npy",
+      "bytes": 441128,
+      "sha256": "621d737cec68af186ac16fd41e8a9da5596b5fe389445968e77ce307a96595cc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0009.npy",
+      "bytes": 441128,
+      "sha256": "e3d5613c0da12f8e16b9ad6774a5900becc0787877d9060c7668364d06351b9a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0010.npy",
+      "bytes": 417140,
+      "sha256": "ef5ee60ac6b27ceccaa38bf9da2a93f261ac5651bdcd37017d75f1ee8668e750"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0011.npy",
+      "bytes": 296480,
+      "sha256": "5f4fefd3682bd3f785ac308399f41449511e3795b3759b2daa9ef6d2a203c644"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0012.npy",
+      "bytes": 201224,
+      "sha256": "c9008ca06b18c13804a0480a90d7ec33834d1f1eecba8603fb02d591d7819e48"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0013.npy",
+      "bytes": 241444,
+      "sha256": "eb5dd50e876b92dbdbc730272c6646b44430cab30c34ddb5bf5785466a1991cd"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0014.npy",
+      "bytes": 256264,
+      "sha256": "8d4b14d46b06434f941035a4a244f21dd3ff78dc6e7b0c4f49db73d27a04e3e9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0015.npy",
+      "bytes": 298600,
+      "sha256": "a156f1d1109a2aca2ad83efd8019f1585e93aa51d26a1b87d1a0a08a1dbbff21"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0016.npy",
+      "bytes": 398088,
+      "sha256": "df9f67799862c4d165fe37574b4df98cc947c094a3bbf6565f3b59e86c137d8a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0017.npy",
+      "bytes": 249912,
+      "sha256": "ac6da73c42574c69b268a565bdb6a2361c0062ad7f4dc22ec17109350b46b78b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0018.npy",
+      "bytes": 319768,
+      "sha256": "173e631794d9f19ac0edd4722aed41a254bd38d62667d7f8fbcc177cad02be66"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0019.npy",
+      "bytes": 300716,
+      "sha256": "7eb661099ecc738a106c291509e190e45e5c3b98ad73297dc6700d974211cbfc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0020.npy",
+      "bytes": 203344,
+      "sha256": "3d54cd458eb9f31f445fa7d3f770c23a1b7bf89690b8e4e0565c4519b6e49158"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0021.npy",
+      "bytes": 273196,
+      "sha256": "328fca6e03af8f2dc8e6d1bb638c539d7d0bd9faaea74ed3edf4699ac43e352b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0022.npy",
+      "bytes": 326116,
+      "sha256": "148334d509790dafe61bdf60c28bfebfe229bb797c2aa839d5ea01ff9e10fde0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0023.npy",
+      "bytes": 319768,
+      "sha256": "466d24ff6898663ad6d768c7f2188c332a18e634f753de8e2c7ce3914b835e2a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0024.npy",
+      "bytes": 446776,
+      "sha256": "fff80082aa87ff8efccb273efd8425b864919b423295ef07bb10d480c9a3e8f4"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0025.npy",
+      "bytes": 362104,
+      "sha256": "4f3a216a2282a49929b51d2916c22a4ef4d777e23b0dbe1ebe892f3db5d98b90"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0026.npy",
+      "bytes": 288016,
+      "sha256": "885738ced27d19d6c20c3ea18d70376ba173a78069fe32bbbd5a263562654045"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0027.npy",
+      "bytes": 330352,
+      "sha256": "361e97dcae8878e943656eab21a6b5ce6caa99c72bd073435469e987861afc42"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0028.npy",
+      "bytes": 516628,
+      "sha256": "074e673cdaea4be32fdbf6f66770fb811f08c38b824094c82623777260afb2d5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0029.npy",
+      "bytes": 357868,
+      "sha256": "2abe6dfb69addf25d14c415805732106a7926d6657966ee659077d65cf40c915"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0030.npy",
+      "bytes": 467944,
+      "sha256": "4d8cb33224c78f6cd2a9556a226ac7f753ea63b6e45ac5341f625724428b0091"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0031.npy",
+      "bytes": 273196,
+      "sha256": "23614d57c5b004fd155632eca9840c1946d2ed4a438f21c079692edeb832745d"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0032.npy",
+      "bytes": 474292,
+      "sha256": "39704ad661ed776a64153a0218aa7df8f6cff0df08f055c83a5fa9eef56b80db"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0033.npy",
+      "bytes": 383272,
+      "sha256": "bca8fbeb2288bca5ce61829cb44e97fb9ff12d1ba8129a1ac8a724a39929c771"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0034.npy",
+      "bytes": 770644,
+      "sha256": "4e451387a55b779fcf97c08f3b584f4c415932691e554c7e0d10594072d09ab4"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0035.npy",
+      "bytes": 241444,
+      "sha256": "f3a469c5ba4ec84739a49b3dcdc5c8ba1de3bf25356150da0a1c78a19abdd14b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0036.npy",
+      "bytes": 359984,
+      "sha256": "3e5a3d2b0ce581736dc5be9aa80b377426ef0f2e62e7c53cf041199ffaa666f8"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0037.npy",
+      "bytes": 372688,
+      "sha256": "c91cdf299eb18e016aac2cdc553542b2c9b6053706bc2a39fec2cf25c271d469"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0038.npy",
+      "bytes": 334584,
+      "sha256": "d8c801922fc726edcb2f5e8c4299cb32864c54c8fb864a4bcf0cb2923ee8ba43"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0039.npy",
+      "bytes": 220276,
+      "sha256": "01f4ff7662486101c51dc8614f3561afd4d9909d5b1288d2b42d91ad78c18086"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0040.npy",
+      "bytes": 520864,
+      "sha256": "b23e0fcaeaa71b227509d59071930f0ac4441e73f562753cf5efb3a4ee1feea4"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0041.npy",
+      "bytes": 400204,
+      "sha256": "f0bd52032975822d55cfcc1dd2d140fed3580e947aed0abe838ce6a1e4989ea0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0042.npy",
+      "bytes": 499696,
+      "sha256": "bf483048d1591ef7aa89d655d5faabe39a9a431dbd38181acf5a5b4055f1ff51"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0043.npy",
+      "bytes": 467944,
+      "sha256": "cadb6e1366d3829109d116a2ac56db37b1b894c6f6bd8c6e55c57d91cef111b2"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0044.npy",
+      "bytes": 590716,
+      "sha256": "f72a45559cbff77de9f7542e2f7a13069e8640a6a10b1fb4eda12728a7397698"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0045.npy",
+      "bytes": 326116,
+      "sha256": "ee932c472229de103f46517251b4f19450c8d845ac211af6412b5d1a36aba936"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0046.npy",
+      "bytes": 527212,
+      "sha256": "6e87a0f406534fac7e60ff51f34c0fc5b8d6e32f8e11be79d3105f4980002923"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0047.npy",
+      "bytes": 404440,
+      "sha256": "010984fe8107481c9b2f728fb553cee0d73f9d0980652bdc99e4ea99838a2df9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0048.npy",
+      "bytes": 368452,
+      "sha256": "c5a23406fa1eadf7eaad2a241795e4de7131886a718aa2148df9894ec861276e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0049.npy",
+      "bytes": 499696,
+      "sha256": "1892e7ad97d59b8223417d2e385d5dc704e2c8bdf08644098d4cf7e9119a9a61"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0050.npy",
+      "bytes": 298600,
+      "sha256": "e04f523a788e8cf3429d8a1969d2f20eb71225067ce269d5461bb9697eee68a0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0051.npy",
+      "bytes": 252028,
+      "sha256": "017334ed3a40d05b70957f6729fbad910cdd2b349fb38c5d0195255088913bdf"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0052.npy",
+      "bytes": 372688,
+      "sha256": "eb93c665d2bb2a78b5e44b77181c97a78c538c2beed32a5574dc92c9e86a9247"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0053.npy",
+      "bytes": 421372,
+      "sha256": "f52f06677af40979fcc7dd2b83815aba0e791ddcb893c2a1b44a4e94339df372"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0054.npy",
+      "bytes": 218160,
+      "sha256": "f8eb10e81f97b94d6a848e67af8e095bd17bf42c82dea69814acfc005a1aa885"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0055.npy",
+      "bytes": 353636,
+      "sha256": "438c2bde50bfddf62f4cbe883c516279b9de3d48d3613f53d395ce1f34ed9ac1"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0056.npy",
+      "bytes": 402320,
+      "sha256": "cacaf33f843cf346f5612b5ab80e07dc558a268a0c184047b0b50858d18c7659"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0057.npy",
+      "bytes": 203344,
+      "sha256": "f6928b9da813cc273f4f4cdbc783837fbed2a1fd3461055357ffff03e8729788"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0058.npy",
+      "bytes": 224512,
+      "sha256": "a1d055c7a3d1ffe81c3e035d521b61f76575ffa05e003ef287f36aa2b8c89773"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0059.npy",
+      "bytes": 431956,
+      "sha256": "e96061f86b46ed4bc5b98692a2574ca8b05ca1f6d25fd322fa1ae35eaadf6bff"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0060.npy",
+      "bytes": 252028,
+      "sha256": "6ad2cba31b91913a1fb061a08183deb29e86d79be5c1f720d96064108310a26f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0061.npy",
+      "bytes": 357868,
+      "sha256": "f333c64f7abfe0f746ef77b84d02f55d7783d8abe59a78e6f940c1572ae13c7b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0062.npy",
+      "bytes": 330352,
+      "sha256": "6822f8dfbb8b204af3d112b09272a9821661003313695284cda770349a730e97"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0063.npy",
+      "bytes": 245680,
+      "sha256": "9ac1f6e1dbbb194e7da0535971722c6e003ad2a790ae220e010b023462e343a5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0064.npy",
+      "bytes": 319768,
+      "sha256": "0e9057c87cd5b2ca02896bc43cf0a6ca4dcf165287e17f860795b3e13075af19"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0065.npy",
+      "bytes": 446776,
+      "sha256": "858b93eede8621b1eac483622ad2a1066912688dafc82e85cbab7c20e4c6e9e7"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0066.npy",
+      "bytes": 654220,
+      "sha256": "00e609eb56e78c97fecb1e3a96b76a4f2a29a4d5e3f972635372cc13d09d4abf"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0067.npy",
+      "bytes": 391736,
+      "sha256": "990c59e1f5345575fdb584e9f29c1fe9171ba2e26f611908482966ce63660038"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0068.npy",
+      "bytes": 503928,
+      "sha256": "8b786fe6642c5f69532d44d0a24d1aa8fe238f86335720bdb29e248f2283b5a1"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0069.npy",
+      "bytes": 480644,
+      "sha256": "e04661a516f92d846addea7d565851a76789e74820767bb4075fa07febe90c2f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0070.npy",
+      "bytes": 446776,
+      "sha256": "8daed835ae28c6c9f2f8974e2bb3010d073860b93c9a46a798cc9205fca9d999"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0071.npy",
+      "bytes": 387504,
+      "sha256": "9702c45df027e01617b26c364d4f87d9e57199c578c055a017784a88669dc0f1"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0072.npy",
+      "bytes": 630936,
+      "sha256": "2be0d452ad2a6169f5a17cf5819c70ea37a12c87dbd50a17018e51259f5a5450"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0073.npy",
+      "bytes": 296480,
+      "sha256": "6a306a059bc4afbc11bd61b36f0cd4216b4267925aa989eed728274e365690d1"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0074.npy",
+      "bytes": 391736,
+      "sha256": "f90c4e70cfba8340a65c9c1a82c1792627d7dfa63195f51e44902a0ef36f2ac3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0075.npy",
+      "bytes": 326116,
+      "sha256": "694eed472ba9e51ee3bcaa5f50edeb1e4e96833e282a1350d9b5c0b2d1ad8f0a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0076.npy",
+      "bytes": 402320,
+      "sha256": "3337549e2d7402b18fe251fed91848fe016635c8c89aa19f0f5f39152a266480"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0077.npy",
+      "bytes": 444656,
+      "sha256": "14a8a0f5239480954eb304750935e4174bea2b0f672e05173b374bfc529943b5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0078.npy",
+      "bytes": 664804,
+      "sha256": "1ecea82e5616171a3c56d56f58dbda1f228bd7f6e1282ffe01c2d2110e99725a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0079.npy",
+      "bytes": 662688,
+      "sha256": "28ffa90cddf8b469616d05aed8ea495578342c0f068399174ec20369d903ebc3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0080.npy",
+      "bytes": 446776,
+      "sha256": "87d46b1734e050d0bb8f6017c8239624f7b612a72711c6f003e0a72b799d55e1"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0081.npy",
+      "bytes": 190640,
+      "sha256": "08f7cc2e14e77df00e2e064fa23bbc98d10cca5dae1f99b06610eae4ae962cfe"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0082.npy",
+      "bytes": 307064,
+      "sha256": "c9687418d033c95c58d2ca910b3a7bd92d9508485f1f2c78e044fac94ffe214c"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0083.npy",
+      "bytes": 427724,
+      "sha256": "5076e06aeaf6d6b25214d14f846b1757b79c90eea980c568af9af022247f5a18"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0084.npy",
+      "bytes": 425608,
+      "sha256": "f6e61e35184581162e6fe93f7e61f6f37e84a6fb9a5438e165b1ed05a2596083"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0085.npy",
+      "bytes": 457360,
+      "sha256": "f2e9eed5725829e4e9e40bea69c5ffc87bb786684f21626e25cb9981e69d146b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0086.npy",
+      "bytes": 283780,
+      "sha256": "3faf45f77bd314e1e297722bc8301775ff88c2be6c5889b36223cd4bbef05209"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0087.npy",
+      "bytes": 357868,
+      "sha256": "8239319ff726768a11bd7a33f5d57702366a6c58d09ef0198a2b85d59e9b8724"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0088.npy",
+      "bytes": 334584,
+      "sha256": "4d72c53fd819ea22631c9cd956523587c44f6a192af20a9d10ff30b49c1eb39b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0089.npy",
+      "bytes": 349400,
+      "sha256": "cf3227dc34939fb5f0081594b4e6de51bf811c8046b60ff2c1fa213b53b8e177"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0090.npy",
+      "bytes": 463708,
+      "sha256": "bb99c51d795a99625214907e8c880a8f596c9d0ea5783119392498efea8488bd"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0091.npy",
+      "bytes": 357868,
+      "sha256": "310077e773829699fbb69d98a21066a93da9e2718ce8ad248f7dc8230386a0b0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0092.npy",
+      "bytes": 400204,
+      "sha256": "18999823e6053a0be9366689638afca2ba24ea63e239563fa20ce5e01776b5b3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0093.npy",
+      "bytes": 364220,
+      "sha256": "9ecff8d38e49ac142f4237564f685f2d01368c333e876c51849aa29a7189c182"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0094.npy",
+      "bytes": 457360,
+      "sha256": "13a1a55b3dcf86a9306ff056435e50830b159ef7f2a6c19288cee5a4577789bc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0095.npy",
+      "bytes": 552616,
+      "sha256": "1c09f36d1a97f096529a22ab83d8ee1472cf15446de1ce4351e6665f128ce2f6"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0096.npy",
+      "bytes": 527212,
+      "sha256": "3775c574c92bd06cd8f6a4b234a043b183a66287019854d9428c0d2f6e4e0a02"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0097.npy",
+      "bytes": 624584,
+      "sha256": "ca293686d7387a89c9403de9c77d1bf36b1d7efe5d54545be2d78fb0ff2fedb8"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0098.npy",
+      "bytes": 315532,
+      "sha256": "96357ee17b2f646e65667f352d9aa30bf9a0b8c6a777c9210204c9d816220c83"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0099.npy",
+      "bytes": 573784,
+      "sha256": "434e4de9e3de16cdb7dccf85e6f71fd1609ae983990df85f4142951bffe2e388"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0100.npy",
+      "bytes": 340936,
+      "sha256": "17f87393b7bd99dd51c5d7fb8023d1f5455f3a8434ad4393cd55a03117f05eab"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0101.npy",
+      "bytes": 262612,
+      "sha256": "974279bd41b34812aa81b5ac115cdd249ef6ee4f44fe800a2862766f6b497115"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0102.npy",
+      "bytes": 353636,
+      "sha256": "76d8a4baee527a7d8edaa9664e68301e997598fac817b03d788c735c79ceb1d3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0103.npy",
+      "bytes": 476408,
+      "sha256": "97907ce5dc7d023c662954586806358e6aa6b3e0a31691a0e1002bbc59171e74"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0104.npy",
+      "bytes": 567432,
+      "sha256": "3d1feca99fac365587687c034f3de37720e59014b51f44878d14e85e73deadab"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0105.npy",
+      "bytes": 330352,
+      "sha256": "a36c93063698b134e0162f0329badaf129277bf9725d71beadbc7142e679563d"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0106.npy",
+      "bytes": 319768,
+      "sha256": "022e94e8e0bf4e120f85ed9ad30d566dca2bddd9abb2b8e7037ef4c4d7dc84e9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0107.npy",
+      "bytes": 747360,
+      "sha256": "d64ed76efbbfaea4c189d19f974e56151fd703eb4ac4c181e506bf59d04ca223"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0108.npy",
+      "bytes": 408672,
+      "sha256": "98e373bb87642c1ad51f12fa14cbf172fb16f01af8cf5b61ce142b71822a234e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0109.npy",
+      "bytes": 644696,
+      "sha256": "9552bd0034aa5a441f958bab222de6ee48ec230f2c8a8978f552e33df41f869e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0110.npy",
+      "bytes": 403380,
+      "sha256": "6671645a49a5a19cbe68e66c973b4600dee152c17952cd1797adc8d1749d3096"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0111.npy",
+      "bytes": 279548,
+      "sha256": "7c40ba8ed7e4d40e21314b2f0c8c2d4001f22f96a26ffa4b189b9f2107574180"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0112.npy",
+      "bytes": 524036,
+      "sha256": "777d4358a8dcc5fd73867cb0613d45dd088488a4191bb05504bfd38cde9cb4e3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0113.npy",
+      "bytes": 279548,
+      "sha256": "48f4d2205a14975039de042ff63dc2458946add268ec055d09b81587c243b9fc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0114.npy",
+      "bytes": 397028,
+      "sha256": "cd93fa8ce105ecf599b78c02f317ddb9a1965e0845c8b8a908dbb4fc15951dff"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0115.npy",
+      "bytes": 200168,
+      "sha256": "b721fe906e1badeac33ede81653a648b8b2d4db18ae38d90621034a8ec1a8bb3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0116.npy",
+      "bytes": 714548,
+      "sha256": "e459a60ada99dad91957251f7bf6589490d2e11510979c61530ce9c04a62f3cb"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0117.npy",
+      "bytes": 273196,
+      "sha256": "8d15bc0651664ab3a1f8a2826a419763e55be060df9e1e7e5ce9e02fb3136907"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0118.npy",
+      "bytes": 606592,
+      "sha256": "c7e49e8c8601f76343795216ae4b490b992bdda051d9fb8aeafd614031300be6"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0119.npy",
+      "bytes": 270020,
+      "sha256": "33d396b1972c2da19bdda85d67a789761d5406fc959b9a80092a962f882c1685"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0120.npy",
+      "bytes": 476408,
+      "sha256": "e749d65c27aeea18560853ccadc55714c0be319445ec36b5d64b4afbf4d0f383"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0121.npy",
+      "bytes": 257320,
+      "sha256": "32ee622a9e5e7951b96b7e432eaf4ddd9a0d87c6e7042504ca4f130087b7681e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0122.npy",
+      "bytes": 463708,
+      "sha256": "dc7a290a628ec9ac0608f1962569bc79afc4a4d151c96104ef63d97cb0a9d43b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0123.npy",
+      "bytes": 866960,
+      "sha256": "764da555abdaa73e7c372b756bd68868ac698d64eb66b3d62b5b916cdf023f8e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0124.npy",
+      "bytes": 311300,
+      "sha256": "0ace35413f7f30d0241735aca4e7027e09f9ddddf403833f8637a44761f75531"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0125.npy",
+      "bytes": 416080,
+      "sha256": "0b20ac13bcd68117657a75b3b75115a55acdfe61ebdbe713174d91518922b8da"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0126.npy",
+      "bytes": 231920,
+      "sha256": "0d6d797e9ff54a824cbb6b10faf37c1088362afd50b530d7b710b406bc46c4b5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0127.npy",
+      "bytes": 238268,
+      "sha256": "1406536dfe9f282478a5c51adfe90277a20e5822d096aba86dad01340509e4d3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0128.npy",
+      "bytes": 231920,
+      "sha256": "6a3edd573a2f576dd6888f8e6d8c43ca61ac712a5d551af7f23f22e8ff1a0c90"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0129.npy",
+      "bytes": 238268,
+      "sha256": "910f82f3cf273eccb33f9c10fcc4541c13e1b1435e5f71e1bd4c85633c280312"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0130.npy",
+      "bytes": 263672,
+      "sha256": "7efe0ebd6722117c4e6ca6ad174cbf1cbb3a0936e2c63545addf1604521c26a2"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0131.npy",
+      "bytes": 206516,
+      "sha256": "3fdf6a6160d72a180ce69000d574583df2eb459d4c55a9326a890cf4ca927956"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0132.npy",
+      "bytes": 231920,
+      "sha256": "5476fce5610d2334878c967694a28396a7186f823e7ba80ca183834f19bb1351"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0133.npy",
+      "bytes": 368452,
+      "sha256": "838191c231bb9cd4ddb87c7eff81010bb8c58f7f4682d2909cd09230f504fee6"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0134.npy",
+      "bytes": 358928,
+      "sha256": "01517a3ef1612bd90a6b319d5e70e0761833a8d5bbf16303197edb1996a271d4"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0135.npy",
+      "bytes": 273196,
+      "sha256": "5cdc52a30ac3dd342233a311deefe3918c44699b81cb2851b72b84dff0c00132"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0136.npy",
+      "bytes": 333524,
+      "sha256": "b0852582200a6dc47405882eb76a470d8543b52df9d51ebd54374608b6e8b1a8"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0137.npy",
+      "bytes": 384328,
+      "sha256": "c9cf887d845a90233ae7e2b68e52b99240364bdf0ce4a751db20a17ac1622c61"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0138.npy",
+      "bytes": 216044,
+      "sha256": "062ffab4648f0f3053a4237160209a53a3cf58389b6cbdf6fd241f417b1cd043"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0139.npy",
+      "bytes": 438308,
+      "sha256": "efec53595a39aa246f04ab9e0b97845c57b82315386035d98697fcfc8a64ebed"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0140.npy",
+      "bytes": 285896,
+      "sha256": "53a941fc57f36e0b1f052eb5e72b2f209801f7aab857cecf62585c63684085a3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0141.npy",
+      "bytes": 304948,
+      "sha256": "68b633b413d70c3100990981171cdb35de466a4c74a7cd3539820699f659a256"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0142.npy",
+      "bytes": 428780,
+      "sha256": "cc4b65ef80d5427b83b9af92f7cdfdf0ce2fc426f2e74ec262fec9b799809151"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0143.npy",
+      "bytes": 438308,
+      "sha256": "c92eb72faa91fbfb09d235d241b1a1388c92c092a067c2467d54aefbf0ffc651"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0144.npy",
+      "bytes": 241444,
+      "sha256": "4a736821471be8ddbde78a04526f5aa438a57ff02362e4bf164d5f790e558eb3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0145.npy",
+      "bytes": 924112,
+      "sha256": "514585228179a36810a193987966e5425c1f3cc6d54d1998e9945bfda4fba55c"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0146.npy",
+      "bytes": 365276,
+      "sha256": "613846b8f676787ca6dec8ee332bc40932e91c28528116fdff8680930bcfc2cd"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0147.npy",
+      "bytes": 539912,
+      "sha256": "af0fd92afd94c92ca67adb729832cf49918e0a9e8481d019ba02cb16193e2d41"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0148.npy",
+      "bytes": 241444,
+      "sha256": "c93ae3e67868648678b2463c8c5829e26fc6769db54c1606447eefcc2404a9b5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0149.npy",
+      "bytes": 190640,
+      "sha256": "b1e13b832ee0d2314a907aaa9d3c9a48f2fbe4c2b3e5b9deac8885fdc2909c46"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0150.npy",
+      "bytes": 273196,
+      "sha256": "53f220b7e4ca37e5a0f1e6b13b36dd27cbf975051602d854dc0307196e0d62d3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0151.npy",
+      "bytes": 311300,
+      "sha256": "41e9e81a89b2565c2775351a9ae2a63bbf3964f2b1397f5a697fc2fb5af19c9b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0152.npy",
+      "bytes": 390680,
+      "sha256": "21912c5f9c86f872df75f26ef9e5a9ad7b97bf90e346b7cd96b666ad54a467fd"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0153.npy",
+      "bytes": 527212,
+      "sha256": "43f9e558477baafea33fe6ffee56b616faf7a26bafb3532391504f3067d82a4b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0154.npy",
+      "bytes": 479584,
+      "sha256": "ff8bc672a9c0d3d04ffacc374d8012e5844f443d9d960f54dd38032f63ac7bf9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0155.npy",
+      "bytes": 644696,
+      "sha256": "e2e69bd3011fbea9c96775cee59d3ed9a3557f15c8c1df416b52a92027b4cb1c"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0156.npy",
+      "bytes": 533564,
+      "sha256": "18ad95007d42c5f5c05a345c6d4a4b873aab455ff64fd9d92ce06ee8a9a52ede"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0157.npy",
+      "bytes": 444656,
+      "sha256": "28cc29ad2b27121b6d6231daf5fb4ed128dd522b029f071d136f3425a7793dab"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0158.npy",
+      "bytes": 444656,
+      "sha256": "0bef8941945911fc63633df80dd321388db9f8b33093880c8af0390331da3bdc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0159.npy",
+      "bytes": 485936,
+      "sha256": "8fdb4ea174995812ff1a9da3303e11386f5c696a78a747f8f2ecae7d234d684b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0160.npy",
+      "bytes": 374804,
+      "sha256": "fd01452aec5b1b46f01dbeda5f60dc38b27c0247780d7dc5977c8d9aed94256a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0161.npy",
+      "bytes": 508160,
+      "sha256": "ca2abb33ff4115258782eccd5154ae74445fb8bbe27b66557c40d22cacd868de"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0162.npy",
+      "bytes": 374804,
+      "sha256": "13f9c6642217b4bf7dba612249f73e35b7a0f3817b65d29ecb480c36ac5beece"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0163.npy",
+      "bytes": 349400,
+      "sha256": "b192b44ceb26356f58ba6f655abc237637b9ff18df90308629b50bc93815e3e5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0164.npy",
+      "bytes": 231920,
+      "sha256": "496b74e2061dd1923acab9b16a08d84beca32fd2ef721c32b99481bf12784906"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0165.npy",
+      "bytes": 285896,
+      "sha256": "ae016bbbb031341bc21bf57fccb0e68118a274cfa536dda2b802ec9247c223cb"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0166.npy",
+      "bytes": 241444,
+      "sha256": "6754dafd61c816cfc46ee0247d62866e8cc9e5728894d3853db17f0275be637e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0167.npy",
+      "bytes": 416080,
+      "sha256": "8d7f67f8e8551597a8b828be1593a03fbf45b1fe3c613e883ff7fabbcc5492d9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0168.npy",
+      "bytes": 444656,
+      "sha256": "5b3ac797a4e14920180725f117c7be353d74a27f1deeb3b66508ddc3c8f4e37e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0169.npy",
+      "bytes": 685972,
+      "sha256": "b329421dcc05f4066b51a4ecf4e24f7a1009d81e37d191ff1270c353a832d928"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0170.npy",
+      "bytes": 377980,
+      "sha256": "3cb1af45600062053e0014ed35cd3141ab79b309f062a3964407aa032dbc1212"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0171.npy",
+      "bytes": 279548,
+      "sha256": "d241798345b6f25ec757b493cbd536c808fecb1abd117b8703fd6b8d9c6b00ce"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0172.npy",
+      "bytes": 431956,
+      "sha256": "60688ebec2e346410ca096f45e50f29c7bd1e552f3f153b54688ecc3f9f982d0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0173.npy",
+      "bytes": 209692,
+      "sha256": "b97b6e749f7e5b114eba77152302f15f9c49cf8be5df6e01f507b0363673ac9c"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0174.npy",
+      "bytes": 397028,
+      "sha256": "8dd38688eacca8de724cf8c342190aa3f4cc039f1c4b266a0a58bf0866b0d6df"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0175.npy",
+      "bytes": 295424,
+      "sha256": "0c3a6288b2f4561ef9918aa772a631d494be27a4ddbb7389da031b88b87a3bfa"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0176.npy",
+      "bytes": 524036,
+      "sha256": "6495772f574d2cad2e0970aa01c43857d13bf47fec57d0bb6270e3cdaa814267"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0177.npy",
+      "bytes": 460532,
+      "sha256": "ddca7f045ece1df3f204b7485871890026f6af1608b23ecc97e7cb631417f296"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0178.npy",
+      "bytes": 343052,
+      "sha256": "9ef9c811e82729a93126afba40db256653b5022eee068408327717765a916a6e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0179.npy",
+      "bytes": 384328,
+      "sha256": "c22b420b6b225573fc05a636fdd243d963a0e6ec1d85b8a95ca117251fece74b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0180.npy",
+      "bytes": 349400,
+      "sha256": "d200a66aa56532d400392f388e910e9ed20d9c2fc44dc86329cb0da6fd3eb243"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0181.npy",
+      "bytes": 254144,
+      "sha256": "61e1ad053b4239e3a039d9a37ea1e298d9fe321264edf359ea71ae651324a50e"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0182.npy",
+      "bytes": 206516,
+      "sha256": "0d69e17ed7749322241f9a8d8151af7c076215b7f13ef23daa16a1195440c903"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0183.npy",
+      "bytes": 400204,
+      "sha256": "ffd7344e3e52d22f57ed06488e8477bf67b661f570285d8d04f29e4be6ff674f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0184.npy",
+      "bytes": 317648,
+      "sha256": "871d9f9ffe60368f2c3be1e2355b2fd918ab23df0a41f960c4fe1b990722e8c5"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0185.npy",
+      "bytes": 222392,
+      "sha256": "339ef962fcd6764097babb01c521b685d92f277b1dc7a7b15babcc15fa0d62fb"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0186.npy",
+      "bytes": 333524,
+      "sha256": "ffb97fd843213dd2bc9575d4f8b9ce5c7c8483991f1f99acfb8f80c424ec1205"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0187.npy",
+      "bytes": 333524,
+      "sha256": "ec7f5cfe3179592730ae7da83e031d7720a450d4018b63bc66a2b0d93f7de6c2"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0188.npy",
+      "bytes": 304948,
+      "sha256": "74f42b1c57b7e7f1dc657ee1a7321a573dac3c1dfbac5986a175320761672e64"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0189.npy",
+      "bytes": 304948,
+      "sha256": "c0466c077c56563221be05a4b9c719116aaf920c4ad5461313fb85b36c126c2f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0190.npy",
+      "bytes": 320824,
+      "sha256": "7bd0393c50aef8c307a2f096d81ed0f2f03b7e9cace70d12cd189417c5415759"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0191.npy",
+      "bytes": 349400,
+      "sha256": "7d7901f50cdf654b51061e179571535724085aa5cf04e507f0d30265ab639ab7"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0192.npy",
+      "bytes": 206516,
+      "sha256": "be939f257e9a0fd514f280f33b4f920e18d27d5a4aa22623de278cd6f97b6a2b"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0193.npy",
+      "bytes": 301772,
+      "sha256": "2202aa1d59ffc71baf6e6feb8c8181e24cb2e32fe616cfac51953073054a0749"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0194.npy",
+      "bytes": 200168,
+      "sha256": "88767ede5e4eeb684ddc454bb4e2f7bd86014dde989135af59e0a41854c2e999"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0195.npy",
+      "bytes": 384328,
+      "sha256": "07f009be737b15d683c5d7367ad8ace34cdd5fca34db1281162ce3789e936de2"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0196.npy",
+      "bytes": 279548,
+      "sha256": "3abde2a3331389456632ab4d5243c3eadae7c5efd6d8ddee8864035df8e98358"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0197.npy",
+      "bytes": 254144,
+      "sha256": "4f31a006c4a18bb6df3fd55746f9d279649467530f8fdca364df77be597474bc"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0198.npy",
+      "bytes": 511336,
+      "sha256": "778a36163f08d06f38a66dadbb557811f9f384fff8bd3265888f8079d34ded8a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0199.npy",
+      "bytes": 438308,
+      "sha256": "ec7bc4ac45faaf34767bef1c9a9762713bf4c06011568753b6849849b8065b07"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0200.npy",
+      "bytes": 304948,
+      "sha256": "b3e19710321968f04e53e62dcb0d4baeebcb655f9c22699315cf3a4c3134e3f4"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0201.npy",
+      "bytes": 352576,
+      "sha256": "3609bd317b9afb25bc625120804d6112d37ab68b28cd00e15fcb58c19254c2b8"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0202.npy",
+      "bytes": 343052,
+      "sha256": "798b303790ed034637b4fa8581e32a229a008c941b7b94d3eeee2a792e2d68d3"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0203.npy",
+      "bytes": 390680,
+      "sha256": "85f24b9957f6f0cd36b0ed31207604add25e9e97db5c499605e5f659026c1c1f"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0204.npy",
+      "bytes": 492284,
+      "sha256": "ca487e305879fd10dbcbe55b720f1995ab07f3c28a8e7be5d0ecdce7138ed000"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0205.npy",
+      "bytes": 511336,
+      "sha256": "922c1bac33e04954d9841c53bb35254fd686f6fd7f9de6e41d243c58524c69a9"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0206.npy",
+      "bytes": 225568,
+      "sha256": "375a6667b5cb5c323f76f9fbf6d0ed65295c734e5c28a7af1c3428b541f77b5a"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0207.npy",
+      "bytes": 425608,
+      "sha256": "e4cd9b056b29f2eaad9c2bd0c531e51288ad85a3f11b84881d650bd3930bdcd0"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0208.npy",
+      "bytes": 428780,
+      "sha256": "e6c3aef9bc0e9056305019e1aa455ca2b4ef293230c7c9c5df487147d6b0f6aa"
+    },
+    {
+      "path": "data/hifigan_finetune/wavs/0209.npy",
+      "bytes": 479584,
+      "sha256": "e9fbe3a0bfedded32a18be50c87aaa25ad37a5fdd121c794e53f51c34957d53e"
+    },
+    {
+      "path": "data/manifest_w5.csv",
+      "bytes": 43557,
+      "sha256": "b1b913578c5e7390772fea3c2d6416d960914bf077947dbcb7bcc1a5dde15035"
+    },
+    {
+      "path": "data/raw/001_วันนี้ฉะฉันรู้สึกดีมาก.wav",
+      "bytes": 160044,
+      "sha256": "97ddbd3c08bf49df8d4b21ffdf6cb1d9df2858e740ea506e3ffbdf1c5dd59344"
+    },
+    {
+      "path": "data/raw/002_ขอน้ำหนึ่งแก้วได้ไหม.wav",
+      "bytes": 160044,
+      "sha256": "abb1aaa0953887009a3d10ba849c7fd3f67829b0258ab62c2db5dc600d02076d"
+    },
+    {
+      "path": "data/raw/003_ฉันอยู่ที่บ้านนะ.wav",
+      "bytes": 160044,
+      "sha256": "062d8ce8280ac48acb48908f30cdb98f38c978ca85d7e1fcc7b7584127ab1abe"
+    },
+    {
+      "path": "data/raw/004_หิวข้าวแล้ว.wav",
+      "bytes": 160044,
+      "sha256": "d034d252e562a5a2df098d888172fbdc94d7538ec9d3e55aa8e95b2362f0f67e"
+    },
+    {
+      "path": "data/raw/005_ขอบคุณมากนะครับ.wav",
+      "bytes": 160044,
+      "sha256": "9a103049b2ffcfad59b24a4a8909ca7ff41f1f07064cd977eac2c23e792104c3"
+    },
+    {
+      "path": "data/raw/006_ช่วยฉันด้วยได้ไหม.wav",
+      "bytes": 160044,
+      "sha256": "d064841aec3230f9220f16529715dd4dbca04948953c0fe46da4291d307878d1"
+    },
+    {
+      "path": "data/raw/007_วันนี้อากาศร้อนมาก.wav",
+      "bytes": 160044,
+      "sha256": "a581307ed4a65855ea6843d9e8e77a10d13e8c21873ace4ebf6ae7f10c255115"
+    },
+    {
+      "path": "data/raw/008_ฉันชื่อกันต์กวี.wav",
+      "bytes": 160044,
+      "sha256": "087d1bb246de0c676c4431e7317ca51031a0f70a176287b9171abe99f4116890"
+    },
+    {
+      "path": "data/raw/009_โทรหาหมอให้ทีได้ไหม.wav",
+      "bytes": 160044,
+      "sha256": "406cd75708314819e31816a7ef2f14b9ccbb84e3ecf53152febc1add907bbb75"
+    },
+    {
+      "path": "data/raw/010_ฉันต้องการความช่วยเหลือ.wav",
+      "bytes": 160044,
+      "sha256": "e7aa86c0c79df73519bcecfe76138b28342095ca703ed0872de8c7214ff22053"
+    },
+    {
+      "path": "data/splits_w5.json",
+      "bytes": 4234,
+      "sha256": "3cdf32c1500ff7b3ca60cee9a49cb0105675518c3d545db375ba799395fa2a9f"
+    },
+    {
+      "path": "results/checkpoints/hifigan_thai/config.json",
+      "bytes": 799,
+      "sha256": "c1bd98e99062ddbced38729a5252dc2aa772328d16d70097ac139dab2f269dc9"
+    },
+    {
+      "path": "results/checkpoints/hifigan_thai/do_latest",
+      "bytes": 960636825,
+      "sha256": "ba6e5bbaee4a2f41c8f627c0f2916e0c821c1183f278af1105ffcd66060faacd"
+    },
+    {
+      "path": "results/checkpoints/hifigan_thai/g_00010000",
+      "bytes": 55822075,
+      "sha256": "4b9e5cf7307f94853b2cfa528d359c0d7b6fa0bf4bcfa5d48420f9c1dd60fcac"
+    },
+    {
+      "path": "results/checkpoints/mapper_layer9.pt",
+      "bytes": 154640271,
+      "sha256": "3020aede1039a41735c70a039c96bca27f2283b84d321236a8d6a83dbce7cf4b"
+    },
+    {
+      "path": "vendor/hifi-gan/LICENSE",
+      "bytes": 1067,
+      "sha256": "5eec017ce442989e01a46cd9cd6aeb13cd0aa3b3943f681577bda00475afaa23"
+    },
+    {
+      "path": "vendor/hifi-gan/LJSpeech-1.1/training.txt",
+      "bytes": 2736932,
+      "sha256": "ccb458e72f14f53403bf10a64ebd03a7a1949d8fd2f12ee0b2db12a47bfb7192"
+    },
+    {
+      "path": "vendor/hifi-gan/LJSpeech-1.1/validation.txt",
+      "bytes": 30558,
+      "sha256": "493546b3dbe887066c1617225c5ee0be36a02dd3a6a998458ebf289c6bd2aaef"
+    },
+    {
+      "path": "vendor/hifi-gan/README.md",
+      "bytes": 4893,
+      "sha256": "eff40fe3d32d09e0d7b891a59b527081031178ae3fd1e60c2ee9b83b19c02b55"
+    },
+    {
+      "path": "vendor/hifi-gan/checkpoints/UNIVERSAL_V1/config.json",
+      "bytes": 799,
+      "sha256": "c1bd98e99062ddbced38729a5252dc2aa772328d16d70097ac139dab2f269dc9"
+    },
+    {
+      "path": "vendor/hifi-gan/checkpoints/UNIVERSAL_V1/g_02500000",
+      "bytes": 55788858,
+      "sha256": "771eaf4876485a35e25577563d390c262e23c2421e4a8c929eacfde34a5b7a60"
+    },
+    {
+      "path": "vendor/hifi-gan/config_v1.json",
+      "bytes": 762,
+      "sha256": "719a04c531031802c3da7207e5093057d5f2d7c6b0a457c77041d01bb7d93c6e"
+    },
+    {
+      "path": "vendor/hifi-gan/config_v2.json",
+      "bytes": 762,
+      "sha256": "cede32b776d5694d1ef265c1a2819a3b8ef3a294921ceb1366e8ca63cdc0c9da"
+    },
+    {
+      "path": "vendor/hifi-gan/config_v3.json",
+      "bytes": 752,
+      "sha256": "1b2d656de833182038c64c73e6395e6cd7bde5d2ff47ed68dd537d36428dd223"
+    },
+    {
+      "path": "vendor/hifi-gan/env.py",
+      "bytes": 394,
+      "sha256": "f5212e8402468ba2b68f79fac906ae48b0762625db368232bbff3bc31fa2b42b"
+    },
+    {
+      "path": "vendor/hifi-gan/inference.py",
+      "bytes": 2652,
+      "sha256": "d654877c4aac8008bdc0ec240a2630196c13e693bdee980fbaf1a6a8337a729d"
+    },
+    {
+      "path": "vendor/hifi-gan/inference_e2e.py",
+      "bytes": 2444,
+      "sha256": "d94eac61ad71a28199f8b53321b82ee8f7c89b9680b0462515f77ba5c2b87d54"
+    },
+    {
+      "path": "vendor/hifi-gan/meldataset.py",
+      "bytes": 6314,
+      "sha256": "962d677d612eda63dd0cfecec8b85a6f01be5b3626e3bdba98139d0f689e9022"
+    },
+    {
+      "path": "vendor/hifi-gan/models.py",
+      "bytes": 9905,
+      "sha256": "6b2c446e551fa3f0855cf02d4c4dc178d7046aa6f3cda2b42321658b281673b2"
+    },
+    {
+      "path": "vendor/hifi-gan/requirements.txt",
+      "bytes": 113,
+      "sha256": "79d0938f5331376f1cdc0937f1709f65176386aa2557377d92dd59e85a8aef4c"
+    },
+    {
+      "path": "vendor/hifi-gan/train.py",
+      "bytes": 12153,
+      "sha256": "7081e768985d2cbf7e00adf5465bdef532324cd0599af30c651c3104eb6d9b3f"
+    },
+    {
+      "path": "vendor/hifi-gan/utils.py",
+      "bytes": 1377,
+      "sha256": "bd93329bf20c16d5226bd9e57d26b1a4afc453fb267081d810a8e0d4ddc73bed"
+    },
+    {
+      "path": "vendor/hifi-gan/validation_loss.png",
+      "bytes": 10995,
+      "sha256": "0fc05d544bec1dbdc7a8d12e7033056035cbe002efa8f490900f367c2b09bef2"
+    }
+  ],
+  "hifigan_revision": "4769534d45265d52a904b850da5a622601885777"
+}

@@ -70,8 +70,61 @@ def compute_mel(
         )
 
     tensor = torch.from_numpy(waveform).unsqueeze(0)
-    tensor = F.pad(tensor.unsqueeze(1), (pad, pad), mode="reflect").squeeze(1)
-    window = torch.hann_window(win_length, dtype=tensor.dtype, device=tensor.device)
+    return compute_mel_tensor(
+        tensor,
+        sr=sr,
+        n_fft=n_fft,
+        hop_length=hop_length,
+        win_length=win_length,
+        n_mels=n_mels,
+        fmax=fmax,
+        power=power,
+    ).squeeze(0).cpu().numpy().astype(np.float32, copy=False)
+
+
+def compute_mel_tensor(
+    waveform,
+    sr=22050,
+    n_fft=1024,
+    hop_length=256,
+    win_length=1024,
+    n_mels=80,
+    fmax=8000,
+    power=1,
+):
+    """Differentiable HiFi-GAN-compatible log mel for a ``(B, samples)`` tensor.
+
+    Tensor inputs must already be at 22.05 kHz. This path is used for the
+    generator's mel reconstruction loss, where gradients must reach the
+    generated waveform.
+    """
+    if not isinstance(waveform, torch.Tensor):
+        raise TypeError("compute_mel_tensor expects a torch.Tensor")
+    if waveform.ndim == 1:
+        waveform = waveform.unsqueeze(0)
+    if waveform.ndim != 2:
+        raise ValueError(
+            f"compute_mel_tensor expects (B, samples), got shape {tuple(waveform.shape)}"
+        )
+    if waveform.shape[1] == 0:
+        raise ValueError("compute_mel_tensor received empty audio")
+    if sr != HIFIGAN_SAMPLE_RATE:
+        raise ValueError(
+            f"Tensor audio must be resampled to {HIFIGAN_SAMPLE_RATE} Hz, got {sr}"
+        )
+    if power <= 0:
+        raise ValueError(f"power must be positive, got {power}")
+
+    pad = (n_fft - hop_length) // 2
+    if pad < 0:
+        raise ValueError("n_fft must be greater than or equal to hop_length")
+    if waveform.shape[1] <= pad:
+        raise ValueError(
+            "Audio is too short for HiFi-GAN reflect padding: "
+            f"{waveform.shape[1]} samples"
+        )
+    window = torch.hann_window(win_length, dtype=waveform.dtype, device=waveform.device)
+    tensor = F.pad(waveform.unsqueeze(1), (pad, pad), mode="reflect").squeeze(1)
     complex_spectrum = torch.stft(
         tensor,
         n_fft=n_fft,
@@ -96,4 +149,4 @@ def compute_mel(
     )
     mel = torch.matmul(basis, spectrum)
     log_mel = torch.log(torch.clamp(mel, min=LOG_CLIP_VALUE))
-    return log_mel.squeeze(0).cpu().numpy().astype(np.float32, copy=False)
+    return log_mel

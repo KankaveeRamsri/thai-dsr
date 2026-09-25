@@ -1,0 +1,33 @@
+Ground-truth mel -> HiFi-GAN sanity test (CPU)
+No encoder or mapper loaded. Existing compute_mel defaults; no mel clamping or normalization.
+Metrics use saved PCM_16 output and previous ground_truth.wav, resampled to 16 kHz.
+Existing shared-length truncation; no time or gain alignment.
+cv_0047: mel shape=(1, 80, 198), min=-11.512925, max=0.884053, mean=-6.998989, std=3.033446, finite=True
+  baseline: STOI=0.964270, PESQ=2.941212, waveform={'peak': 0.7368650436401367, 'rms': 0.0804535299539566, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.959092, PESQ=3.102801, waveform={'peak': 0.6489750742912292, 'rms': 0.08132989704608917, 'clipped_fraction': 0.0}
+cv_0156: mel shape=(1, 80, 235), min=-11.512925, max=0.780300, mean=-6.733239, std=3.621327, finite=True
+  baseline: STOI=0.949780, PESQ=2.119648, waveform={'peak': 0.6703100204467773, 'rms': 0.07288163155317307, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.944694, PESQ=2.688542, waveform={'peak': 0.6441987752914429, 'rms': 0.07981536537408829, 'clipped_fraction': 0.0}
+cv_0016: mel shape=(1, 80, 281), min=-11.512925, max=1.247890, mean=-6.462854, std=2.994561, finite=True
+  baseline: STOI=0.921857, PESQ=2.563892, waveform={'peak': 0.6266769170761108, 'rms': 0.0773722380399704, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.910565, PESQ=2.264827, waveform={'peak': 0.5849518775939941, 'rms': 0.07187872380018234, 'clipped_fraction': 0.0}
+cv_0141: mel shape=(1, 80, 303), min=-11.512925, max=0.653301, mean=-6.392055, std=3.261684, finite=True
+  baseline: STOI=0.913834, PESQ=2.632161, waveform={'peak': 0.6061077117919922, 'rms': 0.08049806207418442, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.912049, PESQ=2.557295, waveform={'peak': 0.6172425150871277, 'rms': 0.08324425667524338, 'clipped_fraction': 0.0}
+cv_0173: mel shape=(1, 80, 390), min=-11.512925, max=0.899228, mean=-6.921410, std=3.715286, finite=True
+  baseline: STOI=0.954049, PESQ=2.412483, waveform={'peak': 0.7070274949073792, 'rms': 0.08300484716892242, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.946675, PESQ=2.077325, waveform={'peak': 0.718085765838623, 'rms': 0.09044166654348373, 'clipped_fraction': 0.0}
+007_วันนี้อากาศร้อนมาก: mel shape=(1, 80, 430), min=-11.512925, max=0.479901, mean=-7.769224, std=2.452297, finite=True
+  baseline: STOI=0.953383, PESQ=3.351483, waveform={'peak': 0.43157869577407837, 'rms': 0.039805151522159576, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.943378, PESQ=2.587359, waveform={'peak': 0.4150579571723938, 'rms': 0.03662514314055443, 'clipped_fraction': 0.0}
+cv_0129: mel shape=(1, 80, 427), min=-11.512925, max=1.281283, mean=-6.375245, std=2.891641, finite=True
+  baseline: STOI=0.952311, PESQ=3.061063, waveform={'peak': 0.7113656401634216, 'rms': 0.07809893041849136, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.941844, PESQ=2.798340, waveform={'peak': 0.667018711566925, 'rms': 0.07943125069141388, 'clipped_fraction': 0.0}
+cv_0097: mel shape=(1, 80, 729), min=-11.512925, max=-0.627051, mean=-6.997257, std=2.167773, finite=True
+  baseline: STOI=0.973223, PESQ=3.331805, waveform={'peak': 0.2862546443939209, 'rms': 0.01559105608612299, 'clipped_fraction': 0.0}
+  finetuned: STOI=0.966523, PESQ=3.112631, waveform={'peak': 0.40553316473960876, 'rms': 0.016116086393594742, 'clipped_fraction': 0.0}
+STOI baseline: 0.947838 +/- 0.020138 (sample std)
+STOI finetuned: 0.940603 +/- 0.019979 (sample std)
+PESQ baseline: 2.801719 +/- 0.442717 (sample std)
+PESQ finetuned: 2.648640 +/- 0.364763 (sample std)
+No subjective listening judgment performed; use WAV files for audible confirmation.

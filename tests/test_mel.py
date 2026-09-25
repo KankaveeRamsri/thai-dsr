@@ -7,7 +7,7 @@ import librosa
 import numpy as np
 import torch
 
-from src.utils.mel import LOG_CLIP_VALUE, compute_mel
+from src.utils.mel import LOG_CLIP_VALUE, compute_mel, compute_mel_tensor
 
 
 VENDOR_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "vendor", "hifi-gan"))
@@ -52,6 +52,22 @@ class MelCompatibilityTest(unittest.TestCase):
         self.assertTrue(np.isfinite(actual).all())
         self.assertGreaterEqual(float(actual.min()), float(np.log(LOG_CLIP_VALUE)) - 1e-6)
         np.testing.assert_allclose(actual, reference, rtol=1e-5, atol=1e-6)
+
+    def test_tensor_path_matches_numpy_path_and_is_differentiable(self):
+        sample_rate = 22050
+        time = np.arange(4096, dtype=np.float32) / sample_rate
+        audio = (0.2 * np.sin(2 * np.pi * 220 * time)).astype(np.float32)
+
+        expected = compute_mel(audio, sr=sample_rate)
+        waveform = torch.from_numpy(audio).unsqueeze(0).requires_grad_(True)
+        actual = compute_mel_tensor(waveform, sr=sample_rate)
+
+        np.testing.assert_allclose(
+            actual.detach().squeeze(0).numpy(), expected, rtol=1e-6, atol=1e-6
+        )
+        actual.mean().backward()
+        self.assertIsNotNone(waveform.grad)
+        self.assertTrue(torch.isfinite(waveform.grad).all())
 
 
 if __name__ == "__main__":

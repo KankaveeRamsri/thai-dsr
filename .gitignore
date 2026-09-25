@@ -13,3 +13,9 @@ __pycache__/
 .venv/
 vendor/
 *.profraw
+
+# Generated training data and transfer archives
+data/hifigan_finetune/
+scripts/colab_transfer_bundle.zip
+results/audio_compare/**/*.wav
+results/mel_compare/*.png

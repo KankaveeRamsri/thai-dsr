@@ -1,0 +1,41 @@
+{
+  "args": {
+    "device": "mps",
+    "content_device": "cpu",
+    "manifest": "data/manifest_w5.csv",
+    "splits": "data/splits_w5.json",
+    "mapper_checkpoint": null,
+    "vocoder_init": "thai",
+    "discriminator_checkpoint": null,
+    "output_dir": "results/checkpoints/joint_finetune/smoke_100_hybrid",
+    "resume": null,
+    "max_steps": 100,
+    "segment_samples": 16384,
+    "mapper_lr": 1e-05,
+    "generator_lr": 1e-05,
+    "discriminator_lr": 1e-05,
+    "adv_weight": 1,
+    "fm_weight": 2,
+    "mel_weight": 45,
+    "content_weight": 2,
+    "grad_clip": 100,
+    "checkpoint_interval": 100,
+    "validation_interval": 50,
+    "val_items": 3,
+    "log_interval": 10,
+    "seed": 1234
+  },
+  "initialization": {
+    "mapper": "results/checkpoints/mapper_layer9.pt",
+    "mapper_sha256": "3020aede1039a41735c70a039c96bca27f2283b84d321236a8d6a83dbce7cf4b",
+    "generator": "results/checkpoints/hifigan_thai/g_00010000",
+    "generator_sha256": "4b9e5cf7307f94853b2cfa528d359c0d7b6fa0bf4bcfa5d48420f9c1dd60fcac",
+    "discriminator": "results/checkpoints/hifigan_thai/do_latest",
+    "split_counts": {
+      "train": 147,
+      "val": 32,
+      "test": 31
+    },
+    "device": "mps"
+  }
+}
