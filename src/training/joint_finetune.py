@@ -125,6 +125,44 @@ def grad_norm(module):
     return float(value)
 
 
+def gan_scale(step, warmup_steps, ramp_steps):
+    """Global, 1-based update schedule; resume continues at its saved step."""
+    if min(warmup_steps, ramp_steps) < 0:
+        raise ValueError('GAN warmup/ramp steps must be nonnegative')
+    if step <= warmup_steps:
+        return 0.0
+    return min(1.0, (step - warmup_steps) / ramp_steps) if ramp_steps else 1.0
+
+
+def clip_optimizer_gradients(modules, max_norm):
+    """Clip the combined optimizer norm, and measure it again after clipping."""
+    if not np.isfinite(max_norm) or max_norm <= 0:
+        raise ValueError('grad-clip must be finite and positive')
+    parameters = [p for module in modules for p in module.parameters() if p.grad is not None]
+    if not parameters:
+        raise RuntimeError('Optimizer has no gradients to clip')
+    before = float(torch.nn.utils.clip_grad_norm_(parameters, max_norm, error_if_nonfinite=True))
+    after = float(torch.stack([p.grad.detach().float().norm() for p in parameters]).norm())
+    if not np.isfinite(after) or after > max_norm * 1.001:
+        raise RuntimeError(f'Gradient clipping failed: {after} > {max_norm}')
+    return before, after
+
+
+def weighted_loss_gradients(terms, predicted):
+    """Compare loss gradients at the SAME mapper output, before optimizer clipping."""
+    result = {}
+    for name, term in terms.items():
+        if not term.requires_grad:  # GAN branches are not evaluated during warmup.
+            result[name] = 0.0
+            continue
+        gradient = torch.autograd.grad(term, predicted, retain_graph=True)[0]
+        norm = float(gradient.detach().float().norm())
+        if not np.isfinite(norm):
+            raise RuntimeError(f'Non-finite {name} gradient at mapper output')
+        result[name] = norm
+    return result
+
+
 def synchronize(device):
     if device.type == 'mps':
         torch.mps.synchronize()
@@ -149,7 +187,7 @@ def save_joint(out, step, mapper, generator, mpd, msd, og, od, args, config, ini
 
 
 @torch.no_grad()
-def validate(step, rows, get_item, mapper, generator, device, out):
+def validate(step, rows, get_item, mapper, generator, device, out, baseline=None):
     mapper.eval()
     generator.eval()
     scores = []
@@ -172,11 +210,16 @@ def validate(step, rows, get_item, mapper, generator, device, out):
                   pesq=float(np.mean([s['pesq'] for s in scores])))
     if not all(np.isfinite(s[k]) for s in scores for k in ('stoi', 'pesq')):
         raise RuntimeError('Non-finite validation metric')
+    if baseline is not None:
+        record['baseline_step'] = baseline['step']
+        record['delta_stoi'] = record['stoi'] - baseline['stoi']
+        record['delta_pesq'] = record['pesq'] - baseline['pesq']
     with (out / 'validation.jsonl').open('a') as f:
         f.write(json.dumps(record) + '\n')
     print('VALIDATION ' + json.dumps(record), flush=True)
     mapper.train()
     generator.train()
+    return record
 
 
 def train(args):
@@ -193,6 +236,11 @@ def train(args):
         raise ValueError('All four loss weights must be positive')
     if args.max_steps < 1 or args.val_items < 1:
         raise ValueError('Positive max-steps and val-items required')
+    gan_scale(1, args.gan_warmup_steps, args.gan_ramp_steps)
+    if not np.isfinite(args.grad_clip) or args.grad_clip <= 0:
+        raise ValueError('grad-clip must be finite and positive')
+    if min(args.validation_interval, args.checkpoint_interval, args.loss_grad_interval) < 0 or args.log_interval < 1:
+        raise ValueError('Intervals must be nonnegative; log-interval must be positive')
     mapper_path = path(args.mapper_checkpoint) if args.mapper_checkpoint else default_mapper()
     pretrained = path('results/checkpoints/hifigan_thai' if args.vocoder_init == 'thai' else 'vendor/hifi-gan/checkpoints/UNIVERSAL_V1')
     gpath = pretrained / ('g_00010000' if args.vocoder_init == 'thai' else 'g_02500000')
@@ -207,7 +255,8 @@ def train(args):
     out.mkdir(parents=True, exist_ok=False)
     init = dict(mapper=str(mapper_path), mapper_sha256=sha256(mapper_path), generator=str(gpath),
                 generator_sha256=sha256(gpath), discriminator=str(dpath) if dpath.is_file() else 'random',
-                split_counts={k: len(v) for k, v in pairs.items()}, device=str(device))
+                split_counts={k: len(v) for k, v in pairs.items()}, device=str(device),
+                training_source_sha256=sha256(Path(__file__)))
     (out / 'run.json').write_text(json.dumps(dict(args=vars(args), initialization=init), indent=2))
     print(json.dumps(init, indent=2), flush=True)
     content = FrozenContent(torch.device(args.content_device))
@@ -257,9 +306,10 @@ def train(args):
             cache[uid] = (emb, clean, distorted.shape[-1] // 256)
         return cache[uid]
     val_rows = pairs['val'][:args.val_items]
-    validate(start, val_rows, get_item, mapper, generator, device, out)
+    baseline = validate(start, val_rows, get_item, mapper, generator, device, out)
+    validations = [baseline]
     times = []
-    first = True
+    gradient_checks = {}
     for step in range(start + 1, args.max_steps + 1):
         synchronize(device)
         started = time.perf_counter()
@@ -291,70 +341,87 @@ def train(args):
         if not torch.isfinite(disc):
             raise RuntimeError('Non-finite discriminator loss')
         disc.backward()
-        dnorm = grad_norm(mpd) + grad_norm(msd)
-        torch.nn.utils.clip_grad_norm_(itertools.chain(mpd.parameters(), msd.parameters()), args.grad_clip, error_if_nonfinite=True)
+        grad_norm(mpd), grad_norm(msd)  # Check that both discriminators receive gradients.
+        dnorm, dnorm_after = clip_optimizer_gradients((mpd, msd), args.grad_clip)
         od.step()
         od.zero_grad(set_to_none=True)
         for d in (mpd, msd):
             set_requires_grad(d, False)
             d.eval()  # Do not update spectral-norm buffers during generator pass.
         og.zero_grad(set_to_none=True)
-        adv, fm = 0, 0
-        for d in (mpd, msd):
-            _, df, fr, ff = d(real, generated)
-            adv = adv + generator_loss(df)[0]
-            fm = fm + feature_loss(fr, ff) / 2  # vendor already multiplies by two
+        scale = gan_scale(step, args.gan_warmup_steps, args.gan_ramp_steps)
+        adv, fm = generated.new_zeros(()), generated.new_zeros(())
+        if scale > 0:
+            for d in (mpd, msd):
+                _, df, fr, ff = d(real, generated)
+                adv = adv + generator_loss(df)[0]
+                fm = fm + feature_loss(fr, ff) / 2  # vendor already multiplies by two
+            del fr, ff
         mel = F.l1_loss(loss_mel(generated), loss_mel(real)).to(device)
         with torch.no_grad():
             target_content = content.encode_wave(real.squeeze(1))
         generated_content = content.encode_wave(generated.squeeze(1))  # MUST keep autograd
         perceptual = F.l1_loss(generated_content, target_content).to(device)
-        total = args.adv_weight*adv + args.fm_weight*fm + args.mel_weight*mel + args.content_weight*perceptual
+        terms = dict(adversarial=scale*args.adv_weight*adv, feature_matching=scale*args.fm_weight*fm,
+                     mel=args.mel_weight*mel, content=args.content_weight*perceptual)
+        total = sum(terms.values())
         if not torch.isfinite(total):
             raise RuntimeError('Non-finite generator loss')
-        if first:
-            checks = {}
-            for name, term in [('adversarial', adv), ('content', perceptual)]:
+        for name, term in [('content', perceptual)] + ([('adversarial', adv)] if scale > 0 else []):
+            if name not in gradient_checks:
                 grad = torch.autograd.grad(term, predicted, retain_graph=True)[0]
                 value = float(grad.norm())
                 if not np.isfinite(value) or value <= 0:
                     raise RuntimeError(f'{name} has no finite gradient to mapper output')
-                checks[name+'_to_mapper_output_grad_norm'] = value
-            (out / 'gradient_checks.json').write_text(json.dumps(checks, indent=2))
-            print('GRADIENT_CHECK ' + json.dumps(checks), flush=True)
-            first = False
+                gradient_checks[name] = dict(step=step, to_mapper_output_grad_norm=value)
+                del grad
+                (out / 'gradient_checks.json').write_text(json.dumps(gradient_checks, indent=2))
+                print('GRADIENT_CHECK ' + json.dumps(gradient_checks), flush=True)
+        loss_gradients = None
+        if (step in {start+1, args.gan_warmup_steps+1, args.gan_warmup_steps+args.gan_ramp_steps}
+                or (args.loss_grad_interval and step % args.loss_grad_interval == 0)):
+            loss_gradients = weighted_loss_gradients(terms, predicted)
         total.backward()
         mnorm, gnorm = grad_norm(mapper), grad_norm(generator)
         if any(p.grad is not None or p.requires_grad for p in content.model.parameters()):
             raise RuntimeError('Frozen wav2vec2 received parameter gradients')
-        torch.nn.utils.clip_grad_norm_(itertools.chain(mapper.parameters(), generator.parameters()), args.grad_clip, error_if_nonfinite=True)
+        gnorm_combined, gnorm_after = clip_optimizer_gradients((mapper, generator), args.grad_clip)
+        mnorm_after, generator_norm_after = grad_norm(mapper), grad_norm(generator)
         og.step()
         synchronize(device)
         elapsed = time.perf_counter() - started
         times.append(elapsed)
         record = dict(step=step, utterance_id=row['utterance_id'], total=float(total.detach()), discriminator=float(disc.detach()),
                       adversarial=float(adv.detach()), feature_matching_raw=float(fm.detach()), mel=float(mel.detach()), content=float(perceptual.detach()),
-                      mapper_grad=mnorm, generator_grad=gnorm, discriminator_grad=dnorm, seconds=elapsed)
+                      mapper_grad=mnorm, generator_grad=gnorm, discriminator_grad=dnorm, seconds=elapsed,
+                      mapper_grad_post_clip=mnorm_after, generator_grad_post_clip=generator_norm_after,
+                      generator_optimizer_grad_pre_clip=gnorm_combined, generator_optimizer_grad_post_clip=gnorm_after,
+                      discriminator_grad_post_clip=dnorm_after, grad_clip=args.grad_clip,
+                      gan_scale=scale, adversarial_weight=scale*args.adv_weight, feature_matching_weight=scale*args.fm_weight,
+                      gan_losses_evaluated=scale > 0, weighted_losses={k: float(v.detach()) for k, v in terms.items()})
+        if loss_gradients is not None:
+            record['weighted_loss_grad_at_mapper_output'] = loss_gradients
         with (out / 'losses.jsonl').open('a') as f:
             f.write(json.dumps(record) + '\n')
         if step == start+1 or step % args.log_interval == 0:
             print('TRAIN ' + json.dumps(record), flush=True)
         # Drop graphs before validation/checkpoint serialization.
-        del generated, real, generated_content, target_content, total, adv, fm, mel, perceptual, disc, predicted, fr, ff, dr, df, inputs
+        del generated, real, generated_content, target_content, total, terms, term, adv, fm, mel, perceptual, disc, predicted, dr, df, inputs
         og.zero_grad(set_to_none=True)
         if device.type == "mps":
             torch.mps.empty_cache()
-        if args.validation_interval and step % args.validation_interval == 0:
-            validate(step, val_rows, get_item, mapper, generator, device, out)
+        if step == args.max_steps or (args.validation_interval and step % args.validation_interval == 0):
+            validations.append(validate(step, val_rows, get_item, mapper, generator, device, out, baseline))
         if step == args.max_steps or (args.checkpoint_interval and step % args.checkpoint_interval == 0):
             save_joint(out, step, mapper, generator, mpd, msd, og, od, args, config, init, rng)
     summary = dict(steps=args.max_steps-start, mean_seconds=float(np.mean(times)),
-                   median_seconds=float(np.median(times)), all_losses_finite=True, output=str(out))
+                   median_seconds=float(np.median(times)), all_losses_finite=True, output=str(out),
+                   validation_trend=[{k: v for k, v in r.items() if k != 'items'} for r in validations])
     (out / 'summary.json').write_text(json.dumps(summary, indent=2))
     print('FINISHED ' + json.dumps(summary), flush=True)
 
 
-def parse_args():
+def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--device', choices=['mps','cpu','cuda','auto'], default='mps')
     p.add_argument('--content-device', choices=['cpu', 'mps', 'cuda'], default='cpu', help='CPU conserves unified GPU memory; waveform gradients still flow')
@@ -373,14 +440,17 @@ def parse_args():
     p.add_argument('--adv-weight', type=float, default=1)
     p.add_argument('--fm-weight', type=float, default=2)
     p.add_argument('--mel-weight', type=float, default=45)
-    p.add_argument('--content-weight', type=float, default=2, help='Tunable; start with 1-5')
-    p.add_argument('--grad-clip', type=float, default=100)
+    p.add_argument('--content-weight', type=float, default=0.5, help='Conservative content anchor; inspect weighted-loss gradient diagnostics when tuning')
+    p.add_argument('--grad-clip', type=float, default=1.0, help='Combined max L2 norm per optimizer, before its step')
+    p.add_argument('--gan-warmup-steps', type=int, default=1000, help='Reconstruction-only generator updates; discriminators still train')
+    p.add_argument('--gan-ramp-steps', type=int, default=1000, help='Linear GAN/FM ramp after warmup (0 means immediate full weight)')
+    p.add_argument('--loss-grad-interval', type=int, default=1000, help='Log each weighted loss gradient at mapper output; 0 disables periodic checks')
     p.add_argument('--checkpoint-interval', type=int, default=500)
-    p.add_argument('--validation-interval', type=int, default=50)
+    p.add_argument('--validation-interval', type=int, default=1000)
     p.add_argument('--val-items', type=int, default=3)
     p.add_argument('--log-interval', type=int, default=10)
     p.add_argument('--seed', type=int, default=1234)
-    return p.parse_args()
+    return p.parse_args(argv)
 
 
 if __name__ == '__main__':

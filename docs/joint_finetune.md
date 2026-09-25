@@ -1,6 +1,8 @@
 # Joint mapper and HiFi-GAN fine-tuning
 
-New entry point: `python -m src.training.joint_finetune`. No prior source, checkpoint, or log is modified. Default execution is a 100-step smoke test, not an overnight run.
+For the updated clipping, loss weights, schedule and smoke protocol, see [joint_stability_diagnosis.md](joint_stability_diagnosis.md). The descriptions below record the initial implementation.
+
+Original entry point: `python -m src.training.joint_finetune`. No prior source, checkpoint, or log is modified. Default execution is a 100-step smoke test, not an overnight run.
 
 ## Initialization and data
 
