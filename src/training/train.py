@@ -1,6 +1,7 @@
 """Train the configured wav2vec2-to-mel Bi-LSTM mapper."""
 
 import argparse
+import json
 import os
 import random
 from pathlib import Path
@@ -16,6 +17,7 @@ from tqdm import tqdm
 
 from src.models.mapper import build_mapper_from_config
 from src.training.dataset import DysarthricDataset, collate_fn
+from src.training.grad_clip import clip
 from src.training.splits import SPLIT_NAMES, load_or_create_splits, row_indices_for_split
 from src.utils.config import (
     DEFAULT_DATA_CONFIG_PATH,
@@ -67,8 +69,13 @@ def masked_l1_loss(pred, target, lengths):
     return diff.sum() / (mask.sum() * mel_dim).clamp(min=1)
 
 
-def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc="epoch"):
-    """Run one pass over a loader; train only when an optimizer is supplied."""
+def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc="epoch",
+              extras=None):
+    """Run one pass over a loader; train only when an optimizer is supplied.
+
+    ``extras`` (a StepExtras) supplies encoder features, gradient clipping and
+    per-step checkpoint/eval/max-steps hooks; without it the loop is unchanged.
+    """
     is_train = optimizer is not None
     model.train(is_train)
     total_loss = 0.0
@@ -76,8 +83,13 @@ def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc
 
     progress_bar = tqdm(loader, desc=desc, leave=False)
     with torch.set_grad_enabled(is_train):
-        for embeddings, mels, lengths in progress_bar:
-            embeddings = embeddings.to(device)
+        for batch in progress_bar:
+            if extras is None:
+                embeddings, mels, lengths = batch
+                embeddings = embeddings.to(device)
+            else:
+                embeddings = extras.embed(batch)
+                _, mels, lengths = batch
             mels = mels.to(device)
             lengths = lengths.to(device)
 
@@ -86,12 +98,16 @@ def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc
             if is_train:
                 optimizer.zero_grad(set_to_none=True)
                 loss.backward()
+                if extras is not None:
+                    extras.clip_gradients()
                 optimizer.step()
 
             batch_size = embeddings.size(0)
             total_loss += loss.item() * batch_size
             total_samples += batch_size
             progress_bar.set_postfix(loss=f"{loss.item():.4f}")
+            if is_train and extras is not None and extras.after_step(loss.item()):
+                break
 
     if total_samples == 0:
         raise ValueError("Cannot run an epoch with an empty data loader")
@@ -168,9 +184,9 @@ def plot_loss_curve(train_losses, val_losses, output_path):
 
 def checkpoint_payload(
     epoch, model, optimizer, scheduler, val_loss, best_val_loss,
-    train_config, data_config, model_config, train_losses, val_losses,
+    train_config, data_config, model_config, train_losses, val_losses, extra=None,
 ):
-    return {
+    return {**(extra or {}),
         "epoch": epoch,
         "model_state_dict": model.state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
@@ -200,6 +216,98 @@ def print_effective_config(values):
         print(f"  {key}: {value}")
 
 
+class StepExtras:
+    """Per-step hooks for the optional features; inactive options cost nothing.
+
+    - encoder (PartialWav2Vec2 or None): features from partially unfrozen wav2vec2
+    - gradient clipping (rescale, logged to gradients.jsonl) per parameter group
+    - eval every N steps: W5 32-utterance mel L1 + 8 fixed W5 clips STOI/PESQ,
+      appended to eval_log.jsonl (same format as the mel-adversarial trainer)
+    - checkpoints/step_N.pt + checkpoints/latest.pt every N steps
+    - stop after --max-steps optimizer steps
+    """
+
+    def __init__(self, *, mapper, encoder, dataset, device, args, out_dir, payload):
+        self.mapper, self.encoder, self.dataset, self.device = mapper, encoder, dataset, device
+        self.args, self.out_dir, self.payload = args, out_dir, payload
+        self.step, self.done, self.nonfinite = 0, False, False
+        self.eval_cache, self.voc = {}, None
+        self.gradients = out_dir / "gradients.jsonl"
+
+    def embed(self, batch):
+        if self.encoder is None:
+            return batch[0].to(self.device)
+        keys, _, lengths = batch
+        return self.encoder.batch_features(keys, lengths)
+
+    def clip_gradients(self):
+        common = dict(diagnostics=self.gradients, step=self.step + 1)
+        if self.args.mapper_clip_norm > 0:
+            clip(self.mapper.parameters(), component="mapper",
+                 max_norm=self.args.mapper_clip_norm, **common)
+        if self.encoder is not None and self.args.wav2vec_clip_norm > 0:
+            clip(self.encoder.trainable_parameters(), component="wav2vec2",
+                 max_norm=self.args.wav2vec_clip_norm, **common)
+
+    def after_step(self, loss):
+        """Return True once --max-steps optimizer steps have run."""
+        self.step += 1
+        if not np.isfinite(loss):
+            raise RuntimeError(f"Non-finite training loss at step {self.step}")
+        if self.args.checkpoint_every and self.step % self.args.checkpoint_every == 0:
+            self.save_periodic()
+        if self.args.eval_every and self.step % self.args.eval_every == 0:
+            self.evaluate()
+        self.done = bool(self.args.max_steps) and self.step >= self.args.max_steps
+        return self.done
+
+    def save_periodic(self):
+        folder = self.out_dir / "checkpoints"
+        folder.mkdir(parents=True, exist_ok=True)
+        path = folder / f"step_{self.step:06d}.pt"
+        torch.save(self.payload(), path)
+        temporary = folder / "latest.pt.tmp"
+        temporary.unlink(missing_ok=True)
+        try:
+            os.link(path, temporary)  # no second copy on disk (Drive/FUSE may refuse)
+        except OSError:
+            temporary.write_bytes(path.read_bytes())
+        os.replace(temporary, folder / "latest.pt")
+
+    def _eval_data(self, row):
+        from src.inference.run import compute_mel_frame_count
+
+        uid = row["utterance_id"]
+        if uid not in self.eval_cache:
+            mel = torch.from_numpy(self.dataset._extract_clean_mel(row["clean_path"])).float()
+            frames = compute_mel_frame_count(REPO_ROOT / row["distorted_path"])
+            self.eval_cache[uid] = (mel, frames)
+        mel, frames = self.eval_cache[uid]
+        if self.encoder is None:
+            features = torch.from_numpy(self.dataset._load_distorted_embedding(uid, "severe")).float()
+        else:
+            with torch.no_grad():
+                features = self.encoder(uid, REPO_ROOT / row["distorted_path"]).float().cpu()
+        return features, mel, frames
+
+    def evaluate(self):
+        from src.evaluation.mapper_eval import audio_metrics, load_vocoder, mel_l1, w5_eval_rows
+
+        if self.voc is None:
+            self.voc = load_vocoder()
+            self.w5_val, self.w5_audio = w5_eval_rows()
+        was_training = self.mapper.training
+        self.mapper.eval()
+        mel = mel_l1(self.mapper, self.w5_val, self._eval_data)
+        audio = audio_metrics(self.mapper, self.voc, self.w5_audio, self._eval_data,
+                              self.out_dir / "eval" / f"step_{self.step:06d}")
+        self.mapper.train(was_training)
+        entry = dict(step=self.step, mel_l1=mel, stoi=audio["stoi"], pesq=audio["pesq"])
+        with (self.out_dir / "eval_log.jsonl").open("a") as handle:
+            handle.write(json.dumps(entry) + "\n")
+        print("EVAL", json.dumps(entry), flush=True)
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Train the Thai-DSR mapper.")
     parser.add_argument("--train-config", default=os.fspath(DEFAULT_TRAIN_CONFIG_PATH))
@@ -213,6 +321,35 @@ def parse_args():
     parser.add_argument("--resume-checkpoint", default=None, help="Checkpoint to resume from.")
     parser.add_argument("--best-checkpoint", default=None, help="Best-checkpoint output path.")
     parser.add_argument("--loss-curve", default=None, help="Loss-curve output path.")
+    parser.add_argument(
+        "--early-stop-patience", type=int, default=None,
+        help="Stop after this many epochs without a new best val loss.",
+    )
+    parser.add_argument("--manifest", default=None, help="Override the config manifest_path.")
+    parser.add_argument("--splits", default=None, help="Override the config splits_path.")
+    parser.add_argument(
+        "--init-checkpoint", default=None,
+        help="Start the mapper (and unfrozen wav2vec2 blocks, if saved) from this checkpoint; "
+             "fresh optimizer. Unlike --resume-checkpoint, epochs restart at 1.",
+    )
+    parser.add_argument(
+        "--unfreeze-top-layers", type=int, default=0,
+        help="Train the N wav2vec2 transformer blocks directly below the selected layer "
+             "(0 = fully frozen, cached embeddings).",
+    )
+    parser.add_argument("--wav2vec-lr", type=float, default=1e-5,
+                        help="Learning rate for the unfrozen wav2vec2 blocks.")
+    parser.add_argument("--wav2vec-clip-norm", type=float, default=1.0,
+                        help="Gradient-norm clip for the unfrozen wav2vec2 blocks (0 = off).")
+    parser.add_argument("--mapper-clip-norm", type=float, default=0.0,
+                        help="Gradient-norm clip for the mapper (0 = off, the original recipe).")
+    parser.add_argument("--eval-every", type=int, default=0,
+                        help="Every N steps (and at step 0) log W5 mel L1 + 8-clip STOI/PESQ "
+                             "to eval_log.jsonl (0 = off).")
+    parser.add_argument("--checkpoint-every", type=int, default=0,
+                        help="Every N steps save checkpoints/step_N.pt and checkpoints/latest.pt (0 = off).")
+    parser.add_argument("--max-steps", type=int, default=0,
+                        help="Stop after N optimizer steps (0 = no limit).")
     return parser.parse_args()
 
 
@@ -247,8 +384,8 @@ def main():
 
     paths = data_config["paths"]
     train_data_config = train_config["data"]
-    manifest_path = train_data_config.get("manifest_path", paths["manifest_path"])
-    splits_path = train_data_config.get("splits_path", paths["splits_path"])
+    manifest_path = args.manifest or train_data_config.get("manifest_path", paths["manifest_path"])
+    splits_path = args.splits or train_data_config.get("splits_path", paths["splits_path"])
     severity_value = train_data_config["severity"]
     severity = None if str(severity_value).lower() == "all" else severity_value
     dataset = DysarthricDataset(
@@ -274,8 +411,22 @@ def main():
         seed=int(split_config["seed"]),
         output_path=project_path(splits_path),
     )
+    for name in ("unfreeze_top_layers", "eval_every", "checkpoint_every", "max_steps"):
+        if getattr(args, name) < 0:
+            raise ValueError(f"--{name.replace('_', '-')} must be non-negative")
+    if args.init_checkpoint and (args.resume_checkpoint or runtime["resume_checkpoint"]):
+        raise ValueError("Use either --init-checkpoint or --resume-checkpoint, not both")
+    encoder = None
+    loader_dataset, loader_collate = dataset, collate_fn
+    if args.unfreeze_top_layers:
+        from src.training.partial_encoder import (
+            EncoderInputDataset, PartialWav2Vec2, collate_encoder_inputs,
+        )
+
+        encoder = PartialWav2Vec2(dataset.layer, args.unfreeze_top_layers, device)
+        loader_dataset, loader_collate = EncoderInputDataset(dataset), collate_encoder_inputs
     subsets = {
-        name: Subset(dataset, row_indices_for_split(dataset.manifest, splits[name]))
+        name: Subset(loader_dataset, row_indices_for_split(dataset.manifest, splits[name]))
         for name in SPLIT_NAMES
     }
 
@@ -289,7 +440,7 @@ def main():
     loader_options = {
         "batch_size": int(optim_config["batch_size"]),
         "num_workers": num_workers,
-        "collate_fn": collate_fn,
+        "collate_fn": loader_collate,
         "pin_memory": device.type == "cuda",
         "persistent_workers": num_workers > 0,
     }
@@ -301,7 +452,21 @@ def main():
     test_loader = DataLoader(subsets["test"], shuffle=False, **loader_options)
 
     mapper = build_mapper_from_config(model_config).to(device)
+    if args.init_checkpoint:
+        initial = torch.load(project_path(args.init_checkpoint), map_location=device, weights_only=True)
+        mapper.load_state_dict(initial["model_state_dict"])
+        if encoder is not None and "wav2vec2_top_layers_state_dict" in initial:
+            if initial.get("unfreeze_top_layers") != args.unfreeze_top_layers:
+                raise ValueError("--init-checkpoint was saved with a different --unfreeze-top-layers")
+            encoder.load_top_state_dict(initial["wav2vec2_top_layers_state_dict"])
+        del initial
     optimizer = build_optimizer(mapper, optim_config)
+    if encoder is not None:
+        mapper_parameters = sum(p.numel() for p in mapper.parameters())
+        encoder_parameters = sum(p.numel() for p in encoder.trainable_parameters())
+        print(f"Unfrozen wav2vec2 blocks: {encoder_parameters:,} parameters "
+              f"(mapper {mapper_parameters:,})")
+        optimizer.add_param_group({"params": encoder.trainable_parameters(), "lr": args.wav2vec_lr})
     scheduler_name = optim_config["lr_scheduler"]
     scheduler = build_scheduler(optimizer, scheduler_name, num_epochs)
     reconstruction_weight = float(train_config["loss"]["reconstruction_weight"])
@@ -327,6 +492,13 @@ def main():
         "num_workers": num_workers,
         "log_interval": log_interval,
         "save_every_n_epochs": save_interval,
+        "unfreeze_top_layers": args.unfreeze_top_layers,
+        "wav2vec_lr": args.wav2vec_lr if encoder is not None else None,
+        "wav2vec_clip_norm": args.wav2vec_clip_norm if encoder is not None else None,
+        "mapper_clip_norm": args.mapper_clip_norm,
+        "eval_every": args.eval_every,
+        "checkpoint_every": args.checkpoint_every,
+        "max_steps": args.max_steps,
         "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
@@ -349,27 +521,62 @@ def main():
     train_losses = []
     val_losses = []
     start_epoch = 1
+    best_epoch = 0
     resume_checkpoint = args.resume_checkpoint or runtime["resume_checkpoint"]
     if resume_checkpoint:
         resume_path = project_path(resume_checkpoint)
         checkpoint = load_checkpoint(resume_path, mapper, optimizer, scheduler, device)
         start_epoch = int(checkpoint["epoch"]) + 1
         best_val_loss = float(checkpoint.get("best_val_loss", checkpoint["val_loss"]))
+        best_epoch = start_epoch - 1  # patience restarts from the resume point
         train_losses = list(checkpoint.get("train_losses", []))
         val_losses = list(checkpoint.get("val_losses", []))
+        if encoder is not None:
+            if checkpoint.get("unfreeze_top_layers") != args.unfreeze_top_layers:
+                raise ValueError("--resume-checkpoint was saved with a different --unfreeze-top-layers")
+            encoder.load_top_state_dict(checkpoint["wav2vec2_top_layers_state_dict"])
+        resumed_step = int(checkpoint.get("global_step", 0))
         if not best_path.exists():
             torch.save(checkpoint, best_path)
         print(f"Resumed from {resume_path} at epoch {start_epoch}")
+
+    extras = None
+    if (encoder is not None or args.mapper_clip_norm > 0 or args.eval_every
+            or args.checkpoint_every or args.max_steps):
+        def current_payload():
+            return checkpoint_payload(
+                epoch, mapper, optimizer, scheduler, val_losses[-1] if val_losses else None,
+                best_val_loss, train_config, data_config, model_config, train_losses, val_losses,
+                extra=payload_extra(),
+            )
+
+        extras = StepExtras(mapper=mapper, encoder=encoder, dataset=dataset, device=device,
+                            args=args, out_dir=checkpoint_dir, payload=current_payload)
+        if resume_checkpoint:
+            extras.step = resumed_step
+
+    def payload_extra():
+        """Extra checkpoint keys; None (unchanged payload) when no new option is active."""
+        if extras is None:
+            return None
+        extra = {"global_step": extras.step}
+        if encoder is not None:
+            extra.update(unfreeze_top_layers=args.unfreeze_top_layers,
+                         wav2vec2_top_layers_state_dict=encoder.top_state_dict())
+        return extra
+
+    if extras is not None and args.eval_every:
+        extras.evaluate()
 
     epoch_bar = tqdm(range(start_epoch, num_epochs + 1), desc="Training")
     for epoch in epoch_bar:
         train_loss = run_epoch(
             mapper, train_loader, device, reconstruction_weight,
-            optimizer=optimizer, desc=f"Epoch {epoch}/{num_epochs} [train]",
+            optimizer=optimizer, desc=f"Epoch {epoch}/{num_epochs} [train]", extras=extras,
         )
         val_loss = run_epoch(
             mapper, val_loader, device, reconstruction_weight,
-            desc=f"Epoch {epoch}/{num_epochs} [val]",
+            desc=f"Epoch {epoch}/{num_epochs} [val]", extras=extras,
         )
         step_scheduler(scheduler, scheduler_name, val_loss)
         train_losses.append(train_loss)
@@ -382,10 +589,12 @@ def main():
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
+            best_epoch = epoch
             torch.save(
                 checkpoint_payload(
                     epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
                     train_config, data_config, model_config, train_losses, val_losses,
+                    extra=payload_extra(),
                 ),
                 best_path,
             )
@@ -397,6 +606,7 @@ def main():
                 checkpoint_payload(
                     epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
                     train_config, data_config, model_config, train_losses, val_losses,
+                    extra=payload_extra(),
                 ),
                 periodic_path,
             )
@@ -406,6 +616,16 @@ def main():
                 f"Epoch {epoch:3d}/{num_epochs} | train_loss={train_loss:.4f} | "
                 f"val_loss={val_loss:.4f} | best_val_loss={best_val_loss:.4f}"
             )
+
+        if args.early_stop_patience and epoch - best_epoch >= args.early_stop_patience:
+            print(
+                f"Early stop at epoch {epoch}: no val improvement since epoch {best_epoch}"
+            )
+            break
+
+        if extras is not None and extras.done:
+            print(f"Stopped after --max-steps {args.max_steps} optimizer steps")
+            break
 
     if not train_losses:
         raise ValueError(
@@ -420,7 +640,9 @@ def main():
 
     best_checkpoint = torch.load(best_path, map_location=device, weights_only=True)
     mapper.load_state_dict(best_checkpoint["model_state_dict"])
-    test_loss = run_epoch(mapper, test_loader, device, reconstruction_weight)
+    if encoder is not None:
+        encoder.load_top_state_dict(best_checkpoint["wav2vec2_top_layers_state_dict"])
+    test_loss = run_epoch(mapper, test_loader, device, reconstruction_weight, extras=extras)
     print(f"\nTraining complete. Best val loss: {best_val_loss:.4f}")
     print(f"Held-out test loss: {test_loss:.4f}")
     print(f"Best checkpoint saved to: {best_path}")

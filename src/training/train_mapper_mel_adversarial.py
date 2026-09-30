@@ -23,6 +23,7 @@ from src.models.encoder import Wav2Vec2ContentEncoder
 from src.models.mel_discriminator import (MelDiscriminator, adversarial_weight,
     score_mels, discriminator_loss, generator_loss)
 from src.training.train import set_seed, masked_l1_loss
+from src.training.grad_clip import clip
 from src.training.train_mapper_weighted import read_splits, digest, record, ROOT, BASE, VOC
 from src.utils.mel import compute_mel
 from src.inference.run import Generator, AttrDict, compute_mel_frame_count, MEL_CLAMP_MIN, MEL_CLAMP_MAX
@@ -35,35 +36,6 @@ ENCODER_REVISION = '3155938c549b23eee16b1d4b55dcb161b7fe4bcf'
 
 def interpolate(h, n):
     return F.interpolate(h.T[None], size=int(n), mode='linear', align_corners=False)[0].T
-
-
-def clip(parameters, *, diagnostics=None, step=None, component=None, weight=None):
-    """Rescale finite gradients; log before an optimizer update or nonfinite failure.
-
-    Float32 norm reductions can differ slightly before and after rescaling.
-    A tiny post-clip overshoot is diagnostic, not a reason to abort training.
-    """
-    parameters = list(parameters)
-    try:
-        raw = float(torch.nn.utils.clip_grad_norm_(parameters, 1.0, error_if_nonfinite=True))
-    except RuntimeError:
-        raw = float(torch.linalg.vector_norm(torch.stack([p.grad.norm() for p in parameters if p.grad is not None])))
-        entry = dict(step=step, component=component, adversarial_weight=weight,
-                     raw_grad_norm=str(raw), error='gradient clipping failed')
-        if diagnostics is not None:
-            with diagnostics.open('a') as f:
-                f.write(json.dumps(entry)+'\n')
-        print('GRADIENT_ERROR', json.dumps(entry), flush=True)
-        raise
-    post = float(torch.linalg.vector_norm(torch.stack([p.grad.norm() for p in parameters if p.grad is not None])))
-    entry = dict(step=step, component=component, adversarial_weight=weight,
-                 raw_grad_norm=raw, post_clip_norm=post, old_bound_would_fail=post > 1.00001)
-    if diagnostics is not None:
-        with diagnostics.open('a') as f:
-            f.write(json.dumps(entry, allow_nan=False)+'\n')
-    if post > 1.00001:
-        print('CLIP_ROUNDOFF', json.dumps(entry), flush=True)
-    return raw, post
 
 
 def main(args):
@@ -84,7 +56,7 @@ def main(args):
     device = torch.device('cpu')
     init = ROOT/args.init_checkpoint if args.init_checkpoint else BASE
     baseline = torch.load(init, map_location='cpu', weights_only=True)
-    cfg = baseline['model_config']; split = read_splits(args.manifest, args.splits)
+    cfg = baseline['model_config']; split = read_splits(manifest=args.manifest, splits_path=args.splits)
     # Audio validation always uses the 8 fixed W5 reference clips (same as before on W5).
     w5_val, val_audio = w5_eval_rows()
     val_ids = {r['utterance_id'] for r in split['val']}

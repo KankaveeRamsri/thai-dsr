@@ -55,6 +55,7 @@ def load_vocoder(device='cpu'):
 
 @torch.no_grad()
 def mel_l1(model, rows, data):
+    device = next(model.parameters()).device
     total = 0.
     for start in range(0, len(rows), 4):
         rr = rows[start:start + 4]
@@ -62,6 +63,7 @@ def mel_l1(model, rows, data):
         lengths = torch.tensor([len(t) for _, t, _ in items])
         hs = pad_sequence([interpolate(h, n) for (h, _, _), n in zip(items, lengths)], batch_first=True)
         target = pad_sequence([t for _, t, _ in items], batch_first=True)
+        hs, target, lengths = hs.to(device), target.to(device), lengths.to(device)
         total += float(masked_l1_loss(model(hs, lengths), target, lengths)) * len(rr)
     return total / len(rows)
 
@@ -69,11 +71,12 @@ def mel_l1(model, rows, data):
 @torch.no_grad()
 def audio_metrics(model, voc, rows, data, folder):
     folder.mkdir(parents=True, exist_ok=True)
+    device = next(model.parameters()).device
     items = []
     for row in rows:
         uid = row['utterance_id']
         h, _, frames = data(row)
-        pred = model(interpolate(h, frames)[None], torch.tensor([frames]))
+        pred = model(interpolate(h, frames)[None].to(device), torch.tensor([frames], device=device)).cpu()
         wav = voc(pred.transpose(1, 2).clamp(MEL_CLAMP_MIN, MEL_CLAMP_MAX)).squeeze().cpu().numpy()
         assert np.isfinite(wav).all()
         dest = folder / (uid + '.wav')
