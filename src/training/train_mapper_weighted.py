@@ -41,11 +41,11 @@ def record(p, data):
     print(p.stem.upper(), s, flush=True)
 
 
-def read_splits():
-    splits = json.loads((ROOT/'data/splits_w5.json').read_text())['splits']
+def read_splits(manifest='data/manifest_w5.csv', splits_path='data/splits_w5.json'):
+    splits = json.loads((ROOT/splits_path).read_text())['splits']
     ids = sum([splits[s] for s in ('train', 'val', 'test')], [])
     assert len(ids) == len(set(ids)), 'Split overlap'
-    with (ROOT/'data/manifest_w5.csv').open() as f:
+    with (ROOT/manifest).open() as f:
         rows = [r for r in csv.DictReader(f) if r['severity'] == 'severe']
     by_id = {r['utterance_id']: r for r in rows}
     assert len(rows) == len(by_id) and set(ids) == set(by_id)

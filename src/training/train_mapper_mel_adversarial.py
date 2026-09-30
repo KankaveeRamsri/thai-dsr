@@ -9,6 +9,7 @@ import json
 import math
 import os
 from pathlib import Path
+import shutil
 import time
 
 import numpy as np
@@ -26,6 +27,10 @@ from src.training.train_mapper_weighted import read_splits, digest, record, ROOT
 from src.utils.mel import compute_mel
 from src.inference.run import Generator, AttrDict, compute_mel_frame_count, MEL_CLAMP_MIN, MEL_CLAMP_MAX
 from src.evaluation.metrics import load_audio_16k, compute_stoi, compute_pesq
+from src.evaluation.mapper_eval import audio_metrics, mel_l1, w5_eval_rows
+
+W5_MANIFEST, W5_SPLITS = 'data/manifest_w5.csv', 'data/splits_w5.json'
+ENCODER_REVISION = '3155938c549b23eee16b1d4b55dcb161b7fe4bcf'
 
 
 def interpolate(h, n):
@@ -63,8 +68,9 @@ def clip(parameters, *, diagnostics=None, step=None, component=None, weight=None
 
 def main(args):
     os.chdir(ROOT)
-    if not 1 <= args.max_steps <= 500 or args.validation_interval < 1 or args.threads < 1:
-        raise ValueError('Smoke only: 1..500 steps; positive interval/threads')
+    if min(args.max_steps, args.validation_interval, args.threads,
+           args.checkpoint_every, args.eval_every or 1) < 1:
+        raise ValueError('Steps, intervals and threads must be positive')
     if args.warmup < 0 or args.ramp < 1 or args.warmup + args.ramp >= args.max_steps:
         raise ValueError('Smoke must exercise warmup, ramp and full-weight phases')
     if any(not math.isfinite(v) or v <= 0 for v in (args.mel_weight,args.adv_weight,args.mapper_lr,args.discriminator_lr)):
@@ -76,12 +82,16 @@ def main(args):
     out.mkdir(parents=True, exist_ok=False)
     torch.set_num_threads(args.threads); set_seed(42)
     device = torch.device('cpu')
-    baseline = torch.load(BASE, map_location='cpu', weights_only=True)
-    cfg = baseline['model_config']; split = read_splits()
-    selected = np.linspace(0, len(split['val'])-1, 8, dtype=int)
-    val_audio = [split['val'][i] for i in selected]
-    immutable = [BASE,VOC,VOC.with_name('config.json'),ROOT/'src/models/mapper.py',
-                 ROOT/'data/manifest_w5.csv',ROOT/'data/splits_w5.json']
+    init = ROOT/args.init_checkpoint if args.init_checkpoint else BASE
+    baseline = torch.load(init, map_location='cpu', weights_only=True)
+    cfg = baseline['model_config']; split = read_splits(args.manifest, args.splits)
+    # Audio validation always uses the 8 fixed W5 reference clips (same as before on W5).
+    w5_val, val_audio = w5_eval_rows()
+    val_ids = {r['utterance_id'] for r in split['val']}
+    assert {r['utterance_id'] for r in w5_val} <= val_ids, 'W5 val utterances must stay in val'
+    w5_manifest = (ROOT/args.manifest).resolve() == (ROOT/W5_MANIFEST).resolve()
+    immutable = [init,VOC,VOC.with_name('config.json'),ROOT/'src/models/mapper.py',
+                 ROOT/args.manifest,ROOT/args.splits]
     hashes = {str(p):digest(p) for p in immutable}
     model = build_mapper_from_config(cfg).to(device)
     model.load_state_dict(baseline['model_state_dict'])
@@ -91,7 +101,7 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(), lr=args.mapper_lr, betas=(0.9,0.999))
     d_optimizer = torch.optim.Adam(discriminator.parameters(), lr=args.discriminator_lr, betas=(0.5,0.999))
     provenance = dict(args=vars(args), seed=42, model_config=cfg, hashes=hashes,
-        initialization='exact mapper_layer9.pt model_state_dict; fresh mel discriminator and Adam states',
+        initialization=f'exact {init.relative_to(ROOT) if init.is_relative_to(ROOT) else init} model_state_dict; fresh mel discriminator and Adam states',
         discriminator_parameters=sum(p.numel() for p in discriminator.parameters()),
         audio_val_ids=[r['utterance_id'] for r in val_audio],
         split_ids={s:[r['utterance_id'] for r in rr] for s,rr in split.items()},
@@ -101,30 +111,37 @@ def main(args):
         discriminator_loss='0.5 * mean((D(real)-1)^2 + D(pred.detach())^2); true-length utterances')
     (out/'run.json').write_text(json.dumps(provenance, indent=2))
     print('PROCESS',json.dumps(dict(pid=os.getpid(),session=os.getsid(0),process_group=os.getpgrp())),flush=True)
+    # W5: the all-layer fp16 cache (unchanged). Other manifests: the float32
+    # layer-9 cache written by src.preprocessing.extract_embedding. Misses are encoded.
     cache = ROOT/'data/embeddings/weighted_all25_fp16'
-    meta = json.loads((cache/'metadata.json').read_text())
-    assert meta == dict(model=cfg['encoder']['content_model'], revision='3155938c549b23eee16b1d4b55dcb161b7fe4bcf',
-                       manifest_sha256=hashes[str(ROOT/'data/manifest_w5.csv')],dtype='float16',layers=25)
+    if w5_manifest:
+        meta = json.loads((cache/'metadata.json').read_text())
+        assert meta == dict(model=cfg['encoder']['content_model'], revision=ENCODER_REVISION,
+                           manifest_sha256=hashes[str(ROOT/W5_MANIFEST)],dtype='float16',layers=25)
     embeddings, targets, frames = {}, {}, {}
     encoder = None
-    for i,row in enumerate(split['train']+split['val'],1):
+    rows = split['train']+split['val']
+    for i,row in enumerate(rows,1):
         uid=row['utterance_id']; source=ROOT/row['distorted_path']
-        key=hashlib.sha256((uid+digest(source)).encode()).hexdigest()
-        path=cache/(key+'.npy')
+        if w5_manifest:
+            key=hashlib.sha256((uid+digest(source)).encode()).hexdigest()
+            path=cache/(key+'.npy')
+        else:
+            path=ROOT/'data/embeddings/distorted'/f'{uid}_severe_layer09.npy'
         if path.exists():
-            embedding=np.load(path,mmap_mode='r')[9].astype(np.float32)
+            embedding=(np.load(path,mmap_mode='r')[9] if w5_manifest else np.load(path)).astype(np.float32)
         else:
             if encoder is None:
                 encoder=Wav2Vec2ContentEncoder(device=device,layer=9)
                 encoder.model.eval().requires_grad_(False)
-                assert encoder.model.config._commit_hash == meta['revision']
+                assert encoder.model.config._commit_hash == ENCODER_REVISION
             embedding=encoder.encode(str(source)).astype(np.float16).astype(np.float32)
         assert embedding.ndim==2 and embedding.shape[1]==1024 and np.isfinite(embedding).all()
         embeddings[uid]=torch.from_numpy(embedding)
         clean,sr=sf.read(ROOT/row['clean_path'],dtype='float32',always_2d=True)
         targets[uid]=torch.from_numpy(compute_mel(clean.mean(axis=1),sr=sr).T.copy())
         frames[uid]=compute_mel_frame_count(source)
-        if i==1 or i%30==0 or i==179: print(f'CACHE {i}/179',flush=True)
+        if i==1 or i%30==0 or i==len(rows): print(f'CACHE {i}/{len(rows)}',flush=True)
     if encoder is not None:
         assert all(not p.requires_grad and p.grad is None for p in encoder.model.parameters())
     del encoder;gc.collect()
@@ -188,6 +205,27 @@ def main(args):
             discriminator=discriminator.state_dict(),optimizer=optimizer.state_dict(),d_optimizer=d_optimizer.state_dict(),
             rng_state=torch.get_rng_state(),sampler_rng=sampler.get_state(),provenance=provenance),out/name)
     checkpoint('best.pt')
+
+    def periodic_checkpoint():
+        (out/'checkpoints').mkdir(exist_ok=True)
+        name=f'checkpoints/step_{step:06d}.pt'
+        checkpoint(name)
+        shutil.copyfile(out/name,out/'checkpoints/latest.pt.tmp')
+        os.replace(out/'checkpoints/latest.pt.tmp',out/'checkpoints/latest.pt')
+
+    def data(row):
+        uid=row['utterance_id']
+        return embeddings[uid],targets[uid],frames[uid]
+
+    def periodic_eval():
+        """mel L1 over the 32 W5 val utterances; STOI/PESQ on the 8 W5 reference clips."""
+        model.eval()
+        mel=mel_l1(model,w5_val,data)
+        audio=audio_metrics(model,voc,val_audio,data,out/'eval'/f'step_{step:06d}')
+        model.train()
+        entry=dict(step=step,mel_l1=mel,stoi=audio['stoi'],pesq=audio['pesq'])
+        with (out/'eval_log.jsonl').open('a') as f:f.write(json.dumps(entry)+'\n')
+        print('EVAL',json.dumps(entry),flush=True)
     while step<args.max_steps:
         epoch+=1;order=torch.randperm(len(split['train']),generator=sampler).tolist()
         for start in range(0,len(order),4):
@@ -224,6 +262,8 @@ def main(args):
             if step%args.validation_interval==0 or step==args.max_steps:
                 result=validation(step);trend.append(result);record(out/'validation.jsonl',result)
                 checkpoint(f'step_{step:06d}.pt')
+            if step%args.checkpoint_every==0 or step==args.max_steps:periodic_checkpoint()
+            if step%(args.eval_every or args.checkpoint_every)==0 or step==args.max_steps:periodic_eval()
             if step>=args.max_steps:break
         result=validation(step,audio=False);record(out/'epochs.jsonl',dict(epoch=epoch,**result))
         if result['val_mel_l1']<best:best=result['val_mel_l1'];checkpoint('best.pt')
@@ -243,6 +283,14 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output-dir',required=True)
     p.add_argument('--max-steps',type=int,default=300)
+    p.add_argument('--init-checkpoint',default=None,
+                   help='mapper checkpoint to start from (default: results/checkpoints/mapper_layer9.pt)')
+    p.add_argument('--manifest',default=W5_MANIFEST)
+    p.add_argument('--splits',default=W5_SPLITS)
+    p.add_argument('--checkpoint-every',type=int,default=300,
+                   help='also save checkpoints/step_N.pt and checkpoints/latest.pt every N steps')
+    p.add_argument('--eval-every',type=int,default=None,
+                   help='append W5 mel L1 + 8-clip STOI/PESQ to eval_log.jsonl every N steps (default: --checkpoint-every)')
     p.add_argument('--validation-interval',type=int,default=100)
     p.add_argument('--threads',type=int,default=4)
     p.add_argument('--warmup',type=int,default=50)
