@@ -1,0 +1,32 @@
+# train_expanded.yaml -- W5 layer-9 mapper recipe on the expanded (~2000 utt) set
+# Configuration for the training run: optimization, logging, checkpoints.
+
+data:
+  severity: severe    # dysarthria severity level used for training (mild | moderate | severe)
+  layer: 9              # wav2vec2 layer selected via scripts/select_layer.py
+  manifest_path: data/manifest_expanded.csv
+  splits_path: data/splits_expanded.json
+
+optim:
+  batch_size: 4
+  learning_rate: 0.001
+  weight_decay: 0.0
+  num_epochs: 40  # upper bound; the run also uses --early-stop-patience
+  optimizer: adam        # e.g. adam | adamw | sgd
+  lr_scheduler: reduce_on_plateau  # e.g. reduce_on_plateau | cosine | step | null
+
+loss:
+  reconstruction_weight: 1.0   # weight for mel reconstruction loss
+
+logging:
+  log_dir: results/logs
+  checkpoint_dir: results/checkpoints/mapper_expanded
+  loss_curve_filename: loss_curve_expanded.png
+  log_interval: 1           # print every epoch (runs are short on GPU)
+  save_every_n_epochs: 5   # finer resume points for Colab disconnects
+
+runtime:
+  device: auto        # auto | cuda | mps | cpu -- auto picks the best available
+  num_workers: 4
+  seed: 42
+  resume_checkpoint: null    # set a checkpoint path only when resuming an interrupted run
