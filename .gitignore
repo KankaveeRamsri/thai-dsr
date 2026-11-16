@@ -19,3 +19,11 @@ data/hifigan_finetune/
 scripts/colab_transfer_bundle.zip
 results/audio_compare/**/*.wav
 results/mel_compare/*.png
+
+# Real-speaker recordings: never commit
+data/patient/
+results/patient_probe/
+
+# Expanded Common Voice audio and its Colab bundle: too large for git
+data/common_voice_ext/*.wav
+scripts/colab_expanded_baseline_bundle.zip

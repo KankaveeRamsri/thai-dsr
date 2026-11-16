@@ -45,8 +45,29 @@ def decode_audio(audio_record):
     return audio
 
 
-def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
+def load_prefix_sentences(prefix_transcripts, start_index):
+    """Read the transcripts of clips already prepared by an earlier run."""
+    with Path(prefix_transcripts).open(encoding="utf-8", newline="") as handle:
+        sentences = [row["sentence"] for row in csv.DictReader(handle)]
+    if len(sentences) < start_index:
+        raise ValueError(
+            f"{prefix_transcripts} has {len(sentences)} rows; --start-index is {start_index}"
+        )
+    return sentences[:start_index]
+
+
+def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT, streaming=False,
+            start_index=0, prefix_transcripts=None):
+    """Write validated clips ``start_index`` .. ``limit - 1`` to ``output_dir``.
+
+    Clips before ``start_index`` are decoded (so indexing matches an earlier
+    run exactly) and checked against ``prefix_transcripts`` but not written.
+    ``streaming`` reads the train split without caching all Thai archives.
+    """
     output_dir = Path(output_dir)
+    prefix_sentences = (
+        load_prefix_sentences(prefix_transcripts, start_index) if start_index else []
+    )
     if output_dir.exists() and any(output_dir.iterdir()):
         raise FileExistsError(
             f"Output directory is not empty: {output_dir}. Move or remove it before rerunning."
@@ -59,6 +80,7 @@ def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
             DATASET_CONFIG,
             split="train",
             trust_remote_code=True,
+            streaming=streaming,
         )
         source_name = DATASET_NAME
     except EmptyDatasetError:
@@ -71,15 +93,18 @@ def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
             DATASET_CONFIG,
             split="train",
             trust_remote_code=True,
+            streaming=streaming,
         )
         source_name = FALLBACK_DATASET_NAME
     dataset = dataset.cast_column("audio", Audio(decode=False))
+    filter_kwargs = {} if streaming else {"desc": "Filtering validated clips"}
     validated = dataset.filter(
         lambda up_votes, down_votes: up_votes >= 2 and down_votes == 0,
         input_columns=["up_votes", "down_votes"],
-        desc="Filtering validated clips",
+        **filter_kwargs,
     )
 
+    index = 0
     transcript_rows = []
     total_duration = 0.0
     decode_failures = 0
@@ -95,7 +120,15 @@ def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
         if audio is None or audio.size == 0:
             continue
 
-        index = len(transcript_rows)
+        if index < start_index:
+            if row["sentence"] != prefix_sentences[index]:
+                raise RuntimeError(
+                    f"Clip {index} does not match {prefix_transcripts}: "
+                    f"{row['sentence']!r} != {prefix_sentences[index]!r}"
+                )
+            index += 1
+            continue
+
         filename = f"cv_{index:04d}.wav"
         sf.write(
             output_dir / filename,
@@ -105,12 +138,15 @@ def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
         )
         transcript_rows.append({"filename": filename, "sentence": row["sentence"]})
         total_duration += len(audio) / TARGET_SAMPLE_RATE
-        if len(transcript_rows) >= limit:
+        index += 1
+        if index % 100 == 0:
+            print(f"prepared clip index {index}/{limit}", flush=True)
+        if index >= limit:
             break
 
-    if len(transcript_rows) < limit:
+    if index < limit:
         raise RuntimeError(
-            f"Found only {len(transcript_rows)} usable clips; requested {limit}. "
+            f"Found only {index} usable clips; requested {limit}. "
             f"Decode failures: {decode_failures}"
         )
 
@@ -122,7 +158,7 @@ def prepare(output_dir=DEFAULT_OUTPUT_DIR, limit=DEFAULT_LIMIT):
 
     print("\nสรุป Common Voice Thai")
     print(f"แหล่งข้อมูล: {source_name}")
-    print(f"ไฟล์ที่บันทึก: {len(transcript_rows)}")
+    print(f"ไฟล์ที่บันทึก: {len(transcript_rows)} (index {start_index}-{index - 1})")
     print(f"ระยะเวลารวม: {total_duration:.2f} วินาที")
     print(f"อัตราสุ่มตัวอย่าง: {TARGET_SAMPLE_RATE} Hz, mono")
     print("ตัวอย่าง transcript 5 รายการแรก:")
@@ -134,10 +170,21 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--limit", type=int, default=DEFAULT_LIMIT)
+    parser.add_argument("--streaming", action="store_true",
+                        help="Stream the train split instead of caching every split")
+    parser.add_argument("--start-index", type=int, default=0,
+                        help="Skip (but verify) clips already prepared by an earlier run")
+    parser.add_argument("--prefix-transcripts",
+                        help="transcripts.csv of the earlier run; required with --start-index")
     args = parser.parse_args()
     if args.limit <= 0:
         parser.error("--limit must be positive")
-    prepare(output_dir=args.output_dir, limit=args.limit)
+    if not 0 <= args.start_index < args.limit:
+        parser.error("--start-index must be in [0, --limit)")
+    if args.start_index and not args.prefix_transcripts:
+        parser.error("--start-index requires --prefix-transcripts")
+    prepare(output_dir=args.output_dir, limit=args.limit, streaming=args.streaming,
+            start_index=args.start_index, prefix_transcripts=args.prefix_transcripts)
 
 
 if __name__ == "__main__":
