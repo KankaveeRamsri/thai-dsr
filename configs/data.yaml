@@ -8,6 +8,10 @@ paths:
   embeddings_dir: data/embeddings  # extracted speaker/content embeddings
   manifest_path: data/manifest.csv  # output of build_manifest.py
   splits_path: data/splits.json      # reproducible utterance-level assignments
+  # Root of the frozen Common Voice 27.0 derived audio set (clean_16k/, distorted/,
+  # embeddings/). Paths in data/manifests/cv27_th_*.csv are relative to it.
+  # The DATA_ROOT environment variable overrides this value.
+  cv27_data_root: ~/data/cv-th/derived
 
 audio:
   sample_rate: 16000    # target sample rate all audio is resampled to

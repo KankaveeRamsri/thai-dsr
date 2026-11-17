@@ -9,7 +9,8 @@ Reads data/manifests/cv27_th_speaker_split.csv and, for each clip:
 
 Each (clip, severity) gets its own seed, sha256("<seed>:<clip_id>:<severity>"),
 so the parameters do not depend on processing order or on --workers. Every
-drawn parameter goes to <out-dir>/distortion_params.csv. A file whose
+drawn parameter goes to <out-dir>/distortion_params.csv. Paths in both CSVs
+are relative to <out-dir> (the DATA_ROOT). A file whose
 pitch_status is not "ok" (Praat error, or no pitch points so F0 was not
 changed) is not written and is marked kept=False.
 
@@ -83,7 +84,8 @@ def process_clip(row, clips_dir, out_dir, base_seed):
     clean, sr = sf.read(clean_path, dtype="float32")
     clean_row = {"clip_id": clip_id, "split": split, "source_sr": source_sr,
                  "source_channels": channels, "clean_samples": len(clean),
-                 "clean_sec": round(len(clean) / sr, 4), "clean_path": str(clean_path)}
+                 "clean_sec": round(len(clean) / sr, 4),
+                 "clean_path": clean_path.relative_to(out_dir).as_posix()}
 
     param_rows = []
     for severity in SEVERITIES_BY_SPLIT[split]:
@@ -106,7 +108,7 @@ def process_clip(row, clips_dir, out_dir, base_seed):
             "tempo_rate_min": min(rates) if rates else None,
             "tempo_rate_max": max(rates) if rates else None,
             "tempo_segments": json.dumps(record["tempo_segments"]),
-            "distorted_path": str(out_path) if kept else "",
+            "distorted_path": out_path.relative_to(out_dir).as_posix() if kept else "",
         })
     return clean_row, param_rows
 

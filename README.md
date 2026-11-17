@@ -240,8 +240,9 @@ no `client_id` and no sentence (enforced by `tests/test_cv_speaker_split.py`).
 It was built with `scripts/build_cv_speaker_split.py`.
 
 The audio was generated once with `scripts/build_cv_distorted.py` (commit
-`b4e25f6`, seed 42). It lives outside the repository in
-`~/data/cv-th/derived/`:
+`b4e25f6`, seed 42). It lives outside the repository in a data root, by default
+`~/data/cv-th/derived/` (set `cv27_data_root` in `configs/data.yaml` or the
+`DATA_ROOT` environment variable to move it):
 
 - `clean_16k/`: 2,996 clean clips as 16 kHz mono PCM_16
 - `distorted/severe/`: one file for every clip
@@ -249,7 +250,9 @@ The audio was generated once with `scripts/build_cv_distorted.py` (commit
 - `distortion_params.csv`: every drawn parameter and `pitch_status` per file
 - `clean_16k_index.csv`: one row per clean clip
 
-Both CSVs carry a sha256 for every wav.
+Both CSVs carry a sha256 for every wav, store paths relative to the data root,
+and are also tracked as `data/manifests/cv27_th_distortion_params.csv` and
+`data/manifests/cv27_th_clean_16k_index.csv`.
 
 **Do not regenerate this set.** Treat it as frozen and copy it instead.
 Each file's distortion parameters come from a seed derived from
@@ -261,7 +264,7 @@ the files every reported result was computed on.
 Check a copy against the recorded checksums:
 
 ```bash
-python scripts/checksum_cv_derived.py verify --out-dir ~/data/cv-th/derived
+python scripts/checksum_cv_derived.py verify --from-repo
 ```
 
 ## Author
