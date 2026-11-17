@@ -2,7 +2,7 @@
 
 import csv
 import unittest
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 MANIFEST = Path(__file__).resolve().parents[1] / "data" / "manifests" / "cv27_th_speaker_split.csv"
@@ -38,6 +38,15 @@ class SpeakerSplitManifestTest(unittest.TestCase):
         leaked = _splits_by(self.rows, "clip_id")
         self.assertEqual(leaked, {}, f"{len(leaked)} clip(s) appear in several splits")
 
+    def test_no_sentence_in_more_than_one_split(self):
+        leaked = _splits_by(self.rows, "sentence")
+        self.assertEqual(leaked, {}, f"{len(leaked)} sentence(s) appear in several splits")
+
+    def test_clips_per_speaker_between_4_and_8(self):
+        counts = Counter(row["client_id"] for row in self.rows)
+        outside = {s: n for s, n in counts.items() if not 4 <= n <= 8}
+        self.assertEqual(outside, {})
+
     def test_clip_ids_are_unique(self):
         clip_ids = [row["clip_id"] for row in self.rows]
         self.assertEqual(len(clip_ids), len(set(clip_ids)))
@@ -48,6 +57,13 @@ class SpeakerSplitManifestTest(unittest.TestCase):
             {"clip_id": "b", "client_id": "spk", "split": "test"},
         ]
         self.assertEqual(_splits_by(rows, "client_id"), {"spk": {"train", "test"}})
+
+    def test_leak_check_detects_shared_sentence(self):
+        rows = [
+            {"clip_id": "a", "client_id": "s1", "split": "train", "sentence": "x"},
+            {"clip_id": "b", "client_id": "s2", "split": "val", "sentence": "x"},
+        ]
+        self.assertEqual(_splits_by(rows, "sentence"), {"x": {"train", "val"}})
 
 
 if __name__ == "__main__":

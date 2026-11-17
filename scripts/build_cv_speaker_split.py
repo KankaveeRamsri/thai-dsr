@@ -11,6 +11,9 @@ Selection
   3. per client_id, at most one clip per distinct sentence
   4. speakers with >= --min-per-speaker clips; at most --max-per-speaker kept
   5. speakers are taken in a seeded order until about --target-clips clips
+  6. sentence-disjoint splits: val, then test, skip sentences used by another
+     split; a speaker left with too few clips is replaced by the next unused
+     speaker of the same gender
 
 Split
   Speakers (not clips) are assigned train/val/test by --ratios, stratified by
@@ -70,7 +73,14 @@ def load_candidates(cv_dir, min_sec, max_sec):
     return clips
 
 
-def select_clips(clips, seed, min_per_speaker, max_per_speaker, target_clips):
+def select_speakers(clips, seed, min_per_speaker, max_per_speaker, target_clips):
+    """Order eligible speakers by seed; the first ones reaching ~target_clips are chosen.
+
+    Returns (chosen, reserve, candidates, n_eligible). ``reserve`` lists the
+    remaining eligible speakers in the same seeded order, used as replacements.
+    ``candidates`` holds each eligible speaker's clips, one per sentence, in
+    seeded order.
+    """
     clips = clips.copy()
     clips["_order"] = [stable_key(seed, c) for c in clips["clip_id"]]
     clips = clips.sort_values(["client_id", "_order"])
@@ -87,9 +97,16 @@ def select_clips(clips, seed, min_per_speaker, max_per_speaker, target_clips):
         chosen.append(speaker)
         total += min(int(per_speaker[speaker]), max_per_speaker)
 
-    selected = clips[clips["client_id"].isin(set(chosen))]
-    selected = selected.groupby("client_id", sort=False).head(max_per_speaker)
-    return selected.drop(columns="_order"), len(eligible)
+    reserve = speakers[len(chosen):]
+    candidates = clips[clips["client_id"].isin(set(eligible))].drop(columns="_order")
+    return chosen, reserve, candidates, len(eligible)
+
+
+def speaker_meta(candidates):
+    return candidates.groupby("client_id").agg(
+        gender=("gender", lambda s: speaker_label(s, "unspecified")),
+        age=("age", lambda s: speaker_label(s, "unspecified")),
+    )
 
 
 def split_counts(n, ratios):
@@ -102,11 +119,8 @@ def split_counts(n, ratios):
     return counts
 
 
-def assign_speaker_splits(selected, seed, ratios):
-    meta = selected.groupby("client_id").agg(
-        gender=("gender", lambda s: speaker_label(s, "unspecified")),
-        age=("age", lambda s: speaker_label(s, "unspecified")),
-    )
+def assign_speaker_splits(meta, seed, ratios):
+    """Split speakers train/val/test by ``ratios`` within each gender group."""
     assignment = {}
     for _, group in meta.groupby("gender"):
         speakers = sorted(group.index, key=lambda s: stable_key(f"{seed}:split", s))
@@ -115,15 +129,58 @@ def assign_speaker_splits(selected, seed, ratios):
             for speaker in speakers[start:start + count]:
                 assignment[speaker] = name
             start += count
-    return meta, assignment
+    return assignment
+
+
+def pick_clips(candidates, assignment, chosen, reserve, meta,
+               min_per_speaker, max_per_speaker):
+    """Pick clips split by split so that no sentence is shared between splits.
+
+    Train speakers take their first clips; val and then test speakers skip any
+    sentence already used by another split. A val/test speaker left with fewer
+    than ``min_per_speaker`` clips is dropped and replaced by the next reserve
+    speaker of the same gender, so split sizes and gender balance are kept.
+    """
+    by_speaker = {s: g for s, g in candidates.groupby("client_id", sort=False)}
+    reserve_by_gender = {}
+    for speaker in reserve:
+        reserve_by_gender.setdefault(meta.at[speaker, "gender"], []).append(speaker)
+
+    initial = {name: [s for s in chosen if assignment[s] == name] for name in SPLITS}
+    assignment = dict(assignment)
+    used = {name: set() for name in SPLITS}
+    picked = []
+    report = {name: {"dropped": [], "replacements": []} for name in SPLITS}
+    for name in SPLITS:
+        blocked = set().union(*(used[other] for other in SPLITS if other != name))
+        for speaker in initial[name]:
+            queue = reserve_by_gender.get(meta.at[speaker, "gender"], [])
+            current = speaker
+            while current is not None:
+                group = by_speaker[current]
+                group = group[~group["sentence"].isin(blocked)].head(max_per_speaker)
+                if len(group) >= min_per_speaker:
+                    assignment[current] = name
+                    used[name].update(group["sentence"])
+                    picked.append(group)
+                    if current != speaker:
+                        report[name]["replacements"].append(current)
+                    break
+                report[name]["dropped"].append(current)
+                assignment.pop(current, None)
+                current = queue.pop(0) if queue else None
+    return pd.concat(picked), assignment, report
 
 
 def build(cv_dir, seed, min_sec, max_sec, min_per_speaker, max_per_speaker,
           target_clips, ratios):
     clips = load_candidates(cv_dir, min_sec, max_sec)
-    selected, n_eligible = select_clips(clips, seed, min_per_speaker,
-                                        max_per_speaker, target_clips)
-    meta, assignment = assign_speaker_splits(selected, seed, ratios)
+    chosen, reserve, candidates, n_eligible = select_speakers(
+        clips, seed, min_per_speaker, max_per_speaker, target_clips)
+    meta = speaker_meta(candidates)
+    assignment = assign_speaker_splits(meta.loc[chosen], seed, ratios)
+    selected, assignment, report = pick_clips(
+        candidates, assignment, chosen, reserve, meta, min_per_speaker, max_per_speaker)
     out = pd.DataFrame({
         "clip_id": selected["clip_id"],
         "client_id": selected["client_id"],
@@ -135,13 +192,18 @@ def build(cv_dir, seed, min_sec, max_sec, min_per_speaker, max_per_speaker,
     })
     out["_s"] = out["split"].map({name: i for i, name in enumerate(SPLITS)})
     out = out.sort_values(["_s", "client_id", "clip_id"]).drop(columns="_s")
-    stats = {"candidates": len(clips), "eligible_speakers": n_eligible}
+    stats = {"candidates": len(clips), "eligible_speakers": n_eligible,
+             "chosen_speakers": len(chosen), "report": report}
     return out.reset_index(drop=True), stats
 
 
 def print_report(df, stats, args):
     print(f"candidate clips (votes + {args.min_sec}-{args.max_sec}s): {stats['candidates']}")
     print(f"speakers with >= {args.min_per_speaker} usable clips: {stats['eligible_speakers']}")
+    print(f"chosen speakers: {stats['chosen_speakers']}")
+    for name, item in stats["report"].items():
+        print(f"  {name}: {len(item['dropped'])} speaker(s) dropped (< {args.min_per_speaker} "
+              f"clips without cross-split sentences), {len(item['replacements'])} replaced from reserve")
     print(f"selected: {df['client_id'].nunique()} speakers, {len(df)} clips, "
           f"{df['duration'].sum() / 3600:.2f} h\n")
     print(f"{'split':6s} {'speakers':>8s} {'clips':>6s} {'hours':>6s}  gender (speakers)")
