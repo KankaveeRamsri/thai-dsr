@@ -224,6 +224,44 @@ def load_checkpoint(path, model, optimizer, scheduler, device):
     return checkpoint
 
 
+def capture_rng_state(generator=None):
+    """Every RNG that training touches, in a form torch.load(weights_only=True) accepts."""
+    np_state = np.random.get_state()
+    state = {
+        "python": random.getstate(),
+        "numpy": (np_state[0], np_state[1].tolist(), int(np_state[2]), int(np_state[3]),
+                  float(np_state[4])),
+        "torch": torch.get_rng_state(),
+        "cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
+        "mps": torch.mps.get_rng_state() if torch.backends.mps.is_available() else None,
+    }
+    if generator is not None:
+        state["loader_generator"] = generator.get_state()
+    return state
+
+
+def restore_rng_state(state, generator=None):
+    random.setstate((state["python"][0], tuple(state["python"][1]), state["python"][2]))
+    name, keys, pos, has_gauss, cached = state["numpy"]
+    np.random.set_state((name, np.asarray(keys, dtype=np.uint32), pos, has_gauss, cached))
+    torch.set_rng_state(state["torch"])
+    if state.get("cuda") and torch.cuda.is_available():
+        torch.cuda.set_rng_state_all(state["cuda"])
+    if state.get("mps") is not None and torch.backends.mps.is_available():
+        torch.mps.set_rng_state(state["mps"])
+    if generator is not None and state.get("loader_generator") is not None:
+        generator.set_state(state["loader_generator"])
+
+
+def save_atomic(payload, path):
+    """Write a checkpoint via a temporary file so an interrupted save never corrupts it."""
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp")
+    torch.save(payload, tmp)
+    os.replace(tmp, path)
+
+
 def print_effective_config(values):
     print("\nEffective configuration:")
     for key, value in values.items():
@@ -333,6 +371,12 @@ def parse_args():
     parser.add_argument("--log-dir", default=None, help="Temporary output override.")
     parser.add_argument("--layer", type=int, default=None, help="Override the wav2vec2 layer.")
     parser.add_argument("--resume-checkpoint", default=None, help="Checkpoint to resume from.")
+    parser.add_argument("--save-latest", default=None,
+                        help="Write a full resumable checkpoint (model, optimizer, scheduler, "
+                             "epoch, best val loss, RNG state) to this path after every epoch.")
+    parser.add_argument("--auto-resume", action="store_true",
+                        help="Resume from --save-latest if that file exists (e.g. after a "
+                             "Colab session restart); otherwise start fresh.")
     parser.add_argument("--best-checkpoint", default=None, help="Best-checkpoint output path.")
     parser.add_argument("--loss-curve", default=None, help="Loss-curve output path.")
     parser.add_argument(
@@ -555,6 +599,8 @@ def main():
         "mel_cache_dir": args.mel_cache_dir,
         "preload": args.preload,
         "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
+        "save_latest": args.save_latest,
+        "auto_resume": args.auto_resume,
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
     })
@@ -578,12 +624,20 @@ def main():
     start_epoch = 1
     best_epoch = 0
     resume_checkpoint = args.resume_checkpoint or runtime["resume_checkpoint"]
+    if args.auto_resume:
+        if not args.save_latest:
+            raise ValueError("--auto-resume needs --save-latest")
+        if resume_checkpoint:
+            raise ValueError("Use either --auto-resume or --resume-checkpoint, not both")
+        if project_path(args.save_latest).exists():
+            resume_checkpoint = args.save_latest
     if resume_checkpoint:
         resume_path = project_path(resume_checkpoint)
         checkpoint = load_checkpoint(resume_path, mapper, optimizer, scheduler, device)
         start_epoch = int(checkpoint["epoch"]) + 1
         best_val_loss = float(checkpoint.get("best_val_loss", checkpoint["val_loss"]))
-        best_epoch = start_epoch - 1  # patience restarts from the resume point
+        # Older checkpoints have no best_epoch: patience then restarts from the resume point.
+        best_epoch = int(checkpoint.get("best_epoch", start_epoch - 1))
         train_losses = list(checkpoint.get("train_losses", []))
         val_losses = list(checkpoint.get("val_losses", []))
         if encoder is not None:
@@ -593,7 +647,9 @@ def main():
         resumed_step = int(checkpoint.get("global_step", 0))
         if not best_path.exists():
             torch.save(checkpoint, best_path)
-        print(f"Resumed from {resume_path} at epoch {start_epoch}")
+        if checkpoint.get("rng_state") is not None:
+            restore_rng_state(checkpoint["rng_state"], generator)
+        print(f"Resumed from {resume_path} at epoch {start_epoch}", flush=True)
 
     extras = None
     if (encoder is not None or args.mapper_clip_norm > 0 or args.eval_every
@@ -611,10 +667,11 @@ def main():
             extras.step = resumed_step
 
     def payload_extra():
-        """Extra checkpoint keys; None (unchanged payload) when no new option is active."""
+        """Extra checkpoint keys: resume state, plus step/encoder state when those options are on."""
+        extra = {"rng_state": capture_rng_state(generator), "best_epoch": best_epoch}
         if extras is None:
-            return None
-        extra = {"global_step": extras.step}
+            return extra
+        extra["global_step"] = extras.step
         if encoder is not None:
             extra.update(unfreeze_top_layers=args.unfreeze_top_layers,
                          wav2vec2_top_layers_state_dict=encoder.top_state_dict())
@@ -670,6 +727,18 @@ def main():
                 periodic_path,
             )
 
+        if args.save_latest:
+            save_atomic(
+                checkpoint_payload(
+                    epoch, mapper, optimizer, scheduler, val_loss, best_val_loss,
+                    train_config, data_config, model_config, train_losses, val_losses,
+                    extra=payload_extra(),
+                ),
+                project_path(args.save_latest),
+            )
+        print(f"epoch {epoch} time {epoch_seconds[-1][1]:.1f}s (train {epoch_seconds[-1][0]:.1f}s) "
+              f"train_loss={train_loss:.4f} val_loss={val_loss:.4f}", flush=True)
+
         if epoch == start_epoch or epoch % max(log_interval, 1) == 0 or epoch == num_epochs:
             print(
                 f"Epoch {epoch:3d}/{num_epochs} | train_loss={train_loss:.4f} | "
@@ -702,8 +771,8 @@ def main():
     if encoder is not None:
         encoder.load_top_state_dict(best_checkpoint["wav2vec2_top_layers_state_dict"])
     test_loss = run_epoch(mapper, test_loader, device, reconstruction_weight, extras=extras)
-    train_s = [t for t, _ in epoch_seconds]
-    total_s = [t for _, t in epoch_seconds]
+    train_s = [t for t, _ in epoch_seconds] or [float("nan")]
+    total_s = [t for _, t in epoch_seconds] or [float("nan")]
     print(f"\nEpoch time over {len(total_s)} epoch(s): mean {np.mean(total_s):.1f}s "
           f"(train {np.mean(train_s):.1f}s, median {np.median(total_s):.1f}s), "
           f"best epoch {best_epoch}")
