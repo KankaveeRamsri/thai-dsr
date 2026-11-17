@@ -232,6 +232,38 @@ Tests:
 python -m unittest discover tests
 ```
 
+### Speaker-independent Common Voice set (frozen)
+
+`data/manifests/cv27_th_speaker_split.csv` selects 2,996 clips from 475 speakers
+of Common Voice Thai 27.0 (`cv-corpus-27.0-2026-09-11`). Train, val and test share
+no `client_id` and no sentence (enforced by `tests/test_cv_speaker_split.py`).
+It was built with `scripts/build_cv_speaker_split.py`.
+
+The audio was generated once with `scripts/build_cv_distorted.py` (commit
+`b4e25f6`, seed 42). It lives outside the repository in
+`~/data/cv-th/derived/`:
+
+- `clean_16k/`: 2,996 clean clips as 16 kHz mono PCM_16
+- `distorted/severe/`: one file for every clip
+- `distorted/mild/` and `distorted/moderate/`: test clips only
+- `distortion_params.csv`: every drawn parameter and `pitch_status` per file
+- `clean_16k_index.csv`: one row per clean clip
+
+Both CSVs carry a sha256 for every wav.
+
+**Do not regenerate this set.** Treat it as frozen and copy it instead.
+Each file's distortion parameters come from a seed derived from
+`clip_id` and severity, so they are reproducible. The audio is not: Praat's
+"Change gender" (formant shift) gives slightly different output on every run
+for identical input and seed. A regenerated set would therefore differ from
+the files every reported result was computed on.
+
+Check a copy against the recorded checksums:
+
+```bash
+python scripts/checksum_cv_derived.py verify --out-dir ~/data/cv-th/derived
+```
+
 ## Author
 
 กันต์กวี รามศรี (Bas) — AI Engineering, Prince of Songkla University
