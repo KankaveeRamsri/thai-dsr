@@ -52,6 +52,11 @@ class DysarthricDataset(Dataset):
       with clip_id, severity and tempo_segments). The embedding is then
       interpolated only for the 50 Hz -> mel frame-rate change, so input and
       target are frame-aligned.
+
+    ``mel_cache_dir`` (optional) holds precomputed ``clean/<utterance_id>.npy``
+    and ``tempo/<utterance_id>_<severity>.npy`` targets written by
+    scripts/cache_cv_mels.py with these same methods, so items are identical.
+    ``preload=True`` reads every embedding and target into RAM once.
     """
 
     def __init__(
@@ -63,6 +68,8 @@ class DysarthricDataset(Dataset):
         layer=None,
         alignment="linear",
         distortion_params=None,
+        mel_cache_dir=None,
+        preload=False,
     ):
         if alignment not in ALIGNMENTS:
             raise ValueError(f"alignment must be one of {ALIGNMENTS}, got {alignment!r}")
@@ -92,21 +99,38 @@ class DysarthricDataset(Dataset):
             if missing:
                 raise ValueError(f"{len(missing)} manifest row(s) have no tempo_segments, e.g. {missing[0]}")
 
+        self.mel_cache_dir = None if mel_cache_dir is None else os.fspath(mel_cache_dir)
+        self._preloaded = None
+        if preload:
+            self._preloaded = [self._load_item(index) for index in range(len(self.manifest))]
+
     def __len__(self):
         return len(self.manifest)
 
     def __getitem__(self, index):
-        row = self.manifest.iloc[index]
-
-        embedding = self._load_distorted_embedding(row["utterance_id"], row["severity"])
-        mel = self._extract_clean_mel(row["clean_path"])
-
-        if self.alignment == "tempo":
-            mel = self.aligned_target(row, mel)
+        if self._preloaded is not None:
+            embedding, mel = self._preloaded[index]
+        else:
+            embedding, mel = self._load_item(index)
 
         embedding = interpolate_embedding(embedding, target_length=mel.shape[0])
         mel = torch.from_numpy(mel).float()
 
+        return embedding, mel
+
+    def _load_item(self, index):
+        """Raw ``(embedding (T_emb, D), target mel (T, 80))`` for one row."""
+        row = self.manifest.iloc[index]
+        embedding = self._load_distorted_embedding(row["utterance_id"], row["severity"])
+        if self.mel_cache_dir is not None:
+            if self.alignment == "tempo":
+                name = os.path.join("tempo", f"{row['utterance_id']}_{row['severity']}.npy")
+            else:
+                name = os.path.join("clean", f"{row['utterance_id']}.npy")
+            return embedding, np.load(os.path.join(self.mel_cache_dir, name))
+        mel = self._extract_clean_mel(row["clean_path"])
+        if self.alignment == "tempo":
+            mel = self.aligned_target(row, mel)
         return embedding, mel
 
     def aligned_target(self, row, clean_mel):

@@ -373,6 +373,14 @@ def parse_args():
     parser.add_argument("--embeddings-dir", default=None,
                         help="Directory of cached distorted embeddings "
                              "(default: <data.yaml embeddings_dir>/distorted).")
+    parser.add_argument("--mel-cache-dir", default=None,
+                        help="Precomputed clean/ and tempo/ target mels (scripts/cache_cv_mels.py).")
+    parser.add_argument("--preload", action="store_true",
+                        help="Read all embeddings and target mels into RAM once (use --num-workers 0).")
+    parser.add_argument("--device", default=None,
+                        help="Override runtime.device (auto | cuda | mps | cpu).")
+    parser.add_argument("--batch-size", type=int, default=None,
+                        help="Override optim.batch_size.")
     parser.add_argument("--fixed-splits", action="store_true",
                         help="Use the --splits file exactly as given (e.g. a speaker-level split); "
                              "fail instead of regenerating it when ratios/seed differ from data.yaml.")
@@ -394,7 +402,11 @@ def main():
     logging_config = train_config["logging"]
     seed = int(runtime["seed"])
     set_seed(seed)
-    device = get_device(runtime["device"])
+    device = get_device(args.device or runtime["device"])
+    if args.batch_size is not None:
+        if args.batch_size <= 0:
+            raise ValueError(f"--batch-size must be positive, got {args.batch_size}")
+        optim_config["batch_size"] = args.batch_size
 
     num_epochs = (
         int(optim_config["num_epochs"])
@@ -426,6 +438,8 @@ def main():
         layer=train_data_config["layer"],
         alignment=args.alignment,
         distortion_params=project_path(args.distortion_params) if args.distortion_params else None,
+        mel_cache_dir=project_path(args.mel_cache_dir) if args.mel_cache_dir else None,
+        preload=args.preload,
     )
     if len(dataset) == 0:
         raise ValueError(f"No dataset rows found for severity={severity_value!r}")
@@ -538,6 +552,8 @@ def main():
         "distortion_params": args.distortion_params,
         "embeddings_dir": embeddings_dir,
         "fixed_splits": args.fixed_splits,
+        "mel_cache_dir": args.mel_cache_dir,
+        "preload": args.preload,
         "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
