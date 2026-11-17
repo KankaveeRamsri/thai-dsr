@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import random
+import time
 from pathlib import Path
 
 import matplotlib
@@ -67,6 +68,19 @@ def masked_l1_loss(pred, target, lengths):
     mask = mask.unsqueeze(-1)
     diff = (pred - target).abs() * mask
     return diff.sum() / (mask.sum() * mel_dim).clamp(min=1)
+
+
+def load_fixed_splits(path, utterance_ids):
+    """Load a split file as-is; every utterance must be in exactly one split."""
+    with open(path, encoding="utf-8") as handle:
+        splits = json.load(handle)["splits"]
+    assigned = [uid for name in SPLIT_NAMES for uid in splits[name]]
+    if len(assigned) != len(set(assigned)):
+        raise ValueError(f"{path}: an utterance appears in more than one split")
+    missing = set(utterance_ids) - set(assigned)
+    if missing:
+        raise ValueError(f"{path}: {len(missing)} manifest utterance(s) are in no split")
+    return {name: [uid for uid in splits[name] if uid in set(utterance_ids)] for name in SPLIT_NAMES}
 
 
 def run_epoch(model, loader, device, reconstruction_weight, optimizer=None, desc="epoch",
@@ -350,6 +364,18 @@ def parse_args():
                         help="Every N steps save checkpoints/step_N.pt and checkpoints/latest.pt (0 = off).")
     parser.add_argument("--max-steps", type=int, default=0,
                         help="Stop after N optimizer steps (0 = no limit).")
+    parser.add_argument("--alignment", choices=("linear", "tempo"), default="linear",
+                        help="linear (default): stretch the embedding over the clean mel. "
+                             "tempo: warp the clean mel onto the distorted timeline with the "
+                             "logged tempo segments (needs --distortion-params).")
+    parser.add_argument("--distortion-params", default=None,
+                        help="CSV with clip_id, severity, tempo_segments (for --alignment tempo).")
+    parser.add_argument("--embeddings-dir", default=None,
+                        help="Directory of cached distorted embeddings "
+                             "(default: <data.yaml embeddings_dir>/distorted).")
+    parser.add_argument("--fixed-splits", action="store_true",
+                        help="Use the --splits file exactly as given (e.g. a speaker-level split); "
+                             "fail instead of regenerating it when ratios/seed differ from data.yaml.")
     return parser.parse_args()
 
 
@@ -388,12 +414,18 @@ def main():
     splits_path = args.splits or train_data_config.get("splits_path", paths["splits_path"])
     severity_value = train_data_config["severity"]
     severity = None if str(severity_value).lower() == "all" else severity_value
+    embeddings_dir = (
+        project_path(args.embeddings_dir) if args.embeddings_dir
+        else project_path(paths["embeddings_dir"]) / "distorted"
+    )
     dataset = DysarthricDataset(
         manifest_path=project_path(manifest_path),
-        embeddings_dir=project_path(paths["embeddings_dir"]) / "distorted",
+        embeddings_dir=embeddings_dir,
         severity=severity,
         train_config_path=args.train_config,
         layer=train_data_config["layer"],
+        alignment=args.alignment,
+        distortion_params=project_path(args.distortion_params) if args.distortion_params else None,
     )
     if len(dataset) == 0:
         raise ValueError(f"No dataset rows found for severity={severity_value!r}")
@@ -405,12 +437,15 @@ def main():
         "test": float(split_config["test_ratio"]),
     }
     utterance_ids = dataset.manifest["utterance_id"].astype(str).unique().tolist()
-    splits, wrote_splits = load_or_create_splits(
-        utterance_ids=utterance_ids,
-        ratios=ratios,
-        seed=int(split_config["seed"]),
-        output_path=project_path(splits_path),
-    )
+    if args.fixed_splits:
+        splits, wrote_splits = load_fixed_splits(project_path(splits_path), utterance_ids), False
+    else:
+        splits, wrote_splits = load_or_create_splits(
+            utterance_ids=utterance_ids,
+            ratios=ratios,
+            seed=int(split_config["seed"]),
+            output_path=project_path(splits_path),
+        )
     for name in ("unfreeze_top_layers", "eval_every", "checkpoint_every", "max_steps"):
         if getattr(args, name) < 0:
             raise ValueError(f"--{name.replace('_', '-')} must be non-negative")
@@ -499,6 +534,10 @@ def main():
         "eval_every": args.eval_every,
         "checkpoint_every": args.checkpoint_every,
         "max_steps": args.max_steps,
+        "alignment": args.alignment,
+        "distortion_params": args.distortion_params,
+        "embeddings_dir": embeddings_dir,
+        "fixed_splits": args.fixed_splits,
         "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
         "checkpoint_dir": checkpoint_dir,
         "log_dir": log_dir,
@@ -568,16 +607,20 @@ def main():
     if extras is not None and args.eval_every:
         extras.evaluate()
 
+    epoch_seconds = []
     epoch_bar = tqdm(range(start_epoch, num_epochs + 1), desc="Training")
     for epoch in epoch_bar:
+        epoch_start = time.perf_counter()
         train_loss = run_epoch(
             mapper, train_loader, device, reconstruction_weight,
             optimizer=optimizer, desc=f"Epoch {epoch}/{num_epochs} [train]", extras=extras,
         )
+        train_seconds = time.perf_counter() - epoch_start
         val_loss = run_epoch(
             mapper, val_loader, device, reconstruction_weight,
             desc=f"Epoch {epoch}/{num_epochs} [val]", extras=extras,
         )
+        epoch_seconds.append((train_seconds, time.perf_counter() - epoch_start))
         step_scheduler(scheduler, scheduler_name, val_loss)
         train_losses.append(train_loss)
         val_losses.append(val_loss)
@@ -643,6 +686,11 @@ def main():
     if encoder is not None:
         encoder.load_top_state_dict(best_checkpoint["wav2vec2_top_layers_state_dict"])
     test_loss = run_epoch(mapper, test_loader, device, reconstruction_weight, extras=extras)
+    train_s = [t for t, _ in epoch_seconds]
+    total_s = [t for _, t in epoch_seconds]
+    print(f"\nEpoch time over {len(total_s)} epoch(s): mean {np.mean(total_s):.1f}s "
+          f"(train {np.mean(train_s):.1f}s, median {np.median(total_s):.1f}s), "
+          f"best epoch {best_epoch}")
     print(f"\nTraining complete. Best val loss: {best_val_loss:.4f}")
     print(f"Held-out test loss: {test_loss:.4f}")
     print(f"Best checkpoint saved to: {best_path}")

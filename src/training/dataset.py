@@ -22,12 +22,14 @@ from torch.utils.data import DataLoader, Dataset
 
 from src.utils.config import DEFAULT_TRAIN_CONFIG_PATH, REPO_ROOT, get_selected_layer
 from src.utils.mel import compute_mel
+from src.utils.time_warp import TempoWarp, mel_frame_count
 
 
 MANIFEST_PATH = REPO_ROOT / "data" / "manifest.csv"
 DISTORTED_EMBEDDINGS_DIR = REPO_ROOT / "data" / "embeddings" / "distorted"
 
 DEFAULT_SEVERITY = "severe"
+ALIGNMENTS = ("linear", "tempo")
 
 
 class DysarthricDataset(Dataset):
@@ -39,6 +41,17 @@ class DysarthricDataset(Dataset):
     computes a log-mel spectrogram from the clean .wav on the fly, and
     linearly interpolates the embedding along time so it lines up frame-for-
     frame with the mel (wav2vec2 runs at ~50Hz, mel frames at ~86Hz).
+
+    ``alignment`` chooses how the distorted input and clean target meet:
+
+    - ``"linear"`` (default, the original behaviour): the embedding is
+      stretched over the clean mel's length, so the tempo perturbation is
+      undone only on average.
+    - ``"tempo"``: the target is the clean mel warped onto the distorted
+      timeline with the logged tempo segments (``distortion_params``, a CSV
+      with clip_id, severity and tempo_segments). The embedding is then
+      interpolated only for the 50 Hz -> mel frame-rate change, so input and
+      target are frame-aligned.
     """
 
     def __init__(
@@ -48,7 +61,14 @@ class DysarthricDataset(Dataset):
         severity=DEFAULT_SEVERITY,
         train_config_path=DEFAULT_TRAIN_CONFIG_PATH,
         layer=None,
+        alignment="linear",
+        distortion_params=None,
     ):
+        if alignment not in ALIGNMENTS:
+            raise ValueError(f"alignment must be one of {ALIGNMENTS}, got {alignment!r}")
+        if alignment == "tempo" and distortion_params is None:
+            raise ValueError("alignment='tempo' needs distortion_params")
+        self.alignment = alignment
         self.embeddings_dir = os.fspath(embeddings_dir)
         self.layer = (
             get_selected_layer(train_config_path) if layer is None else int(layer)
@@ -59,6 +79,19 @@ class DysarthricDataset(Dataset):
             manifest = manifest[manifest["severity"] == severity]
         self.manifest = manifest.reset_index(drop=True)
 
+        self.tempo_segments = {}
+        if alignment == "tempo":
+            params = pd.read_csv(distortion_params, usecols=["clip_id", "severity", "tempo_segments"])
+            self.tempo_segments = {
+                (row.clip_id, row.severity): row.tempo_segments for row in params.itertuples()
+            }
+            missing = [
+                (u, s) for u, s in zip(self.manifest["utterance_id"], self.manifest["severity"])
+                if (u, s) not in self.tempo_segments
+            ]
+            if missing:
+                raise ValueError(f"{len(missing)} manifest row(s) have no tempo_segments, e.g. {missing[0]}")
+
     def __len__(self):
         return len(self.manifest)
 
@@ -68,10 +101,28 @@ class DysarthricDataset(Dataset):
         embedding = self._load_distorted_embedding(row["utterance_id"], row["severity"])
         mel = self._extract_clean_mel(row["clean_path"])
 
+        if self.alignment == "tempo":
+            mel = self.aligned_target(row, mel)
+
         embedding = interpolate_embedding(embedding, target_length=mel.shape[0])
         mel = torch.from_numpy(mel).float()
 
         return embedding, mel
+
+    def aligned_target(self, row, clean_mel):
+        """Warp a ``(T_clean, 80)`` clean mel onto the distorted mel frame grid."""
+        info = sf.info(self._resolve(row["distorted_path"]))
+        warp = TempoWarp(self.tempo_segments[(row["utterance_id"], row["severity"])], info.samplerate)
+        if warp.distorted_samples != info.frames:
+            raise ValueError(
+                f"{row['distorted_path']}: {info.frames} samples, tempo segments give "
+                f"{warp.distorted_samples}"
+            )
+        return warp.warp_frames(clean_mel, n_target=mel_frame_count(info.frames, info.samplerate))
+
+    @staticmethod
+    def _resolve(path):
+        return path if os.path.isabs(path) else REPO_ROOT / path
 
     def _load_distorted_embedding(self, utterance_id, severity):
         """Load the cached wav2vec2 hidden state for one distorted utterance.
