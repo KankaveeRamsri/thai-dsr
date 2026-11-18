@@ -91,18 +91,32 @@ def extract_all_hidden_states(wav_path, feature_extractor, model, device):
     return hidden_states
 
 
-def save_hidden_states(hidden_states, wav_path, output_dir, layer=None):
-    """Save one selected layer, or every layer for layer-selection research."""
+def _layer_indices(layer, count=NUM_HIDDEN_STATE_LAYERS):
+    """None -> every layer; an int -> that layer; a list/tuple -> those layers."""
+    if layer is None:
+        return range(count)
+    if isinstance(layer, (list, tuple)):
+        return tuple(layer)
+    return (layer,)
+
+
+def save_hidden_states(hidden_states, wav_path, output_dir, layer=None, verbose=True):
+    """Save one selected layer, several layers, or every layer for layer-selection research.
+
+    ``layer`` is an index into ``outputs.hidden_states`` (0 = feature projection
+    + positional embedding, k = output of transformer block k; 24 also has the
+    encoder's final LayerNorm), or a list of them, or None for all 25.
+    """
     os.makedirs(output_dir, exist_ok=True)
 
     utterance_id = os.path.splitext(os.path.basename(wav_path))[0]
-    layer_indices = range(len(hidden_states)) if layer is None else (layer,)
-    for layer_idx in layer_indices:
+    for layer_idx in _layer_indices(layer, len(hidden_states)):
         layer_output = hidden_states[layer_idx]
         # Move to CPU and drop the batch dimension before saving.
         layer_array = layer_output.squeeze(0).cpu().numpy()
 
-        print(f"Layer {layer_idx:02d} shape: {layer_array.shape}")
+        if verbose:
+            print(f"Layer {layer_idx:02d} shape: {layer_array.shape}")
 
         out_path = os.path.join(
             output_dir, f"{utterance_id}_layer{layer_idx:02d}.npy"
@@ -113,7 +127,7 @@ def save_hidden_states(hidden_states, wav_path, output_dir, layer=None):
 def cache_exists(wav_path, output_dir, layer=None):
     """Return whether the requested cache format is already complete."""
     utterance_id = os.path.splitext(os.path.basename(wav_path))[0]
-    layer_indices = range(NUM_HIDDEN_STATE_LAYERS) if layer is None else (layer,)
+    layer_indices = _layer_indices(layer)
     return all(
         os.path.isfile(
             os.path.join(output_dir, f"{utterance_id}_layer{layer_idx:02d}.npy")
@@ -150,17 +164,38 @@ def main():
         help="Layer to save (default: configs/train.yaml data.layer).",
     )
     parser.add_argument(
+        "--layers",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Save several layers (e.g. --layers 3 6 12 18 24) from one forward pass per file.",
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="One progress bar only; no per-file / per-layer lines.",
+    )
+    parser.add_argument(
         "--all-layers",
         action="store_true",
         help="Save all 25 layers for layer-selection experiments (uses much more disk).",
     )
     args = parser.parse_args()
 
+    if sum(bool(x) for x in (args.layer is not None, args.layers, args.all_layers)) > 1:
+        parser.error("use only one of --layer, --layers, --all-layers")
     selected_layer = get_selected_layer(DEFAULT_TRAIN_CONFIG_PATH) if args.layer is None else args.layer
-    if not 0 <= selected_layer <= 24:
-        parser.error(f"--layer must be between 0 and 24, got {selected_layer}")
+    requested = args.layers or [selected_layer]
+    for value in requested:
+        if not 0 <= value <= 24:
+            parser.error(f"layers must be between 0 and 24, got {value}")
 
-    layer_to_save = None if args.all_layers else selected_layer
+    if args.all_layers:
+        layer_to_save = None
+    elif args.layers:
+        layer_to_save = sorted(set(args.layers))
+    else:
+        layer_to_save = selected_layer
     if args.input_dir:
         wav_paths = sorted(glob.glob(os.path.join(args.input_dir, "*.wav")))
         if not wav_paths:
@@ -187,17 +222,21 @@ def main():
     feature_extractor, model = load_model(device)
 
     print(f"Extracting embeddings from {len(pending_paths)} uncached file(s)")
-    progress_bar = tqdm(pending_paths, desc="Extracting embeddings")
+    progress_bar = tqdm(pending_paths, desc="Extracting embeddings", mininterval=10 if args.quiet else 0.1)
     for index, wav_path in enumerate(progress_bar, start=1):
-        print(f"[{index}/{len(pending_paths)}] {wav_path}")
-        progress_bar.set_postfix(file=os.path.basename(wav_path))
+        if not args.quiet:
+            print(f"[{index}/{len(pending_paths)}] {wav_path}")
+            progress_bar.set_postfix(file=os.path.basename(wav_path))
         hidden_states = extract_all_hidden_states(
             wav_path, feature_extractor, model, device
         )
-        save_hidden_states(hidden_states, wav_path, args.output_dir, layer=layer_to_save)
+        save_hidden_states(hidden_states, wav_path, args.output_dir, layer=layer_to_save,
+                           verbose=not args.quiet)
 
     if args.all_layers:
         print(f"Saved all layer embeddings to: {args.output_dir}")
+    elif args.layers:
+        print(f"Saved layers {layer_to_save} to: {args.output_dir}")
     else:
         print(f"Saved selected layer {selected_layer} embedding to: {args.output_dir}")
 
