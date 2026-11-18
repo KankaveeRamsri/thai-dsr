@@ -56,6 +56,17 @@ class KnownSegmentsTest(unittest.TestCase):
         self.assertLess(np.abs(warped[inside] - target_time[inside]).max(), 1e-9)
 
 
+    def test_unwarp_frames_inverts_warp_frames(self):
+        warp = TempoWarp(self.SEGMENTS, SR)
+        n_dist = mel_frame_count(warp.distorted_samples, SR)
+        dist_time = (np.arange(n_dist) + 0.5) * MEL_HOP / FRAME_SR
+        unwarped = warp.unwarp_frames(dist_time[:, None])[:, 0]
+        self.assertEqual(len(unwarped), mel_frame_count(warp.clean_samples, SR))
+        target_time = warp.clean_to_distorted((np.arange(len(unwarped)) + 0.5) * MEL_HOP / FRAME_SR)
+        inside = (target_time >= dist_time[0]) & (target_time <= dist_time[-1])
+        self.assertGreater(inside.mean(), 0.95)
+        self.assertLess(np.abs(unwarped[inside] - target_time[inside]).max(), 1e-9)
+
 class AgainstDistortionTempoStageTest(unittest.TestCase):
     def setUp(self):
         self.clean = _modulated_noise()
@@ -86,6 +97,26 @@ class AgainstDistortionTempoStageTest(unittest.TestCase):
         self.assertLess(abs(lag), 0.5)
         self.assertGreater(scores[lags == 0][0], 0.85)
 
+
+    def test_unstretch_returns_clean_length_and_timeline(self):
+        """Inverse-warping the distorted audio puts its envelope back on the clean timeline."""
+        restored = self.warp.unstretch_waveform(self.distorted)
+        self.assertEqual(len(restored), len(self.clean))
+        a = _log_energy(compute_mel(self.clean, sr=SR).T)
+        b = _log_energy(compute_mel(restored, sr=SR).T)
+        lags = np.arange(-4, 5)
+        scores = np.array([np.corrcoef(np.roll(b, lag)[6:-6], a[6:-6])[0, 1] for lag in lags])
+        self.assertEqual(lags[int(np.argmax(scores))], 0)
+        # Two phase-vocoder passes over a noise carrier blur the frame energy
+        # (0.79 here); the unwarped distorted clip, truncated, scores 0.07.
+        self.assertGreater(scores[lags == 0][0], 0.7)
+        n = len(a)
+        raw = _log_energy(compute_mel(self.distorted, sr=SR).T)[:n]
+        self.assertLess(np.corrcoef(raw[6:-6], a[6:len(raw) - 6])[0, 1], 0.3)
+
+    def test_unstretch_rejects_wrong_length(self):
+        with self.assertRaises(ValueError):
+            self.warp.unstretch_waveform(self.distorted[:-1])
 
 if __name__ == "__main__":
     unittest.main()

@@ -76,16 +76,15 @@ class TempoWarp:
         Each distorted frame centre is mapped back to clean time and the clean
         frames are linearly interpolated there, segment by segment.
         """
-        clean_frames = np.asarray(clean_frames)
         if n_target is None:
             n_target = mel_frame_count(self.distorted_samples, self.sr, hop)
-        centres = (np.arange(n_target) + 0.5) * hop / frame_sr
-        position = self.distorted_to_clean(centres) * frame_sr / hop - 0.5
-        position = np.clip(position, 0, len(clean_frames) - 1)
-        low = np.floor(position).astype(int)
-        high = np.minimum(low + 1, len(clean_frames) - 1)
-        weight = (position - low)[:, None]
-        return ((1 - weight) * clean_frames[low] + weight * clean_frames[high]).astype(clean_frames.dtype)
+        return _resample_frames(clean_frames, n_target, self.distorted_to_clean, hop, frame_sr)
+
+    def unwarp_frames(self, distorted_frames, n_target=None, hop=MEL_HOP, frame_sr=HIFIGAN_SAMPLE_RATE):
+        """Inverse of ``warp_frames``: resample distorted-timeline frames onto the clean grid."""
+        if n_target is None:
+            n_target = mel_frame_count(self.clean_samples, self.sr, hop)
+        return _resample_frames(distorted_frames, n_target, self.clean_to_distorted, hop, frame_sr)
 
     def stretch_waveform(self, clean):
         """Apply the logged per-segment time-stretch to a clean waveform.
@@ -103,3 +102,43 @@ class TempoWarp:
                 piece = librosa.effects.time_stretch(piece, rate=rate)
             pieces.append(piece)
         return np.concatenate(pieces).astype(np.float32)
+
+    def unstretch_waveform(self, distorted):
+        """Map a distorted-timeline waveform back onto the clean timeline.
+
+        The inverse of ``stretch_waveform``: each distorted segment (cut at the
+        exact knots) is time-stretched by ``1 / rate`` with the same phase
+        vocoder and trimmed or zero-padded to its clean length (the round trip
+        can be off by one sample from rounding). ``distorted`` must have
+        ``distorted_samples`` samples; the result has ``clean_samples``.
+        """
+        distorted = np.asarray(distorted, dtype=np.float32)
+        if len(distorted) != self.distorted_samples:
+            raise ValueError(f"waveform has {len(distorted)} samples, segments cover {self.distorted_samples}")
+        pieces = []
+        for (_, length, rate), lo, hi in zip(self.segments, self.dist_knots[:-1], self.dist_knots[1:]):
+            piece = distorted[int(lo):int(hi)]
+            if rate is not None:
+                piece = fit_length(librosa.effects.time_stretch(piece, rate=1.0 / rate), length)
+            pieces.append(piece)
+        return np.concatenate(pieces).astype(np.float32)
+
+
+def fit_length(signal, n):
+    """Trim or zero-pad ``signal`` to exactly ``n`` samples."""
+    signal = np.asarray(signal)
+    if len(signal) >= n:
+        return signal[:n]
+    return np.pad(signal, (0, n - len(signal)))
+
+
+def _resample_frames(frames, n_target, target_to_source, hop, frame_sr):
+    """Linearly interpolate ``(T, D)`` frames at the source times of ``n_target`` frame centres."""
+    frames = np.asarray(frames)
+    centres = (np.arange(n_target) + 0.5) * hop / frame_sr
+    position = target_to_source(centres) * frame_sr / hop - 0.5
+    position = np.clip(position, 0, len(frames) - 1)
+    low = np.floor(position).astype(int)
+    high = np.minimum(low + 1, len(frames) - 1)
+    weight = (position - low)[:, None]
+    return ((1 - weight) * frames[low] + weight * frames[high]).astype(frames.dtype)
