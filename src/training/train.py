@@ -19,6 +19,7 @@ from tqdm import tqdm
 from src.models.mapper import build_mapper_from_config
 from src.training.dataset import DysarthricDataset, collate_fn
 from src.training.grad_clip import clip
+from src.training.input_norm import compute_train_input_stats
 from src.training.splits import SPLIT_NAMES, load_or_create_splits, row_indices_for_split
 from src.utils.config import (
     DEFAULT_DATA_CONFIG_PATH,
@@ -425,6 +426,9 @@ def parse_args():
                         help="Override runtime.device (auto | cuda | mps | cpu).")
     parser.add_argument("--batch-size", type=int, default=None,
                         help="Override optim.batch_size.")
+    parser.add_argument("--no-input-norm", action="store_true",
+                        help="Disable the per-dimension input normalisation (configs/train.yaml "
+                             "data.input_norm); reproduces the W2 recipe.")
     parser.add_argument("--fixed-splits", action="store_true",
                         help="Use the --splits file exactly as given (e.g. a speaker-level split); "
                              "fail instead of regenerating it when ratios/seed differ from data.yaml.")
@@ -544,15 +548,35 @@ def main():
     val_loader = DataLoader(subsets["val"], shuffle=False, **loader_options)
     test_loader = DataLoader(subsets["test"], shuffle=False, **loader_options)
 
+    input_norm = bool(train_data_config.get("input_norm", False)) and not args.no_input_norm
+    train_data_config["input_norm"] = input_norm
+    model_config["mapper"]["input_norm"] = input_norm  # stored with every checkpoint
+    input_norm_meta = None
+    if input_norm:
+        if args.unfreeze_top_layers:
+            raise ValueError("input_norm uses statistics of the frozen cached embeddings; "
+                             "it cannot be combined with --unfreeze-top-layers (use --no-input-norm)")
+        # Train split only: val/test rows are never read (src/training/input_norm.py).
+        input_mean, input_std, input_norm_meta = compute_train_input_stats(dataset, splits, layer=dataset.layer)
+        print(f"Input normalisation: layer {dataset.layer}, {input_norm_meta['n_clips']} train clip(s), "
+              f"{input_norm_meta['n_frames']} frame(s); mean |mean| {input_mean.abs().mean():.3f}, "
+              f"mean std {input_std.mean():.3f}", flush=True)
     mapper = build_mapper_from_config(model_config).to(device)
+    if input_norm:
+        mapper.set_input_stats(input_mean, input_std)
     if args.init_checkpoint:
         initial = torch.load(project_path(args.init_checkpoint), map_location=device, weights_only=True)
-        mapper.load_state_dict(initial["model_state_dict"])
+        state = initial["model_state_dict"]
+        if input_norm and "input_mean" not in state:  # e.g. a W2 checkpoint: take its weights only
+            state = {**state, "input_mean": mapper.input_mean, "input_std": mapper.input_std}
+        mapper.load_state_dict(state)
         if encoder is not None and "wav2vec2_top_layers_state_dict" in initial:
             if initial.get("unfreeze_top_layers") != args.unfreeze_top_layers:
                 raise ValueError("--init-checkpoint was saved with a different --unfreeze-top-layers")
             encoder.load_top_state_dict(initial["wav2vec2_top_layers_state_dict"])
         del initial
+        if input_norm:  # statistics always come from this run's train split
+            mapper.set_input_stats(input_mean, input_std)
     optimizer = build_optimizer(mapper, optim_config)
     if encoder is not None:
         mapper_parameters = sum(p.numel() for p in mapper.parameters())
@@ -598,6 +622,7 @@ def main():
         "fixed_splits": args.fixed_splits,
         "mel_cache_dir": args.mel_cache_dir,
         "preload": args.preload,
+        "input_norm": input_norm,
         "resume_checkpoint": args.resume_checkpoint or runtime["resume_checkpoint"],
         "save_latest": args.save_latest,
         "auto_resume": args.auto_resume,
@@ -618,6 +643,9 @@ def main():
         else checkpoint_dir / "best_mapper.pt"
     )
     best_path.parent.mkdir(parents=True, exist_ok=True)
+    if input_norm:
+        np.savez(best_path.with_name("input_norm.npz"), mean=input_mean.numpy(), std=input_std.numpy(),
+                 meta=json.dumps(input_norm_meta))
     best_val_loss = float("inf")
     train_losses = []
     val_losses = []
@@ -645,6 +673,9 @@ def main():
                 raise ValueError("--resume-checkpoint was saved with a different --unfreeze-top-layers")
             encoder.load_top_state_dict(checkpoint["wav2vec2_top_layers_state_dict"])
         resumed_step = int(checkpoint.get("global_step", 0))
+        if input_norm and not (torch.equal(mapper.input_mean.cpu(), input_mean)
+                               and torch.equal(mapper.input_std.cpu(), input_std)):
+            raise ValueError(f"{resume_path}: stored input statistics differ from the train split's")
         if not best_path.exists():
             torch.save(checkpoint, best_path)
         if checkpoint.get("rng_state") is not None:
@@ -669,6 +700,8 @@ def main():
     def payload_extra():
         """Extra checkpoint keys: resume state, plus step/encoder state when those options are on."""
         extra = {"rng_state": capture_rng_state(generator), "best_epoch": best_epoch}
+        if input_norm_meta is not None:
+            extra["input_norm"] = input_norm_meta
         if extras is None:
             return extra
         extra["global_step"] = extras.step

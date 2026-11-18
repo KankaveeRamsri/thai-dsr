@@ -61,7 +61,9 @@ SYSTEMS = [  # (folder, role)
     ("mapper_linear_deploy", "(a) linear, distorted length (deployable)"),
     ("mapper_tempo", "(b) tempo"),
     # fixed-layer ablation (docs/ablation_plan.md); skipped until evaluated
-    *((f"mapper_tempo_layer{layer:02d}", f"tempo, layer {layer}") for layer in (3, 6, 12, 18, 24)),
+    # (input normalisation, all six layers retrained with identical code)
+    *((f"mapper_tempo_norm_layer{layer:02d}", f"tempo + input norm, layer {layer}")
+      for layer in (3, 6, 9, 12, 18, 24)),
 ]
 PAIRS = [("mapper_tempo", "mapper_linear_oracle"), ("mapper_tempo", "mapper_linear_deploy")]
 GROUPS = {

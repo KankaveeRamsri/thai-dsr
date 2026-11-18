@@ -4,6 +4,7 @@
 data:
   severity: severe    # dysarthria severity level used for training (mild | moderate | severe)
   layer: 9              # wav2vec2 layer selected via scripts/select_layer.py
+  input_norm: true      # mapper input (x - mean) / std per dimension, stats from the TRAIN split only (docs/ablation_plan.md, Amendment 1)
   manifest_path: data/manifest_w5.csv
   splits_path: data/splits_w5.json
 

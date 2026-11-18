@@ -40,8 +40,18 @@ class MapperModel(nn.Module):
         lstm_dropout=LSTM_DROPOUT,
         projection_hidden_dim=PROJECTION_HIDDEN_DIM,
         mel_dim=MEL_DIM,
+        input_norm=False,
     ):
         super().__init__()
+
+        # Optional per-dimension input normalisation (x - mean) / std. The
+        # statistics are buffers, so they travel with every checkpoint and the
+        # same forward() applies them in training and inference. They are set
+        # from the train split by src/training/input_norm.py before training.
+        self.input_norm = bool(input_norm)
+        if self.input_norm:
+            self.register_buffer("input_mean", torch.zeros(input_dim))
+            self.register_buffer("input_std", torch.ones(input_dim))
 
         self.lstm = nn.LSTM(
             input_size=input_dim,
@@ -61,6 +71,20 @@ class MapperModel(nn.Module):
             nn.Linear(projection_hidden_dim, mel_dim),
         )
 
+    def set_input_stats(self, mean, std):
+        """Install per-dimension input statistics (needs input_norm=True)."""
+        if not self.input_norm:
+            raise ValueError("this mapper was built without input_norm")
+        mean = torch.as_tensor(mean, dtype=self.input_mean.dtype)
+        std = torch.as_tensor(std, dtype=self.input_std.dtype)
+        if mean.shape != self.input_mean.shape or std.shape != self.input_std.shape:
+            raise ValueError(f"stats shape {tuple(mean.shape)} / {tuple(std.shape)}, "
+                             f"expected {tuple(self.input_mean.shape)}")
+        if not bool((std > 0).all()):
+            raise ValueError("input std must be positive")
+        self.input_mean.copy_(mean)
+        self.input_std.copy_(std)
+
     def forward(self, x, lengths=None):
         """
         Args:
@@ -73,6 +97,8 @@ class MapperModel(nn.Module):
         Returns:
             (batch, T, mel_dim) predicted mel-spectrogram.
         """
+        if self.input_norm:
+            x = (x - self.input_mean) / self.input_std
         if lengths is not None:
             packed = pack_padded_sequence(
                 x, lengths.cpu(), batch_first=True, enforce_sorted=False
@@ -109,6 +135,7 @@ def build_mapper_from_config(model_config):
         lstm_dropout=float(mapper_config["dropout"]),
         projection_hidden_dim=int(mapper_config["projection_hidden_dim"]),
         mel_dim=int(mapper_config["mel_dim"]),
+        input_norm=bool(mapper_config.get("input_norm", False)),
     )
 
 

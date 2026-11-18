@@ -290,11 +290,11 @@ Metric definitions are in the docstring of `scripts/evaluate_cv_aligned.py`.
 
 #### Fixed-layer ablation
 
-Tempo alignment is the standard for all new runs. Layers 3, 6, 12, 18 and 24 are compared with layer 9 using the identical recipe. The pre-registered plan, with the layer index convention, hypotheses and test procedure, is in `docs/ablation_plan.md`.
+Tempo alignment is the standard for all new runs. Layers 3, 6, 9, 12, 18 and 24 are all trained with identical code. This recipe adds per-dimension mapper input normalisation, with statistics from the train split only (`configs/train.yaml` `data.input_norm`). Layer 9 is retrained under it; the W2 layer-9 run stays as the W2 result. The pre-registered plan, with the layer index convention, hypotheses and test procedure, is in `docs/ablation_plan.md`.
 
 1. `notebooks/colab_extract_layers.ipynb` extracts all ablation layers from the frozen distorted wavs in one GPU pass per file (`python -m src.preprocessing.extract_embedding --layers ...`). It writes one archive per layer to Drive.
-2. `notebooks/colab_train.ipynb` trains one layer per run, chosen with `LAYER`, into `runs/cv27_layer<NN>_tempo`.
-3. `scripts/evaluate_cv_aligned.py --system mapper --alignment tempo --layer NN` scores each run into `mapper_tempo_layer<NN>`.
+2. `notebooks/colab_train.ipynb` trains one layer per run, chosen with `LAYER`, into `runs/cv27_layer<NN>_tempo` (two-digit layer, so layer 9 goes to `cv27_layer09_tempo`).
+3. `scripts/evaluate_cv_aligned.py --system mapper --alignment tempo --layer NN` scores each run into `mapper_tempo_norm_layer<NN>`.
 
 ## Author
 

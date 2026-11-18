@@ -12,6 +12,7 @@
 #   - Accept CLI args for input path, checkpoint path, output path
 
 import argparse
+import copy
 import csv
 import glob
 import json
@@ -64,13 +65,22 @@ def get_device():
 
 def load_mapper(checkpoint_path, device, model_config_path, train_config_path, layer=None):
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
-    model_config = checkpoint.get("model_config") or load_yaml_config(model_config_path)
+    model_config = copy.deepcopy(checkpoint.get("model_config") or load_yaml_config(model_config_path))
+    # Input normalisation follows the checkpoint: its statistics are buffers in
+    # the state dict (W2 and older checkpoints have none and load without it).
+    has_stats = "input_mean" in checkpoint["model_state_dict"]
+    if bool(model_config["mapper"].get("input_norm", False)) != has_stats:
+        raise ValueError(f"{checkpoint_path}: model_config input_norm disagrees with the stored state dict")
+    model_config["mapper"]["input_norm"] = has_stats
     model = build_mapper_from_config(model_config).to(device)
     model.load_state_dict(checkpoint["model_state_dict"])
+    norm_layer = (checkpoint.get("input_norm") or {}).get("layer")
 
     checkpoint_train_config = checkpoint.get("train_config") or checkpoint.get("config", {})
     checkpoint_layer = checkpoint_train_config.get("data", {}).get("layer")
     configured_layer = get_selected_layer(train_config_path) if layer is None else int(layer)
+    if norm_layer is not None and int(norm_layer) != configured_layer:
+        raise ValueError(f"input statistics are for layer {norm_layer}, configured layer {configured_layer}")
     if checkpoint_layer is not None and int(checkpoint_layer) != configured_layer:
         raise ValueError(
             "Checkpoint/config layer mismatch: "

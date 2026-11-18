@@ -312,7 +312,14 @@ def main():
     embeddings_dir = args.embeddings_dir or root / "embeddings"
     out_root = args.out_dir or root / "eval" / "test_full"
     variant = f"linear_{args.linear_length}" if args.alignment == "linear" else args.alignment
-    layer_suffix = "" if args.layer == 9 else f"_layer{args.layer:02d}"
+    checkpoint = None
+    if args.system == "mapper" and args.checkpoint:
+        checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
+    if checkpoint is not None and "input_mean" in checkpoint["model_state_dict"]:
+        # ablation recipe (input normalisation, docs/ablation_plan.md Amendment 1): every layer is named
+        layer_suffix = f"_norm_layer{args.layer:02d}"
+    else:  # W2 recipe: layer 9 keeps the plain name
+        layer_suffix = "" if args.layer == 9 else f"_layer{args.layer:02d}"
     name = args.name or (f"mapper_{variant}{layer_suffix}" if args.system == "mapper" else args.system)
     out = out_root / name
     if args.pitch_only:
@@ -327,7 +334,6 @@ def main():
     vocoder = load_vocoder(device) if args.system not in ("distorted", "pv_roundtrip") else None
     mapper, checkpoint_info = None, {}
     if args.system == "mapper":
-        checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
         sources = check_alignment(args.checkpoint, checkpoint, args.alignment)
         run_info = Path(args.checkpoint).with_name("run_info.json")
         stored_layers = {"checkpoint": checkpoint.get("wav2vec2_layer"),
@@ -341,6 +347,8 @@ def main():
                            "epoch": checkpoint.get("epoch"), "best_epoch": checkpoint.get("best_epoch"),
                            "val_loss": checkpoint.get("val_loss"), "alignment": args.alignment,
                            "linear_length": args.linear_length if args.alignment == "linear" else None,
+                           "input_norm": checkpoint.get("input_norm") or (
+                               "input_mean" in checkpoint["model_state_dict"]),
                            "alignment_confirmed_by": sources or "--alignment only (nothing stored with the checkpoint)"}
         del checkpoint
 
