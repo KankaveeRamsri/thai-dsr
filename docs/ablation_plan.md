@@ -45,23 +45,29 @@ entries:
 
 ## What is held fixed
 
-Everything except the layer is identical to the layer-9 tempo run
-(`cv27_layer9_tempo`; commit ef6b427, best epoch 18, best val loss 1.1004).
+Everything except the layer is identical across all six runs (3, 6, 9, 12, 18, 24).
+All six are trained with the same code, including a new layer-9 run. The recipe is
+the W2 layer-9 tempo run (`cv27_layer9_tempo`; commit ef6b427, best epoch 18, best
+val loss 1.1004) **plus per-layer input normalisation**. This was added by
+Amendment 1 before any ablation training; see Deviations.
 
 | setting | value |
 |---|---|
 | alignment | `tempo` (target = clean mel warped onto the distorted timeline with the logged tempo segments; embedding interpolated to the distorted mel frame count) |
 | encoder | `airesearch/wav2vec2-large-xlsr-53-th`, frozen, fp32 |
 | mapper | BiLSTM, `configs/model.yaml` unchanged (2 × 512, LayerNorm, 256 → 80 projection, dropout 0.1) |
+| input normalisation (Amendment 1) | `(x − mean) / std` per input dimension. Mean and std are computed per layer over every mapper-input frame of the **train split only**: 2,383 clips, embeddings interpolated to the mel frame count exactly as the mapper sees them. They are stored as model buffers in every checkpoint and in `input_norm.npz` next to `best.pt`, and applied inside `MapperModel.forward`, so training and inference use the same code. Setting: `configs/train.yaml` `data.input_norm: true`. |
 | vocoder | HiFi-GAN UNIVERSAL_V1 (evaluation only) |
 | data | CV 27.0 Thai speaker split (`data/manifests/cv27_th_*`): train = 2,383 severe clips from 379 speakers; val = 305 severe clips from 48 speakers; test = 308 clips × mild/moderate/severe, 48 speakers |
 | optimisation | Adam, lr 1e-3, weight decay 0, batch size 4, ReduceLROnPlateau (patience 5), **50 epochs**, seed 42 |
 | model selection | `best.pt` = lowest validation loss over the 50 epochs |
 | hardware | Colab GPU. Recorded per session in `run_info.json`; T4 where possible, as for layer 9. |
 
-- The layer-9 run is reused rather than retrained.
-- Training code is unchanged since ef6b427: `git diff ef6b427 -- src/training
-  src/models configs data/manifests` is empty.
+- Layer 9 is retrained under this recipe (Amendment 1). The W2 layer-9 run
+  (`cv27_layer9_tempo`, no input normalisation) is kept unchanged as the W2
+  result and is not part of the ablation comparisons.
+- Apart from input normalisation, training code is unchanged since ef6b427: the
+  loss, optimiser, scheduler, data loading and seeding are the same.
 - The only change in `src/utils/time_warp.py` is new inverse functions.
   `warp_frames` gives bit-identical output (max abs diff 0 on 200 clips).
 - Tempo targets come from the same cached `mel_cache/tempo/` archive.
@@ -121,7 +127,8 @@ and layer comparison is exploratory.
 
 ### Test procedure
 
-- **Unit of analysis.** Paired per-clip differences of layer L minus layer 9,
+- **Unit of analysis.** Paired per-clip differences of layer L minus the
+  *retrained* layer 9 (same recipe, Amendment 1),
   pooled over the three severities (924 pairs). Per-severity results are
   descriptive.
 - **Test.** Two-sided Wilcoxon signed-rank on the 48 per-speaker mean
@@ -144,28 +151,72 @@ and layer comparison is exploratory.
   speakers. If a pre-registered result hinges on a difference smaller than
   0.01 STOI or 0.02 cosine, layer 9 and that layer are re-run with seed 43
   before any claim is made.
-- **Input scale.** The mapper has no input normalisation, and the residual-stream
-  scale grows with depth (layer 24 is re-normalised). No per-layer tuning is
-  done. Differences may therefore partly reflect how well one fixed recipe suits
-  each layer's scale.
-  - The per-layer mean frame norm on the training set is reported alongside the
-    results.
+- **Input scale.** The residual-stream scale differs a lot across layers. Mean
+  frame L2 norm on sample files: layer 3 ≈ 120, 6 ≈ 187, 12 ≈ 291, 18 ≈ 384, and
+  24 ≈ 15 because it is re-normalised.
+  - Amendment 1 removes the first-order part of this (per-dimension location and
+    scale) with train-split statistics.
+  - Differences in correlation structure across dimensions remain, and no other
+    per-layer tuning is done.
+  - The per-layer mean frame norm is still reported alongside the results.
 - **Proxy metrics.** STOI is a proxy for intelligibility (no ASR or listening
   test here), and ECAPA similarity is a proxy for speaker identity.
-- **Different commits.** The layer-9 run was trained at ef6b427 and the new
-  runs at a later commit. This has no effect on training (see above) but is
-  recorded in each `run_info.json`.
+- **Same code for all six runs.** All six ablation runs, layer 9 included, are
+  trained from one pinned commit, recorded in each `run_info.json`.
+- **W2 comparison.** The W2 layer-9 run (ef6b427) differs from the new layer-9
+  run only by input normalisation. Comparing the two is exploratory and not part
+  of H1/H2.
 
 ## Artefacts
 
 - Drive embedding archives: `cv27_embeddings_layer<NN>.tar` (same layout as
   `cv27_embeddings_layer09.tar`), each with a `.sha256` file.
-- Drive runs: `runs/cv27_layer<NN>_tempo/` (`best.pt`, `latest.pt`,
-  `run_info.json`, `train.log`). The existing layer-9 run stays at
-  `runs/cv27_layer9_tempo/`.
-- Mac checkpoints: `<data root>/checkpoints/cv27_layer<NN>_tempo/`.
-- Mac evaluation: `<data root>/eval/test_full/mapper_tempo_layer<NN>/`.
+- Drive runs: `runs/cv27_layer<NN>_tempo/` with a two-digit layer, including
+  `cv27_layer09_tempo` for the retrained layer 9. Each holds `best.pt`,
+  `latest.pt`, `input_norm.npz`, `run_info.json` and `train.log`. The W2 run
+  stays untouched at `runs/cv27_layer9_tempo/`.
+- Mac checkpoints: `<data root>/checkpoints/cv27_layer<NN>_tempo/`. The W2 run
+  stays at `cv27_layer9_tempo/`.
+- Mac evaluation: `<data root>/eval/test_full/mapper_tempo_norm_layer<NN>/`.
+  The W2 evaluation stays at `mapper_tempo/`.
 
 ## Deviations
 
-None yet.
+### Amendment 1 (2026-11-18, before any ablation training): per-layer input normalisation; layer 9 retrained
+
+**Change.** The mapper normalises its input per dimension: `(x − mean) / std`.
+- Mean and std are computed per layer over every mapper-input frame of the
+  train split only. Validation and test clips are never read for this.
+- Frames are the embeddings interpolated to the mel frame count, i.e. exactly
+  what the mapper receives.
+- Accumulation is in float64; std is floored at 1e-5.
+- The statistics are model buffers. They are saved in every checkpoint (`best.pt`,
+  `latest.pt`) together with metadata: layer, split, number of clips and frames,
+  and a sha256 of the sorted train clip ids. They are also written to
+  `input_norm.npz` next to `best.pt`.
+- Normalisation runs inside `MapperModel.forward`, so training, validation and
+  inference all use the same code. A checkpoint without these buffers (W2) loads
+  as before, without normalisation.
+- On resume, the statistics are recomputed and must equal the stored ones.
+
+**Applies to** all six ablation runs: 3, 6, 9, 12, 18 and 24. Layer 9 is
+retrained under the same recipe, so every layer is trained with identical code.
+The W2 layer-9 tempo run (ef6b427, no normalisation) is kept unchanged as the
+W2 result. It is no longer the ablation's reference.
+
+**Why.** Without it, the comparison is confounded by input scale:
+- The mapper has no input normalisation, and wav2vec2 hidden-state scale changes
+  strongly with depth. The mean frame norm goes from about 120 at layer 3 to
+  about 384 at layer 18, then drops to about 15 at layer 24 after the final
+  LayerNorm. A few dimensions have very large values (|x| up to about 800 at
+  layer 9).
+- With one fixed optimiser recipe (Adam, lr 1e-3), each layer would see a
+  different effective input scale and LSTM gate saturation. A layer effect could
+  then partly be "this layer's scale suits lr 1e-3".
+- Train-split statistics remove that first-order confound without per-layer
+  tuning and without using validation or test data.
+- Retraining layer 9 under the same recipe keeps the reference comparable. The
+  W2 run would differ from the other layers in code as well as in layer.
+
+**Unchanged:** layers, data, splits, loss, optimiser, scheduler, epochs, seed,
+model selection, metrics, hypotheses, test procedure and decision rules.
