@@ -12,8 +12,9 @@ Systems and the timeline each one produces audio on
                    costs every distorted-timeline system)
   copysynth_ref    mel of the stretched clean waveform -> HiFi-GAN      distorted
                    (legacy ceiling of the previous protocol)
-  mapper           wav2vec2 layer-9 embedding -> mapper -> HiFi-GAN     see below
-                   (--checkpoint, --alignment)
+  mapper           wav2vec2 layer-L embedding -> mapper -> HiFi-GAN     see below
+                   (--checkpoint, --alignment, --layer, default 9; a
+                   layer other than 9 adds _layer<NN> to the default name)
 
 Mapper inference (--alignment, plus --linear-length for linear models)
   linear, --linear-length oracle  (default name mapper_linear_oracle)
@@ -65,6 +66,20 @@ Mel and speaker metrics
                  client_id (mean over them), so copying the reference does not
                  help. spk_n_other is how many clips that is.
 
+Pitch / tone metrics (src/evaluation/pitch.py, Praat via parselmouth)
+  Computed on the same clean-timeline signal as the main comparison: the
+  melwarp audio for vocoded systems (the output itself for clean-timeline
+  ones), and the waveform inverse warp for the floor and pv_roundtrip, which
+  have no mel. The reference is the untouched clean clip.
+  f0_corr        Pearson correlation of F0 (semitones) on frames voiced in both
+  f0_rmse_st     RMS F0 error in semitones on frames voiced in both
+  vuv_agree      share of frames with the same voiced/unvoiced decision
+  f0_n_voiced_both  frames voiced in both (< 10: f0_corr / f0_rmse_st are NaN)
+  hnr_db / hnr_clean_db  mean HNR of the output / of the clean clip
+  --pitch-only recomputes just these for an existing <out-dir>/<name>/ from its
+  saved audio, into pitch_metrics.csv (per_utterance.csv is left untouched);
+  the summarizer merges it.
+
 Legacy metrics (kept separate)
   stoi_trunc / pesq_trunc  original protocol (src/evaluation/metrics.py):
                  unwarped clean reference, both truncated to the shorter
@@ -99,6 +114,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.evaluation.mapper_eval import load_vocoder  # noqa: E402
 from src.evaluation.metrics import PESQ_MODE, TARGET_SAMPLE_RATE, compute_pesq, compute_stoi, load_audio_16k  # noqa: E402
+from src.evaluation.pitch import PITCH_COLUMNS, analyze, compare  # noqa: E402
 from src.inference.run import MEL_CLAMP_MAX, MEL_CLAMP_MIN, get_device, load_mapper  # noqa: E402
 from src.utils.config import DEFAULT_MODEL_CONFIG_PATH, DEFAULT_TRAIN_CONFIG_PATH, cv_data_root  # noqa: E402
 from src.utils.mel import HIFIGAN_SAMPLE_RATE, compute_mel  # noqa: E402
@@ -203,6 +219,52 @@ def clean_speaker_embeddings(path, clips, speaker_of, encoder, clean_paths):
     return dict(zip(clips, embeddings))
 
 
+class CleanPitch:
+    """Pitch tracks of the clean clips, computed once per clip."""
+
+    def __init__(self):
+        self.tracks = {}
+
+    def __call__(self, clip, clean):
+        if clip not in self.tracks:
+            self.tracks[clip] = analyze(clean, TARGET_SAMPLE_RATE)
+        return self.tracks[clip]
+
+
+def pitch_only(out, split_rows, segments):
+    """Pitch / tone metrics for an existing system folder, from its saved audio."""
+    previous = pd.read_csv(out / "per_utterance.csv")
+    info = json.loads((out / "run_info.json").read_text())
+    system, timeline = info["system"], info["timeline"]
+    by_clip = split_rows.set_index(["utterance_id", "severity"])
+    clean_pitch, results, start = CleanPitch(), [], time.time()
+    source = ("waveform inverse warp of the distorted input" if system == "distorted" else
+              "waveform inverse warp of the stretched clean clip" if system == "pv_roundtrip" else
+              "saved output audio (clean timeline)" if timeline == "clean" else "saved audio_melwarp")
+    print(f"{out.name}: pitch metrics for {len(previous)} rows from {source}", flush=True)
+    for i, row in enumerate(previous.itertuples(), 1):
+        paths = by_clip.loc[(row.utterance_id, row.severity)]
+        clean = load_audio_16k(paths.clean_path)
+        if system in ("distorted", "pv_roundtrip"):
+            warp = TempoWarp(segments.loc[(row.utterance_id, row.severity)], TARGET_SAMPLE_RATE)
+            native = load_audio_16k(paths.distorted_path) if system == "distorted" else warp.stretch_waveform(clean)
+            estimate = warp.unstretch_waveform(fit_length(native, warp.distorted_samples))
+        else:
+            folder = "audio" if timeline == "clean" else "audio_melwarp"
+            estimate = fit_length(load_audio_16k(out / folder / f"{row.utterance_id}_{row.severity}.wav"), len(clean))
+        metrics = compare(clean_pitch(row.utterance_id, clean), analyze(estimate, TARGET_SAMPLE_RATE))
+        results.append({"utterance_id": row.utterance_id, "severity": row.severity, **metrics})
+        if i % 100 == 0 or i == len(previous):
+            print(f"  {i}/{len(previous)} {time.time() - start:.0f}s", flush=True)
+    df = pd.DataFrame(results)
+    df.to_csv(out / "pitch_metrics.csv", index=False)
+    (out / "pitch_run_info.json").write_text(json.dumps({
+        "system": system, "timeline": timeline, "rows": len(df), "estimate": source,
+        "reference": "untouched clean clip", "git": git_state(), "seconds": round(time.time() - start, 1),
+        "f0_metrics_nan": int(df["f0_corr"].isna().sum())}, indent=2))
+    print(df.merge(previous[["utterance_id", "severity"]]).groupby("severity")[PITCH_COLUMNS].mean().round(3).to_string())
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -228,9 +290,14 @@ def main():
     parser.add_argument("--limit", type=int, default=0, help="only the first N clips per severity (smoke test)")
     parser.add_argument("--device", default=None, help="mapper/vocoder device (default: cuda, then mps, then cpu)")
     parser.add_argument("--no-audio", action="store_true", help="do not keep the output wav files")
+    parser.add_argument("--pitch-only", action="store_true",
+                        help="only (re)compute the pitch / tone metrics of an existing <out-dir>/<name>/ "
+                             "from its saved audio, into pitch_metrics.csv")
     args = parser.parse_args()
-    if args.system == "mapper" and not (args.checkpoint and args.alignment):
+    if args.system == "mapper" and not args.pitch_only and not (args.checkpoint and args.alignment):
         parser.error("--system mapper needs --checkpoint and --alignment")
+    if args.system == "mapper" and args.pitch_only and not (args.name or args.alignment):
+        parser.error("--pitch-only with --system mapper needs --name or --alignment")
 
     root = cv_data_root()
     manifest = pd.read_csv(args.manifest or root / "training_manifest.csv")
@@ -245,8 +312,12 @@ def main():
     embeddings_dir = args.embeddings_dir or root / "embeddings"
     out_root = args.out_dir or root / "eval" / "test_full"
     variant = f"linear_{args.linear_length}" if args.alignment == "linear" else args.alignment
-    name = args.name or (f"mapper_{variant}" if args.system == "mapper" else args.system)
+    layer_suffix = "" if args.layer == 9 else f"_layer{args.layer:02d}"
+    name = args.name or (f"mapper_{variant}{layer_suffix}" if args.system == "mapper" else args.system)
     out = out_root / name
+    if args.pitch_only:
+        pitch_only(out, split_rows, segments)
+        return
     (out / "audio").mkdir(parents=True, exist_ok=True)
     (out / "audio_melwarp").mkdir(exist_ok=True)
 
@@ -258,6 +329,12 @@ def main():
     if args.system == "mapper":
         checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
         sources = check_alignment(args.checkpoint, checkpoint, args.alignment)
+        run_info = Path(args.checkpoint).with_name("run_info.json")
+        stored_layers = {"checkpoint": checkpoint.get("wav2vec2_layer"),
+                         str(run_info): json.loads(run_info.read_text()).get("layer", 9) if run_info.exists() else None}
+        for source, value in stored_layers.items():
+            if value is not None and int(value) != args.layer:
+                raise SystemExit(f"--layer {args.layer} but {source} says layer {value}")
         mapper = load_mapper(args.checkpoint, device, DEFAULT_MODEL_CONFIG_PATH,
                              DEFAULT_TRAIN_CONFIG_PATH, layer=args.layer)
         checkpoint_info = {"path": str(Path(args.checkpoint).resolve()), "sha256": sha256(args.checkpoint),
@@ -268,6 +345,7 @@ def main():
         del checkpoint
 
     encoder = SpeakerEncoder()
+    clean_pitch = CleanPitch()
     # Clean references cover the whole split, also under --limit.
     test_clips = sorted(set(split_rows["utterance_id"]))
     clean_paths = dict(zip(split_rows["utterance_id"], split_rows["clean_path"]))
@@ -354,6 +432,9 @@ def main():
                                             keep=not args.no_audio), len(clean))
             result["stoi_melwarp"] = float(stoi(clean, melwarp, TARGET_SAMPLE_RATE, extended=False))
             result["pesq_melwarp"] = safe_pesq(clean, melwarp)[0]
+        # pitch / tone on the same clean-timeline signal as the main comparison
+        result.update(compare(clean_pitch(row.utterance_id, clean),
+                              analyze(melwarp if vocoder is not None else restored, TARGET_SAMPLE_RATE)))
         results.append(result)
         if i % 50 == 0 or i == len(rows):
             elapsed = time.time() - start
@@ -382,7 +463,7 @@ def main():
             "main *_melwarp: mel frames unwarped onto the clean grid, then vocoded; "
             "secondary stoi/pesq: waveform trimmed/padded to the distorted length, then inverse-warped "
             "(TempoWarp.unstretch_waveform)"),
-        "checkpoint": checkpoint_info or None,
+        "checkpoint": checkpoint_info or None, "layer": args.layer if args.system == "mapper" else None,
         "device": str(device), "ecapa": {"source": ECAPA_SOURCE, "revision": encoder.revision},
         "git": git_state(), "seconds": round(time.time() - start, 1),
         "max_abs_length_residual": int(df["length_residual"].abs().max()),
@@ -390,7 +471,7 @@ def main():
     }
     (out / "run_info.json").write_text(json.dumps(info, indent=2, ensure_ascii=False))
     metrics = ["stoi_melwarp", "pesq_melwarp", "stoi", "pesq", "mel_l1", "mel_l1_clean",
-               "spk_sim_same", "spk_sim_other", "stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"]
+               "spk_sim_same", "spk_sim_other", "f0_corr", "f0_rmse_st", "vuv_agree", "hnr_db", "stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"]
     means = df.groupby("severity")[metrics].mean().reindex([s for s in SEVERITY_ORDER if s in set(df["severity"])])
     print(f"\n{name} ({timeline} timeline); max |length residual| {info['max_abs_length_residual']} samples, "
           f"{info['pesq_failed']} PESQ failure(s), {info['seconds']:.0f}s")

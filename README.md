@@ -284,7 +284,17 @@ python scripts/checksum_cv_derived.py verify --from-repo
 
 **Secondary.** The waveform inverse-warp `stoi` / `pesq` is also reported. It is the only version defined for the floor, but its phase-vocoder pass penalises every distorted-timeline system (see `pv_roundtrip`).
 
+**Pitch / tone.** `f0_corr`, `f0_rmse_st` (semitones), `vuv_agree` and `hnr_db` come from Praat (`src/evaluation/pitch.py`). They are measured against the clean clip on the same clean-timeline signal: melwarp audio, or the waveform inverse warp for the floor. For systems scored before these metrics existed, `--pitch-only` recomputes them from the saved audio.
+
 Metric definitions are in the docstring of `scripts/evaluate_cv_aligned.py`.
+
+#### Fixed-layer ablation
+
+Tempo alignment is the standard for all new runs. Layers 3, 6, 12, 18 and 24 are compared with layer 9 using the identical recipe. The pre-registered plan, with the layer index convention, hypotheses and test procedure, is in `docs/ablation_plan.md`.
+
+1. `notebooks/colab_extract_layers.ipynb` extracts all ablation layers from the frozen distorted wavs in one GPU pass per file (`python -m src.preprocessing.extract_embedding --layers ...`). It writes one archive per layer to Drive.
+2. `notebooks/colab_train.ipynb` trains one layer per run, chosen with `LAYER`, into `runs/cv27_layer<NN>_tempo`.
+3. `scripts/evaluate_cv_aligned.py --system mapper --alignment tempo --layer NN` scores each run into `mapper_tempo_layer<NN>`.
 
 ## Author
 

@@ -20,6 +20,11 @@ Reads <eval-dir>/<system>/per_utterance.csv for each system and writes, in
                            tempo vs (a) linear with the oracle length, and vs
                            (a) linear with the deployable distorted length.
 
+Pitch / tone metrics (f0_corr, f0_rmse_st, vuv_agree, hnr_db) come from
+per_utterance.csv, or from <system>/pitch_metrics.csv written by
+evaluate_cv_aligned.py --pitch-only for systems evaluated before they existed.
+Metrics a system lacks show as "–" and are left out of its paired comparisons.
+
 The main comparison is stoi_melwarp / pesq_melwarp (mel-domain inverse warp);
 the waveform inverse-warp stoi / pesq are secondary (see evaluate_cv_aligned.py).
 
@@ -55,6 +60,8 @@ SYSTEMS = [  # (folder, role)
     ("mapper_linear_oracle", "(a) linear, clean length (oracle)"),
     ("mapper_linear_deploy", "(a) linear, distorted length (deployable)"),
     ("mapper_tempo", "(b) tempo"),
+    # fixed-layer ablation (docs/ablation_plan.md); skipped until evaluated
+    *((f"mapper_tempo_layer{layer:02d}", f"tempo, layer {layer}") for layer in (3, 6, 12, 18, 24)),
 ]
 PAIRS = [("mapper_tempo", "mapper_linear_oracle"), ("mapper_tempo", "mapper_linear_deploy")]
 GROUPS = {
@@ -62,14 +69,20 @@ GROUPS = {
     "secondary: STOI/PESQ vs untouched clean, waveform inverse warp (phase vocoder)": ["stoi", "pesq"],
     "mel L1": ["mel_l1", "mel_l1_clean"],
     "speaker similarity (ECAPA cosine)": ["spk_sim_same", "spk_sim_other"],
+    "pitch / tone vs clean (Praat; melwarp, or waveform inverse warp for the floor)":
+        ["f0_corr", "f0_rmse_st", "vuv_agree", "hnr_db"],
     "legacy": ["stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"],
 }
 METRICS = [m for group in GROUPS.values() for m in group]
-LOWER_IS_BETTER = {"mel_l1", "mel_l1_clean"}
+LOWER_IS_BETTER = {"mel_l1", "mel_l1_clean", "f0_rmse_st"}
+PITCH_METRICS = ["f0_corr", "f0_rmse_st", "vuv_agree", "f0_n_voiced_both", "hnr_db", "hnr_clean_db"]
 # mel_l1 is measured against each model's own training target, which differs
 # between the clean and distorted timelines, so it is not compared pairwise.
 PAIRED_METRICS = ["stoi_melwarp", "pesq_melwarp", "stoi", "pesq", "mel_l1_clean",
-                  "spk_sim_same", "spk_sim_other", "stoi_trunc", "pesq_trunc"]
+                  "spk_sim_same", "spk_sim_other", "f0_corr", "f0_rmse_st", "vuv_agree", "hnr_db",
+                  "stoi_trunc", "pesq_trunc"]
+# Metrics missing for a system (e.g. pitch metrics not yet computed) are NaN in
+# its tables and dropped from paired comparisons that involve it.
 
 
 def cluster_bootstrap(values, clusters, n_boot, seed):
@@ -151,6 +164,16 @@ def main():
         if keys is not None and these != keys:
             raise SystemExit(f"{name} covers different (clip, severity) rows than {systems[0][0]}")
         keys = these
+        pitch_path = eval_dir / name / "pitch_metrics.csv"
+        if pitch_path.exists() and "f0_corr" not in df.columns:  # from --pitch-only
+            pitch = pd.read_csv(pitch_path)
+            if set(zip(pitch["utterance_id"], pitch["severity"])) != these:
+                raise SystemExit(f"{pitch_path} covers different rows than {path}")
+            df = df.merge(pitch[["utterance_id", "severity", *PITCH_METRICS]], on=["utterance_id", "severity"],
+                          how="left", validate="one_to_one")
+        for metric in [*METRICS, *PITCH_METRICS]:
+            if metric not in df.columns:
+                df[metric] = np.nan
         frames[name] = df
         systems.append((name, role))
     if not frames:
@@ -202,7 +225,8 @@ def main():
         a = frames[a_name].set_index(["utterance_id", "severity"])
         b = frames[b_name].set_index(["utterance_id", "severity"])
         per_clip = pd.DataFrame({"client_id": a["client_id"]}, index=a.index)
-        for metric in PAIRED_METRICS:
+        metrics = [m for m in PAIRED_METRICS if a[m].notna().any() and b[m].notna().any()]
+        for metric in metrics:
             per_clip[f"{metric}_{a_name}"] = a[metric]
             per_clip[f"{metric}_{b_name}"] = b.loc[a.index, metric]
             per_clip[f"{metric}_diff"] = per_clip[f"{metric}_{b_name}"] - per_clip[f"{metric}_{a_name}"]
@@ -210,7 +234,7 @@ def main():
         per_clip.to_csv(out / f"paired_{b_name}_vs_{a_name}_per_clip.csv", index=False)
         paired_rows = []
         for severity, part in by_severity(per_clip):
-            for metric in PAIRED_METRICS:
+            for metric in metrics:
                 diff = part[f"{metric}_diff"]
                 n, mean, low, high = cluster_bootstrap(diff, part["client_id"], args.n_boot, args.seed)
                 valid = part[np.isfinite(diff)]
@@ -247,12 +271,20 @@ def main():
         ckpt_text = (f"epoch {ckpt.get('epoch')}, best_epoch {ckpt.get('best_epoch')}, "
                      f"sha256 {str(ckpt.get('sha256'))[:12]}") if ckpt else "–"
         lines.append(f"| {name} | {role} | {info.get('timeline', '?')} | {info.get('inference', '?')} | {ckpt_text} |")
+    pitch_systems = [name for name, _ in systems if frames[name]["f0_n_voiced_both"].notna().any()]
     for title, metrics in GROUPS.items():
         lines += ["", f"## {title}", "", markdown_table(summary, metrics, systems)]
-    if reference_rows:
-        lines += ["", "Clean references for spk_sim_other: " + "; ".join(
-            f"{r['system']} {fmt(r['mean_spk_sim_other'], r['ci_low_spk_sim_other'], r['ci_high_spk_sim_other'])}"
-            for r in reference_rows)]
+        if "spk_sim_other" in metrics and reference_rows:
+            lines += ["", "Clean references for spk_sim_other: " + "; ".join(
+                f"{r['system']} {fmt(r['mean_spk_sim_other'], r['ci_low_spk_sim_other'], r['ci_high_spk_sim_other'])}"
+                for r in reference_rows)]
+        if "f0_corr" in metrics and pitch_systems:
+            clean = pd.concat(frames[name][["utterance_id", "client_id", "hnr_clean_db"]] for name in pitch_systems)
+            clean = clean.drop_duplicates("utterance_id")
+            lines += ["", "Clean reference HNR (dB): " + fmt(*cluster_bootstrap(
+                clean["hnr_clean_db"], clean["client_id"], args.n_boot, args.seed)[1:]),
+                      "", "Rows with < 10 frames voiced in both (f0_corr / f0_rmse_st NaN): " + ", ".join(
+                          f"{name} {int((frames[name]['f0_n_voiced_both'] < 10).sum())}" for name in pitch_systems)]
     for b_name, a_name, paired_rows in paired_tables:
         lines += ["", f"## Paired: {b_name} − {a_name} (per clip)", "",
                   f"| severity | metric | better | mean diff [95% CI] | share {b_name} better | "
