@@ -269,22 +269,20 @@ python scripts/checksum_cv_derived.py verify --from-repo
 
 #### Test evaluation on this set
 
-`scripts/run_cv_test_eval.sh` scores six systems on all 308 test clips at three severities (924 rows each):
+`scripts/run_cv_test_eval.sh` scores seven systems on all 308 test clips at three severities (924 rows each):
 
 - the distorted input (floor)
 - a phase-vocoder round trip (control)
-- clean copy-synthesis on the clean timeline and on the distorted timeline (ceilings)
-- mapper (a) `linear` and mapper (b) `tempo`
+- clean copy-synthesis on the clean and on the distorted timeline (ceilings)
+- mapper (a) `linear` with the clean frame count (`mapper_linear_oracle`, as trained, which gives it the clean duration)
+- mapper (a) `linear` with the distorted frame count (`mapper_linear_deploy`, no oracle)
+- mapper (b) `tempo` (distorted frame count, as trained)
 
-`scripts/summarize_cv_eval.py` then writes the tables, with 95% CIs from a bootstrap over speakers and a paired (b) − (a) comparison.
+`scripts/summarize_cv_eval.py` writes the tables, with 95% CIs from a bootstrap over speakers and paired (b) − (a) comparisons against both linear variants.
 
-**Primary metric.** STOI and PESQ against the untouched clean clip. Output on the distorted timeline is inverse-warped first, using the logged tempo segments.
+**Main comparison.** `stoi_melwarp` / `pesq_melwarp` score against the untouched clean clip. Distorted-timeline output has its mel frames unwarped onto the clean grid before vocoding.
 
-**Timelines.** Each mapper runs on the timeline it was trained on:
-- `linear` takes the clean frame count, which is an oracle on duration.
-- `tempo` takes the distorted frame count.
-
-**Inverse-warp penalty.** The waveform inverse warp is itself a phase-vocoder pass, so it costs every distorted-timeline system some STOI. The `pv_roundtrip` control and the mel-domain `*_melwarp` columns show how large that cost is.
+**Secondary.** The waveform inverse-warp `stoi` / `pesq` is also reported. It is the only version defined for the floor, but its phase-vocoder pass penalises every distorted-timeline system (see `pv_roundtrip`).
 
 Metric definitions are in the docstring of `scripts/evaluate_cv_aligned.py`.
 

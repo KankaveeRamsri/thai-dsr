@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Full CV 27.0 test evaluation: floor, control, both ceilings, (a) and (b),
+# Full CV 27.0 test evaluation: floor, control, both ceilings, (a) linear with the oracle
+# and the deployable length, (b) tempo,
 # then the summary tables. One system at a time.
 #
 # Expects the Colab checkpoints at (copy run_info.json along with best.pt so
@@ -22,7 +23,9 @@ done
 for system in distorted pv_roundtrip copysynth_clean copysynth_tempo; do
   "$PY" scripts/evaluate_cv_aligned.py --system "$system" "$@"
 done
-for alignment in linear tempo; do
-  "$PY" scripts/evaluate_cv_aligned.py --system mapper --alignment "$alignment" \
-    --checkpoint "$CKPT/cv27_layer9_$alignment/best.pt" "$@"
+for length in oracle deploy; do
+  "$PY" scripts/evaluate_cv_aligned.py --system mapper --alignment linear --linear-length "$length" \
+    --checkpoint "$CKPT/cv27_layer9_linear/best.pt" "$@"
 done
+"$PY" scripts/evaluate_cv_aligned.py --system mapper --alignment tempo \
+  --checkpoint "$CKPT/cv27_layer9_tempo/best.pt" "$@"

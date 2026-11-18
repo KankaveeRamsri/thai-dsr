@@ -15,30 +15,48 @@ Systems and the timeline each one produces audio on
   mapper           wav2vec2 layer-9 embedding -> mapper -> HiFi-GAN     see below
                    (--checkpoint, --alignment)
 
-Mapper inference uses the timeline the checkpoint was trained on:
-  --alignment linear  the embedding is interpolated to the CLEAN mel frame
-                      count, exactly as in training. This gives the model the
-                      clean duration (an oracle it also had in training); the
-                      output is on the clean timeline.
-  --alignment tempo   the embedding is interpolated only for the frame-rate
-                      change, to the DISTORTED mel frame count; no oracle. The
-                      output is on the distorted timeline.
+Mapper inference (--alignment, plus --linear-length for linear models)
+  linear, --linear-length oracle  (default name mapper_linear_oracle)
+        the embedding is interpolated to the CLEAN mel frame count, exactly as
+        in training. This hands the model the clean duration, which is not
+        available in deployment; the output is on the clean timeline.
+  linear, --linear-length deploy  (default name mapper_linear_deploy)
+        the same model, but the embedding is interpolated to the DISTORTED mel
+        frame count, the only length known at deployment; no oracle. The
+        output is on the distorted timeline.
+  tempo  (default name mapper_tempo)
+        the embedding is interpolated only for the frame-rate change, to the
+        DISTORTED mel frame count, as in training; no oracle. The output is on
+        the distorted timeline.
 If a run_info.json (written by notebooks/colab_train.ipynb) or an "alignment"
 key sits with the checkpoint, it must agree with --alignment.
 
-Primary metrics (reference = the untouched clean clip)
-  stoi / pesq    the system output is brought onto the clean timeline and
-                 compared with the clean waveform. Distorted-timeline output is
-                 trimmed/padded to the distorted length (vocoder rounding,
-                 < 1 hop, see length_residual) and inverse-warped with
-                 TempoWarp.unstretch_waveform (logged tempo segments, phase
-                 vocoder at 1/rate per segment). Clean-timeline output is only
-                 trimmed/padded to the clean length. The logged segments are
-                 used for scoring only, never as a system input.
-  mel_l1         mean |mel - the model's own training target|: the clean mel
-                 (clean timeline) or the clean mel warped onto the distorted
-                 timeline (distorted timeline). Mapper: unclamped prediction.
-                 Not comparable across timelines; use mel_l1_clean for that.
+Every output is scored against the untouched clean clip. Distorted-timeline
+output is brought onto the clean timeline using the logged tempo segments;
+those are used for scoring only, never as a system input. Clean-timeline
+output is only trimmed/padded to the clean length (< 1 hop, length_residual).
+
+Main comparison (vocoded systems)
+  stoi_melwarp / pesq_melwarp  distorted-timeline output is brought back by
+                 unwarping its MEL frames onto the clean frame grid (frame
+                 interpolation, TempoWarp.unwarp_frames) and vocoding that.
+                 Equal to stoi / pesq for clean-timeline systems. Not defined
+                 for the floor or pv_roundtrip, which have no mel to vocode.
+
+Secondary (waveform inverse warp; the only one defined for the floor)
+  stoi / pesq    distorted-timeline output is trimmed/padded to the distorted
+                 length and inverse-warped with TempoWarp.unstretch_waveform
+                 (phase vocoder at 1/rate per logged segment). That phase-
+                 vocoder pass costs every distorted-timeline system STOI that
+                 clean-timeline systems never pay (see pv_roundtrip, and
+                 copysynth_tempo vs copysynth_clean), which is why the mel-
+                 domain version is the main comparison.
+
+Mel and speaker metrics
+  mel_l1         mean |mel - aligned clean target on the system's timeline|:
+                 the clean mel (clean timeline) or the clean mel warped onto the
+                 distorted timeline (distorted timeline). Mapper: unclamped
+                 prediction. Not comparable across timelines.
   mel_l1_clean   mean |mel - clean mel| on the clean frame grid; distorted-
                  timeline mels are first unwarped by frame interpolation.
   spk_sim_same   ECAPA-TDNN (speechbrain/spkrec-ecapa-voxceleb) cosine between
@@ -47,19 +65,7 @@ Primary metrics (reference = the untouched clean clip)
                  client_id (mean over them), so copying the reference does not
                  help. spk_n_other is how many clips that is.
 
-Sensitivity metric (vocoded systems only)
-  stoi_melwarp / pesq_melwarp  as stoi / pesq, but distorted-timeline output
-                 is brought back by unwarping its MEL frames (frame
-                 interpolation, as mel_l1_clean) and vocoding that, instead of
-                 a phase-vocoder pass over the waveform. Equal to stoi / pesq
-                 for clean-timeline systems. The phase-vocoder inverse warp
-                 costs every distorted-timeline system STOI that clean-timeline
-                 systems never pay (see pv_roundtrip and copysynth_tempo vs
-                 copysynth_clean); this column shows how much of a linear vs
-                 tempo difference that accounts for. Not defined for the
-                 floor or pv_roundtrip (no mel to vocode without changing them).
-
-Legacy metrics (kept separate, not the primary protocol)
+Legacy metrics (kept separate)
   stoi_trunc / pesq_trunc  original protocol (src/evaluation/metrics.py):
                  unwarped clean reference, both truncated to the shorter
                  length, no time alignment.
@@ -204,7 +210,11 @@ def main():
     parser.add_argument("--checkpoint", help="mapper checkpoint (for --system mapper)")
     parser.add_argument("--alignment", choices=("linear", "tempo"),
                         help="what the mapper was trained with (for --system mapper)")
-    parser.add_argument("--name", help="output folder name (default: the system name, or mapper_<alignment>)")
+    parser.add_argument("--linear-length", choices=("oracle", "deploy"), default="oracle",
+                        help="linear models only: interpolate the embedding to the clean (oracle) or the "
+                             "distorted (deploy) mel frame count")
+    parser.add_argument("--name", help="output folder name (default: the system name, mapper_tempo, "
+                                       "or mapper_linear_<linear-length>)")
     parser.add_argument("--split", default="test")
     parser.add_argument("--manifest", type=Path, default=None,
                         help="default: <data root>/training_manifest.csv")
@@ -234,12 +244,14 @@ def main():
     segments = pd.read_csv(args.params).set_index(["clip_id", "severity"])["tempo_segments"]
     embeddings_dir = args.embeddings_dir or root / "embeddings"
     out_root = args.out_dir or root / "eval" / "test_full"
-    name = args.name or (f"mapper_{args.alignment}" if args.system == "mapper" else args.system)
+    variant = f"linear_{args.linear_length}" if args.alignment == "linear" else args.alignment
+    name = args.name or (f"mapper_{variant}" if args.system == "mapper" else args.system)
     out = out_root / name
     (out / "audio").mkdir(parents=True, exist_ok=True)
     (out / "audio_melwarp").mkdir(exist_ok=True)
 
-    timeline = SYSTEM_TIMELINE.get(args.system) or ("clean" if args.alignment == "linear" else "distorted")
+    timeline = SYSTEM_TIMELINE.get(args.system) or (
+        "clean" if variant == "linear_oracle" else "distorted")
     device = torch.device(args.device) if args.device else get_device()
     vocoder = load_vocoder(device) if args.system not in ("distorted", "pv_roundtrip") else None
     mapper, checkpoint_info = None, {}
@@ -251,6 +263,7 @@ def main():
         checkpoint_info = {"path": str(Path(args.checkpoint).resolve()), "sha256": sha256(args.checkpoint),
                            "epoch": checkpoint.get("epoch"), "best_epoch": checkpoint.get("best_epoch"),
                            "val_loss": checkpoint.get("val_loss"), "alignment": args.alignment,
+                           "linear_length": args.linear_length if args.alignment == "linear" else None,
                            "alignment_confirmed_by": sources or "--alignment only (nothing stored with the checkpoint)"}
         del checkpoint
 
@@ -357,13 +370,17 @@ def main():
             "copysynth_tempo": "clean mel warped onto the distorted timeline -> HiFi-GAN",
             "pv_roundtrip": "clean stretched onto the distorted timeline (phase vocoder), no vocoder",
             "copysynth_ref": "mel of the stretched clean waveform -> HiFi-GAN",
-        }.get(args.system) or (
-            "embedding interpolated to the CLEAN mel frame count (as trained with --alignment linear; "
-            "uses the clean duration as an oracle)" if args.alignment == "linear" else
-            "embedding interpolated to the DISTORTED mel frame count (as trained with --alignment tempo)"),
-        "primary_metric_reference": "untouched clean clip; " + (
-            "output trimmed/padded to the clean length" if timeline == "clean" else
-            "output trimmed/padded to the distorted length, then inverse-warped "
+        }.get(args.system) or {
+            "linear_oracle": "linear model; embedding interpolated to the CLEAN mel frame count, as in "
+                             "training (uses the clean duration as an oracle)",
+            "linear_deploy": "linear model; embedding interpolated to the DISTORTED mel frame count "
+                             "(no oracle; differs from how it was trained)",
+            "tempo": "tempo model; embedding interpolated to the DISTORTED mel frame count, as in training",
+        }[variant],
+        "reference": "untouched clean clip; " + (
+            "output trimmed/padded to the clean length (all metrics)" if timeline == "clean" else
+            "main *_melwarp: mel frames unwarped onto the clean grid, then vocoded; "
+            "secondary stoi/pesq: waveform trimmed/padded to the distorted length, then inverse-warped "
             "(TempoWarp.unstretch_waveform)"),
         "checkpoint": checkpoint_info or None,
         "device": str(device), "ecapa": {"source": ECAPA_SOURCE, "revision": encoder.revision},
@@ -372,8 +389,8 @@ def main():
         "pesq_failed": int(df["pesq"].isna().sum()),
     }
     (out / "run_info.json").write_text(json.dumps(info, indent=2, ensure_ascii=False))
-    metrics = ["stoi", "pesq", "mel_l1", "mel_l1_clean", "spk_sim_same", "spk_sim_other",
-               "stoi_melwarp", "pesq_melwarp", "stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"]
+    metrics = ["stoi_melwarp", "pesq_melwarp", "stoi", "pesq", "mel_l1", "mel_l1_clean",
+               "spk_sim_same", "spk_sim_other", "stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"]
     means = df.groupby("severity")[metrics].mean().reindex([s for s in SEVERITY_ORDER if s in set(df["severity"])])
     print(f"\n{name} ({timeline} timeline); max |length residual| {info['max_abs_length_residual']} samples, "
           f"{info['pesq_failed']} PESQ failure(s), {info['seconds']:.0f}s")

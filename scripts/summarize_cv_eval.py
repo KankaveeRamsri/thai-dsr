@@ -16,7 +16,12 @@ Reads <eval-dir>/<system>/per_utterance.csv for each system and writes, in
   paired_<b>_vs_<a>_per_clip.csv  one row per (clip, severity): a, b, b - a
   paired_<b>_vs_<a>.csv    per severity and metric: means, mean difference
                            with 95% CI, share of clips where b is better, and
-                           Wilcoxon signed-rank p-values
+                           Wilcoxon signed-rank p-values. Default pairs: (b)
+                           tempo vs (a) linear with the oracle length, and vs
+                           (a) linear with the deployable distorted length.
+
+The main comparison is stoi_melwarp / pesq_melwarp (mel-domain inverse warp);
+the waveform inverse-warp stoi / pesq are secondary (see evaluate_cv_aligned.py).
 
 Confidence intervals: percentile bootstrap over SPEAKERS (client_id), not
 clips, because the 308 test clips come from 48 speakers with 4-8 clips each
@@ -47,22 +52,24 @@ SYSTEMS = [  # (folder, role)
     ("pv_roundtrip", "control: inverse warp only"),
     ("copysynth_clean", "ceiling (clean timeline)"),
     ("copysynth_tempo", "ceiling (distorted timeline)"),
-    ("mapper_linear", "(a) linear"),
+    ("mapper_linear_oracle", "(a) linear, clean length (oracle)"),
+    ("mapper_linear_deploy", "(a) linear, distorted length (deployable)"),
     ("mapper_tempo", "(b) tempo"),
 ]
+PAIRS = [("mapper_tempo", "mapper_linear_oracle"), ("mapper_tempo", "mapper_linear_deploy")]
 GROUPS = {
-    "primary (inverse-warp, vs untouched clean)": ["stoi", "pesq"],
+    "main: STOI/PESQ vs untouched clean, mel-domain inverse warp": ["stoi_melwarp", "pesq_melwarp"],
+    "secondary: STOI/PESQ vs untouched clean, waveform inverse warp (phase vocoder)": ["stoi", "pesq"],
     "mel L1": ["mel_l1", "mel_l1_clean"],
     "speaker similarity (ECAPA cosine)": ["spk_sim_same", "spk_sim_other"],
-    "sensitivity (mel-domain inverse warp)": ["stoi_melwarp", "pesq_melwarp"],
     "legacy": ["stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"],
 }
 METRICS = [m for group in GROUPS.values() for m in group]
 LOWER_IS_BETTER = {"mel_l1", "mel_l1_clean"}
 # mel_l1 is measured against each model's own training target, which differs
 # between the clean and distorted timelines, so it is not compared pairwise.
-PAIRED_METRICS = ["stoi", "pesq", "mel_l1_clean", "spk_sim_same", "spk_sim_other",
-                  "stoi_melwarp", "pesq_melwarp", "stoi_trunc", "pesq_trunc"]
+PAIRED_METRICS = ["stoi_melwarp", "pesq_melwarp", "stoi", "pesq", "mel_l1_clean",
+                  "spk_sim_same", "spk_sim_other", "stoi_trunc", "pesq_trunc"]
 
 
 def cluster_bootstrap(values, clusters, n_boot, seed):
@@ -119,8 +126,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--eval-dir", type=Path, default=None, help="default: <data root>/eval/test_full")
-    parser.add_argument("--pair", nargs=2, default=["mapper_tempo", "mapper_linear"], metavar=("B", "A"),
-                        help="paired comparison B - A (default: mapper_tempo mapper_linear)")
+    parser.add_argument("--pair", nargs=2, action="append", metavar=("B", "A"),
+                        help="paired comparison B - A; repeatable (default: mapper_tempo vs "
+                             "mapper_linear_oracle and vs mapper_linear_deploy)")
     parser.add_argument("--expected-rows", type=int, default=924,
                         help="rows every system must have (0: skip the check, e.g. smoke tests)")
     parser.add_argument("--n-boot", type=int, default=10000)
@@ -185,10 +193,12 @@ def main():
     speaker = pd.concat([speaker, pd.DataFrame(reference_rows)], ignore_index=True)
     speaker.to_csv(out / "speaker_similarity.csv", index=False)
 
-    # Paired comparison B vs A per clip.
-    b_name, a_name = args.pair
-    paired_rows = []
-    if b_name in frames and a_name in frames:
+    # Paired comparisons B vs A per clip.
+    paired_tables = []
+    for b_name, a_name in args.pair or PAIRS:
+        if b_name not in frames or a_name not in frames:
+            print(f"paired comparison skipped: need both {b_name} and {a_name}")
+            continue
         a = frames[a_name].set_index(["utterance_id", "severity"])
         b = frames[b_name].set_index(["utterance_id", "severity"])
         per_clip = pd.DataFrame({"client_id": a["client_id"]}, index=a.index)
@@ -198,6 +208,7 @@ def main():
             per_clip[f"{metric}_diff"] = per_clip[f"{metric}_{b_name}"] - per_clip[f"{metric}_{a_name}"]
         per_clip = per_clip.reset_index()
         per_clip.to_csv(out / f"paired_{b_name}_vs_{a_name}_per_clip.csv", index=False)
+        paired_rows = []
         for severity, part in by_severity(per_clip):
             for metric in PAIRED_METRICS:
                 diff = part[f"{metric}_diff"]
@@ -209,18 +220,19 @@ def main():
                 paired_rows.append({
                     "severity": severity, "metric": metric,
                     "better": "lower" if metric in LOWER_IS_BETTER else "higher", "n": n,
-                    f"mean_{a_name}": float(valid[f"{metric}_{a_name}"].mean()) if n else np.nan,
-                    f"mean_{b_name}": float(valid[f"{metric}_{b_name}"].mean()) if n else np.nan,
+                    "mean_a": float(valid[f"{metric}_{a_name}"].mean()) if n else np.nan,
+                    "mean_b": float(valid[f"{metric}_{b_name}"].mean()) if n else np.nan,
                     "mean_diff": mean, "ci_low": low, "ci_high": high,
-                    f"share_{b_name}_better": float(better.mean()) if n else np.nan,
+                    "share_b_better": float(better.mean()) if n else np.nan,
                     "n_speakers": int(len(speaker_means)),
                     "p_wilcoxon_speaker": safe_wilcoxon(speaker_means),
                     "p_wilcoxon_clip": safe_wilcoxon(d),
                 })
         paired = pd.DataFrame(paired_rows)
+        paired.insert(0, "a", a_name)
+        paired.insert(0, "b", b_name)
         paired.to_csv(out / f"paired_{b_name}_vs_{a_name}.csv", index=False)
-    else:
-        print(f"paired comparison skipped: need both {b_name} and {a_name}")
+        paired_tables.append((b_name, a_name, paired_rows))
 
     # Markdown report.
     infos = {name: json.loads((eval_dir / name / "run_info.json").read_text())
@@ -241,14 +253,14 @@ def main():
         lines += ["", "Clean references for spk_sim_other: " + "; ".join(
             f"{r['system']} {fmt(r['mean_spk_sim_other'], r['ci_low_spk_sim_other'], r['ci_high_spk_sim_other'])}"
             for r in reference_rows)]
-    if paired_rows:
+    for b_name, a_name, paired_rows in paired_tables:
         lines += ["", f"## Paired: {b_name} − {a_name} (per clip)", "",
                   f"| severity | metric | better | mean diff [95% CI] | share {b_name} better | "
                   "p (Wilcoxon, speakers) | p (Wilcoxon, clips) |", "|---|---|---|---|---|---|---|"]
         for r in paired_rows:
             lines.append(f"| {r['severity']} | {r['metric']} | {r['better']} | "
                          f"{fmt(r['mean_diff'], r['ci_low'], r['ci_high'], 4)} | "
-                         f"{r[f'share_{b_name}_better']:.2f} | {r['p_wilcoxon_speaker']:.3g} | "
+                         f"{r['share_b_better']:.2f} | {r['p_wilcoxon_speaker']:.3g} | "
                          f"{r['p_wilcoxon_clip']:.3g} |")
     (out / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {out}")
