@@ -1,37 +1,82 @@
 #!/usr/bin/env python3
-"""Evaluate on the CV 27.0 speaker split with time-aligned references.
+"""Evaluate one system on the CV 27.0 test split (308 clips x mild/moderate/severe).
 
-Systems
-  distorted  the unprocessed distorted input (floor)
-  copysynth  clean mel warped onto the distorted timeline -> HiFi-GAN (ceiling:
-             the exact training target of --alignment tempo, vocoded)
-  copysynth_ref  mel of the aligned reference waveform -> HiFi-GAN (ceiling
-             that isolates the vocoder from the frame-interpolation warp)
-  mapper     wav2vec2 layer-9 embedding -> mapper -> HiFi-GAN (--checkpoint)
+Systems and the timeline each one produces audio on
+  distorted        the unprocessed distorted input (floor)              distorted
+  copysynth_clean  clean mel -> HiFi-GAN (ceiling for linear models)    clean
+  copysynth_tempo  clean mel warped onto the distorted timeline ->      distorted
+                   HiFi-GAN (ceiling for tempo models: the exact
+                   training target of --alignment tempo, vocoded)
+  pv_roundtrip     clean -> per-segment stretch -> inverse stretch,     distorted
+                   no vocoder (control: what the inverse warp alone
+                   costs every distorted-timeline system)
+  copysynth_ref    mel of the stretched clean waveform -> HiFi-GAN      distorted
+                   (legacy ceiling of the previous protocol)
+  mapper           wav2vec2 layer-9 embedding -> mapper -> HiFi-GAN     see below
+                   (--checkpoint, --alignment)
 
-Every system works on the distorted timeline: the mapper input is the cached
-embedding interpolated only for the frame-rate change, so the output has the
-distorted clip's mel frame count.
+Mapper inference uses the timeline the checkpoint was trained on:
+  --alignment linear  the embedding is interpolated to the CLEAN mel frame
+                      count, exactly as in training. This gives the model the
+                      clean duration (an oracle it also had in training); the
+                      output is on the clean timeline.
+  --alignment tempo   the embedding is interpolated only for the frame-rate
+                      change, to the DISTORTED mel frame count; no oracle. The
+                      output is on the distorted timeline.
+If a run_info.json (written by notebooks/colab_train.ipynb) or an "alignment"
+key sits with the checkpoint, it must agree with --alignment.
 
-Metrics per (clip, severity)
-  mel_l1          mean |mel - aligned clean mel| (mapper: unclamped prediction;
-                  distorted: the distorted mel itself; copysynth: 0 by design)
-  stoi / pesq     against the ALIGNED reference: the clean waveform
-                  time-stretched per tempo segment with the same phase vocoder
-                  as the distortion (TempoWarp.stretch_waveform), so both
-                  signals share one timeline. The vocoder output differs from
-                  the reference length only by mel-frame rounding (< 1 hop);
-                  that residual is zero-padded or trimmed and reported.
-  stoi_trunc /    the original protocol (src/evaluation/metrics.py): the
-  pesq_trunc      unwarped clean reference, both signals truncated to the
-                  shorter length, no time alignment. Reported separately.
+Primary metrics (reference = the untouched clean clip)
+  stoi / pesq    the system output is brought onto the clean timeline and
+                 compared with the clean waveform. Distorted-timeline output is
+                 trimmed/padded to the distorted length (vocoder rounding,
+                 < 1 hop, see length_residual) and inverse-warped with
+                 TempoWarp.unstretch_waveform (logged tempo segments, phase
+                 vocoder at 1/rate per segment). Clean-timeline output is only
+                 trimmed/padded to the clean length. The logged segments are
+                 used for scoring only, never as a system input.
+  mel_l1         mean |mel - the model's own training target|: the clean mel
+                 (clean timeline) or the clean mel warped onto the distorted
+                 timeline (distorted timeline). Mapper: unclamped prediction.
+                 Not comparable across timelines; use mel_l1_clean for that.
+  mel_l1_clean   mean |mel - clean mel| on the clean frame grid; distorted-
+                 timeline mels are first unwarped by frame interpolation.
+  spk_sim_same   ECAPA-TDNN (speechbrain/spkrec-ecapa-voxceleb) cosine between
+                 the system output (native timeline, 16 kHz) and the clean clip.
+  spk_sim_other  the same against every OTHER clean test clip of the same
+                 client_id (mean over them), so copying the reference does not
+                 help. spk_n_other is how many clips that is.
 
-Writes <out-dir>/<name>/per_utterance.csv (and vocoded audio) under the data
-root, and prints mean metrics per severity.
+Sensitivity metric (vocoded systems only)
+  stoi_melwarp / pesq_melwarp  as stoi / pesq, but distorted-timeline output
+                 is brought back by unwarping its MEL frames (frame
+                 interpolation, as mel_l1_clean) and vocoding that, instead of
+                 a phase-vocoder pass over the waveform. Equal to stoi / pesq
+                 for clean-timeline systems. The phase-vocoder inverse warp
+                 costs every distorted-timeline system STOI that clean-timeline
+                 systems never pay (see pv_roundtrip and copysynth_tempo vs
+                 copysynth_clean); this column shows how much of a linear vs
+                 tempo difference that accounts for. Not defined for the
+                 floor or pv_roundtrip (no mel to vocode without changing them).
+
+Legacy metrics (kept separate, not the primary protocol)
+  stoi_trunc / pesq_trunc  original protocol (src/evaluation/metrics.py):
+                 unwarped clean reference, both truncated to the shorter
+                 length, no time alignment.
+  stoi_fwd / pesq_fwd      previous aligned protocol: the clean clip stretched
+                 forward onto the distorted timeline as the reference.
+                 Distorted-timeline systems only (NaN otherwise).
+
+Writes <out-dir>/<name>/per_utterance.csv, run_info.json and the vocoded audio;
+the clean-clip ECAPA embeddings are cached in <out-dir>/ecapa_clean_<split>.npz.
+scripts/summarize_cv_eval.py builds the tables with confidence intervals.
 """
 
 import argparse
+import hashlib
 import json
+import os
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -46,132 +91,293 @@ from pystoi import stoi
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from src.evaluation.mapper_eval import load_vocoder  # noqa: E402
 from src.evaluation.metrics import PESQ_MODE, TARGET_SAMPLE_RATE, compute_pesq, compute_stoi, load_audio_16k  # noqa: E402
 from src.inference.run import MEL_CLAMP_MAX, MEL_CLAMP_MIN, get_device, load_mapper  # noqa: E402
-from src.evaluation.mapper_eval import load_vocoder  # noqa: E402
 from src.utils.config import DEFAULT_MODEL_CONFIG_PATH, DEFAULT_TRAIN_CONFIG_PATH, cv_data_root  # noqa: E402
 from src.utils.mel import HIFIGAN_SAMPLE_RATE, compute_mel  # noqa: E402
-from src.utils.time_warp import TempoWarp, mel_frame_count  # noqa: E402
+from src.utils.time_warp import TempoWarp, fit_length, mel_frame_count  # noqa: E402
 
 SEVERITY_ORDER = ["mild", "moderate", "severe"]
+SYSTEM_TIMELINE = {"distorted": "distorted", "copysynth_clean": "clean", "copysynth_tempo": "distorted",
+                   "pv_roundtrip": "distorted", "copysynth_ref": "distorted"}
+ECAPA_SOURCE = "speechbrain/spkrec-ecapa-voxceleb"
+ECAPA_SAVEDIR = Path("~/.cache/speechbrain/spkrec-ecapa-voxceleb").expanduser()
 
 
-def fit_length(signal, n):
-    if len(signal) >= n:
-        return signal[:n]
-    return np.pad(signal, (0, n - len(signal)))
-
-
-def safe_pesq(reference, estimate, fn):
+def safe_pesq(reference, estimate):
     try:
-        return float(fn(reference, estimate)), ""
+        return float(pesq(TARGET_SAMPLE_RATE, reference, estimate, PESQ_MODE)), ""
     except Exception as exc:  # pesq raises on e.g. no detected utterance
         return float("nan"), str(exc)
+
+
+def safe_pesq_trunc(reference, estimate):
+    try:
+        return float(compute_pesq(reference, estimate))
+    except Exception:
+        return float("nan")
+
+
+def vocode(vocoder, mel, device, path, keep=True):
+    """(T, 80) mel -> HiFi-GAN -> 16-bit wav at ``path`` -> 16 kHz float waveform."""
+    voc_in = torch.from_numpy(np.ascontiguousarray(mel.T))[None].float()
+    with torch.no_grad():
+        wav = vocoder(voc_in.clamp(MEL_CLAMP_MIN, MEL_CLAMP_MAX).to(device)).squeeze().cpu().numpy()
+    sf.write(path, np.clip(wav, -1, 1), HIFIGAN_SAMPLE_RATE, subtype="PCM_16")
+    audio = load_audio_16k(path)
+    if not keep:
+        path.unlink()
+    return audio
+
+
+def sha256(path):
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def git_state():
+    def run(*cmd):
+        return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    return {"commit": run("git", "rev-parse", "HEAD"), "dirty": bool(run("git", "status", "--porcelain"))}
+
+
+def check_alignment(checkpoint_path, checkpoint, alignment):
+    """Fail if anything stored with the checkpoint names a different alignment."""
+    sources = {}
+    if checkpoint.get("alignment"):
+        sources["checkpoint"] = checkpoint["alignment"]
+    run_info = Path(checkpoint_path).with_name("run_info.json")
+    if run_info.exists():
+        sources[str(run_info)] = json.loads(run_info.read_text()).get("config")
+    for source, value in sources.items():
+        if value is not None and value != alignment:
+            raise SystemExit(f"--alignment {alignment} but {source} says {value!r}")
+    return sources
+
+
+class SpeakerEncoder:
+    """ECAPA-TDNN speaker embeddings (192-d, L2-normalised) on 16 kHz audio, CPU."""
+
+    def __init__(self):
+        # librosa's lazy loader calls inspect.stack(), which walks sys.modules
+        # and trips speechbrain's lazy optional-dependency stubs (k2). Load
+        # every librosa path this script uses before speechbrain is imported.
+        import librosa
+        silence = np.zeros(TARGET_SAMPLE_RATE, dtype=np.float32)
+        compute_mel(silence, sr=TARGET_SAMPLE_RATE)
+        librosa.resample(silence, orig_sr=HIFIGAN_SAMPLE_RATE, target_sr=TARGET_SAMPLE_RATE)
+        librosa.effects.time_stretch(silence, rate=1.1)
+        from speechbrain.inference.speaker import EncoderClassifier
+        self.model = EncoderClassifier.from_hparams(source=ECAPA_SOURCE, savedir=str(ECAPA_SAVEDIR),
+                                                    run_opts={"device": "cpu"})
+        ckpt = ECAPA_SAVEDIR / "embedding_model.ckpt"  # a symlink into the HF snapshot
+        self.revision = Path(os.readlink(ckpt)).parent.name if ckpt.is_symlink() else "unknown"
+
+    @torch.no_grad()
+    def __call__(self, wav):
+        emb = self.model.encode_batch(torch.from_numpy(np.ascontiguousarray(wav, dtype=np.float32))[None])
+        emb = emb.reshape(-1).numpy().astype(np.float64)
+        return emb / np.linalg.norm(emb)
+
+
+def clean_speaker_embeddings(path, clips, speaker_of, encoder, clean_paths):
+    """ECAPA embeddings of the clean test clips, cached in ``path``."""
+    if path.exists():
+        cached = np.load(path, allow_pickle=False)
+        if list(cached["clip_id"]) == clips:
+            return dict(zip(clips, cached["embedding"]))
+    print(f"computing ECAPA embeddings for {len(clips)} clean clips -> {path}", flush=True)
+    embeddings = np.stack([encoder(load_audio_16k(clean_paths[clip])) for clip in clips])
+    np.savez(path, clip_id=np.array(clips), client_id=np.array([speaker_of[c] for c in clips]),
+             embedding=embeddings, revision=np.array(encoder.revision))
+    return dict(zip(clips, embeddings))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--system", choices=("distorted", "copysynth", "copysynth_ref", "mapper"), required=True)
+    parser.add_argument("--system", choices=(*SYSTEM_TIMELINE, "mapper"), required=True)
     parser.add_argument("--checkpoint", help="mapper checkpoint (for --system mapper)")
-    parser.add_argument("--name", help="output folder name (default: the system name)")
+    parser.add_argument("--alignment", choices=("linear", "tempo"),
+                        help="what the mapper was trained with (for --system mapper)")
+    parser.add_argument("--name", help="output folder name (default: the system name, or mapper_<alignment>)")
     parser.add_argument("--split", default="test")
     parser.add_argument("--manifest", type=Path, default=None,
                         help="default: <data root>/training_manifest.csv")
     parser.add_argument("--splits", type=Path, default=ROOT / "data/manifests/cv27_th_splits.json")
+    parser.add_argument("--speakers", type=Path, default=ROOT / "data/manifests/cv27_th_speaker_split.csv")
     parser.add_argument("--params", type=Path, default=ROOT / "data/manifests/cv27_th_distortion_params.csv")
     parser.add_argument("--embeddings-dir", type=Path, default=None,
                         help="default: <data root>/embeddings")
-    parser.add_argument("--out-dir", type=Path, default=None, help="default: <data root>/eval")
+    parser.add_argument("--out-dir", type=Path, default=None, help="default: <data root>/eval/test_full")
     parser.add_argument("--layer", type=int, default=9)
-    parser.add_argument("--limit", type=int, default=0, help="only the first N rows (smoke test)")
-    parser.add_argument("--device", default=None, help="default: cuda, then mps, then cpu")
+    parser.add_argument("--limit", type=int, default=0, help="only the first N clips per severity (smoke test)")
+    parser.add_argument("--device", default=None, help="mapper/vocoder device (default: cuda, then mps, then cpu)")
+    parser.add_argument("--no-audio", action="store_true", help="do not keep the output wav files")
     args = parser.parse_args()
-    if args.system == "mapper" and not args.checkpoint:
-        parser.error("--system mapper needs --checkpoint")
+    if args.system == "mapper" and not (args.checkpoint and args.alignment):
+        parser.error("--system mapper needs --checkpoint and --alignment")
 
     root = cv_data_root()
     manifest = pd.read_csv(args.manifest or root / "training_manifest.csv")
-    ids = set(json.loads(args.splits.read_text(encoding="utf-8"))["splits"][args.split])
-    rows = manifest[manifest["utterance_id"].isin(ids)].sort_values(["severity", "utterance_id"])
+    ids = json.loads(args.splits.read_text(encoding="utf-8"))["splits"][args.split]
+    split_rows = manifest[manifest["utterance_id"].isin(set(ids))].sort_values(["severity", "utterance_id"])
+    rows = split_rows
     if args.limit:
-        rows = rows.head(args.limit)
+        rows = rows.groupby("severity", group_keys=False).head(args.limit)
+    speakers = pd.read_csv(args.speakers, usecols=["clip_id", "client_id"])
+    speaker_of = dict(zip(speakers["clip_id"], speakers["client_id"]))
     segments = pd.read_csv(args.params).set_index(["clip_id", "severity"])["tempo_segments"]
     embeddings_dir = args.embeddings_dir or root / "embeddings"
-    out = (args.out_dir or root / "eval") / (args.name or args.system)
+    out_root = args.out_dir or root / "eval" / "test_full"
+    name = args.name or (f"mapper_{args.alignment}" if args.system == "mapper" else args.system)
+    out = out_root / name
     (out / "audio").mkdir(parents=True, exist_ok=True)
+    (out / "audio_melwarp").mkdir(exist_ok=True)
 
+    timeline = SYSTEM_TIMELINE.get(args.system) or ("clean" if args.alignment == "linear" else "distorted")
     device = torch.device(args.device) if args.device else get_device()
-    vocoder = load_vocoder(device) if args.system != "distorted" else None
-    mapper = None
+    vocoder = load_vocoder(device) if args.system not in ("distorted", "pv_roundtrip") else None
+    mapper, checkpoint_info = None, {}
     if args.system == "mapper":
+        checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=True)
+        sources = check_alignment(args.checkpoint, checkpoint, args.alignment)
         mapper = load_mapper(args.checkpoint, device, DEFAULT_MODEL_CONFIG_PATH,
                              DEFAULT_TRAIN_CONFIG_PATH, layer=args.layer)
-    print(f"{args.system}: {len(rows)} rows ({args.split}) on {device} -> {out}", flush=True)
+        checkpoint_info = {"path": str(Path(args.checkpoint).resolve()), "sha256": sha256(args.checkpoint),
+                           "epoch": checkpoint.get("epoch"), "best_epoch": checkpoint.get("best_epoch"),
+                           "val_loss": checkpoint.get("val_loss"), "alignment": args.alignment,
+                           "alignment_confirmed_by": sources or "--alignment only (nothing stored with the checkpoint)"}
+        del checkpoint
 
+    encoder = SpeakerEncoder()
+    # Clean references cover the whole split, also under --limit.
+    test_clips = sorted(set(split_rows["utterance_id"]))
+    clean_paths = dict(zip(split_rows["utterance_id"], split_rows["clean_path"]))
+    clean_spk = clean_speaker_embeddings(out_root / f"ecapa_clean_{args.split}.npz", test_clips,
+                                         speaker_of, encoder, clean_paths)
+    by_speaker = {}
+    for clip in test_clips:
+        by_speaker.setdefault(speaker_of[clip], []).append(clip)
+
+    print(f"{name}: {len(rows)} rows ({args.split}), {timeline} timeline, {device} -> {out}", flush=True)
     results, start = [], time.time()
     for i, row in enumerate(rows.itertuples(), 1):
         clean = load_audio_16k(row.clean_path)
         distorted = load_audio_16k(row.distorted_path)
         warp = TempoWarp(segments.loc[(row.utterance_id, row.severity)], TARGET_SAMPLE_RATE)
-        reference = warp.stretch_waveform(clean)
-        if len(reference) != len(distorted):
-            raise ValueError(f"{row.utterance_id}: aligned reference length mismatch")
-        n_frames = mel_frame_count(len(distorted), TARGET_SAMPLE_RATE)
-        target = warp.warp_frames(compute_mel(clean, sr=TARGET_SAMPLE_RATE).T, n_target=n_frames)
+        n_clean = mel_frame_count(len(clean), TARGET_SAMPLE_RATE)
+        n_dist = mel_frame_count(len(distorted), TARGET_SAMPLE_RATE)
+        clean_mel = compute_mel(clean, sr=TARGET_SAMPLE_RATE).T
+        assert len(clean_mel) == n_clean
+        tempo_target = warp.warp_frames(clean_mel, n_target=n_dist)
+        target = clean_mel if timeline == "clean" else tempo_target
+        reference_fwd = None
+        if timeline == "distorted":
+            reference_fwd = warp.stretch_waveform(clean)
+            if len(reference_fwd) != len(distorted):
+                raise ValueError(f"{row.utterance_id}: aligned reference length mismatch")
 
+        mel = None
         if args.system == "distorted":
-            mel = compute_mel(distorted, sr=TARGET_SAMPLE_RATE).T
-            estimate = distorted
+            mel, wav = compute_mel(distorted, sr=TARGET_SAMPLE_RATE).T, distorted
+        elif args.system == "pv_roundtrip":
+            mel, wav = compute_mel(reference_fwd, sr=TARGET_SAMPLE_RATE).T, reference_fwd
         else:
-            if args.system == "copysynth":
-                mel = target
+            if args.system == "copysynth_clean":
+                mel = clean_mel
+            elif args.system == "copysynth_tempo":
+                mel = tempo_target
             elif args.system == "copysynth_ref":
-                mel = compute_mel(reference, sr=TARGET_SAMPLE_RATE).T
+                mel = compute_mel(reference_fwd, sr=TARGET_SAMPLE_RATE).T
             else:
+                n_frames = n_clean if timeline == "clean" else n_dist
                 emb = torch.from_numpy(np.load(
                     embeddings_dir / f"{row.utterance_id}_{row.severity}_layer{args.layer:02d}.npy")).float()
                 emb = F.interpolate(emb.T[None], size=n_frames, mode="linear", align_corners=False)[0].T
                 with torch.no_grad():
                     pred = mapper(emb[None].to(device), torch.tensor([n_frames], device=device))
                 mel = pred[0].cpu().numpy()
-            voc_in = torch.from_numpy(np.ascontiguousarray(mel.T))[None].float()
-            with torch.no_grad():
-                wav = vocoder(voc_in.clamp(MEL_CLAMP_MIN, MEL_CLAMP_MAX).to(device)).squeeze().cpu().numpy()
-            path = out / "audio" / f"{row.utterance_id}_{row.severity}.wav"
-            sf.write(path, np.clip(wav, -1, 1), HIFIGAN_SAMPLE_RATE, subtype="PCM_16")
-            estimate = load_audio_16k(path)
+            wav = vocode(vocoder, mel, device, out / "audio" / f"{row.utterance_id}_{row.severity}.wav",
+                         keep=not args.no_audio)
 
-        residual = len(estimate) - len(reference)
-        aligned = fit_length(estimate, len(reference))
-        pesq_aligned, pesq_err = safe_pesq(
-            reference, aligned, lambda r, e: pesq(TARGET_SAMPLE_RATE, r, e, PESQ_MODE))
-        pesq_trunc, _ = safe_pesq(clean, estimate, compute_pesq)
-        results.append({
-            "utterance_id": row.utterance_id, "severity": row.severity,
-            "mel_l1": float(np.abs(mel - target).mean()),
-            "stoi": float(stoi(reference, aligned, TARGET_SAMPLE_RATE, extended=False)),
-            "pesq": pesq_aligned,
-            "stoi_trunc": float(compute_stoi(clean, estimate)),
-            "pesq_trunc": pesq_trunc,
-            "length_residual": residual, "pesq_error": pesq_err,
-        })
-        if i % 100 == 0 or i == len(rows):
-            print(f"  {i}/{len(rows)} {time.time() - start:.0f}s", flush=True)
+        native = len(clean) if timeline == "clean" else len(distorted)
+        on_native = fit_length(wav, native)
+        restored = on_native if timeline == "clean" else warp.unstretch_waveform(on_native)
+        pesq_value, pesq_err = safe_pesq(clean, restored)
+        mel_clean_grid = None if mel is None else (mel if timeline == "clean" else warp.unwarp_frames(mel, n_clean))
+
+        spk = encoder(wav)
+        others = [c for c in by_speaker[speaker_of[row.utterance_id]] if c != row.utterance_id]
+        result = {
+            "utterance_id": row.utterance_id, "client_id": speaker_of[row.utterance_id],
+            "severity": row.severity, "system": name, "timeline": timeline,
+            "stoi": float(stoi(clean, restored, TARGET_SAMPLE_RATE, extended=False)),
+            "pesq": pesq_value,
+            "mel_l1": float(np.abs(mel - target).mean()) if mel is not None else float("nan"),
+            "mel_l1_clean": float(np.abs(mel_clean_grid - clean_mel).mean()) if mel is not None else float("nan"),
+            "spk_sim_same": float(spk @ clean_spk[row.utterance_id]),
+            "spk_sim_other": float(np.mean([spk @ clean_spk[c] for c in others])) if others else float("nan"),
+            "spk_n_other": len(others),
+            "stoi_trunc": float(compute_stoi(clean, wav)),
+            "pesq_trunc": safe_pesq_trunc(clean, wav),
+            "stoi_fwd": float("nan"), "pesq_fwd": float("nan"),
+            "stoi_melwarp": float("nan"), "pesq_melwarp": float("nan"),
+            "length_residual": len(wav) - native, "pesq_error": pesq_err,
+        }
+        if timeline == "distorted":
+            result["stoi_fwd"] = float(stoi(reference_fwd, on_native, TARGET_SAMPLE_RATE, extended=False))
+            result["pesq_fwd"] = safe_pesq(reference_fwd, on_native)[0]
+        if vocoder is not None:
+            if timeline == "clean":  # nothing to unwarp: identical to the primary metric
+                melwarp = restored
+            else:
+                melwarp = fit_length(vocode(vocoder, mel_clean_grid, device,
+                                            out / "audio_melwarp" / f"{row.utterance_id}_{row.severity}.wav",
+                                            keep=not args.no_audio), len(clean))
+            result["stoi_melwarp"] = float(stoi(clean, melwarp, TARGET_SAMPLE_RATE, extended=False))
+            result["pesq_melwarp"] = safe_pesq(clean, melwarp)[0]
+        results.append(result)
+        if i % 50 == 0 or i == len(rows):
+            elapsed = time.time() - start
+            print(f"  {i}/{len(rows)} {elapsed:.0f}s ({elapsed / i:.2f}s/row)", flush=True)
 
     df = pd.DataFrame(results)
     df.to_csv(out / "per_utterance.csv", index=False)
-    metrics = ["mel_l1", "stoi", "pesq", "stoi_trunc", "pesq_trunc"]
-    summary = df.groupby("severity")[metrics].mean().reindex(
-        [s for s in SEVERITY_ORDER if s in set(df["severity"])])
-    summary.loc["all"] = df[metrics].mean()
-    summary["n"] = df.groupby("severity").size().reindex(summary.index).fillna(len(df)).astype(int)
-    summary["pesq_failed"] = df.groupby("severity")["pesq"].apply(lambda s: s.isna().sum()) \
-        .reindex(summary.index).fillna(df["pesq"].isna().sum()).astype(int)
-    print(f"\n{args.name or args.system} ({args.split}); max |length residual| "
-          f"{df['length_residual'].abs().max()} samples")
-    print(summary.round(4).to_string())
-    summary.round(4).to_csv(out / "summary.csv")
+    info = {
+        "system": args.system, "name": name, "split": args.split, "rows": len(df),
+        "timeline": timeline,
+        "inference": {
+            "distorted": "the distorted input itself",
+            "copysynth_clean": "clean mel -> HiFi-GAN, on the clean timeline",
+            "copysynth_tempo": "clean mel warped onto the distorted timeline -> HiFi-GAN",
+            "pv_roundtrip": "clean stretched onto the distorted timeline (phase vocoder), no vocoder",
+            "copysynth_ref": "mel of the stretched clean waveform -> HiFi-GAN",
+        }.get(args.system) or (
+            "embedding interpolated to the CLEAN mel frame count (as trained with --alignment linear; "
+            "uses the clean duration as an oracle)" if args.alignment == "linear" else
+            "embedding interpolated to the DISTORTED mel frame count (as trained with --alignment tempo)"),
+        "primary_metric_reference": "untouched clean clip; " + (
+            "output trimmed/padded to the clean length" if timeline == "clean" else
+            "output trimmed/padded to the distorted length, then inverse-warped "
+            "(TempoWarp.unstretch_waveform)"),
+        "checkpoint": checkpoint_info or None,
+        "device": str(device), "ecapa": {"source": ECAPA_SOURCE, "revision": encoder.revision},
+        "git": git_state(), "seconds": round(time.time() - start, 1),
+        "max_abs_length_residual": int(df["length_residual"].abs().max()),
+        "pesq_failed": int(df["pesq"].isna().sum()),
+    }
+    (out / "run_info.json").write_text(json.dumps(info, indent=2, ensure_ascii=False))
+    metrics = ["stoi", "pesq", "mel_l1", "mel_l1_clean", "spk_sim_same", "spk_sim_other",
+               "stoi_melwarp", "pesq_melwarp", "stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"]
+    means = df.groupby("severity")[metrics].mean().reindex([s for s in SEVERITY_ORDER if s in set(df["severity"])])
+    print(f"\n{name} ({timeline} timeline); max |length residual| {info['max_abs_length_residual']} samples, "
+          f"{info['pesq_failed']} PESQ failure(s), {info['seconds']:.0f}s")
+    print(means.round(4).to_string())
 
 
 if __name__ == "__main__":

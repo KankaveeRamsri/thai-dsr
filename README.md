@@ -267,6 +267,27 @@ Check a copy against the recorded checksums:
 python scripts/checksum_cv_derived.py verify --from-repo
 ```
 
+#### Test evaluation on this set
+
+`scripts/run_cv_test_eval.sh` scores six systems on all 308 test clips at three severities (924 rows each):
+
+- the distorted input (floor)
+- a phase-vocoder round trip (control)
+- clean copy-synthesis on the clean timeline and on the distorted timeline (ceilings)
+- mapper (a) `linear` and mapper (b) `tempo`
+
+`scripts/summarize_cv_eval.py` then writes the tables, with 95% CIs from a bootstrap over speakers and a paired (b) − (a) comparison.
+
+**Primary metric.** STOI and PESQ against the untouched clean clip. Output on the distorted timeline is inverse-warped first, using the logged tempo segments.
+
+**Timelines.** Each mapper runs on the timeline it was trained on:
+- `linear` takes the clean frame count, which is an oracle on duration.
+- `tempo` takes the distorted frame count.
+
+**Inverse-warp penalty.** The waveform inverse warp is itself a phase-vocoder pass, so it costs every distorted-timeline system some STOI. The `pv_roundtrip` control and the mel-domain `*_melwarp` columns show how large that cost is.
+
+Metric definitions are in the docstring of `scripts/evaluate_cv_aligned.py`.
+
 ## Author
 
 กันต์กวี รามศรี (Bas) — AI Engineering, Prince of Songkla University
