@@ -220,3 +220,31 @@ W2 result. It is no longer the ablation's reference.
 
 **Unchanged:** layers, data, splits, loss, optimiser, scheduler, epochs, seed,
 model selection, metrics, hypotheses, test procedure and decision rules.
+
+### Deviation 2 (2026-11-19, before any ablation training): runs move from Colab to Kaggle
+
+Colab GPU quota ran out, so the ablation runs on Kaggle Notebooks (GPU T4) with
+`notebooks/kaggle_ablation.ipynb`. **The recipe does not change.** Training clones the
+recipe commit b6c04e3 (Amendment 1 included) and runs the same `src.training.train`
+command with the same arguments, data and checks as `colab_train.ipynb`. Only the
+procedure around it changes:
+
+- **Embeddings.** One layer at a time, extracted on the Kaggle GPU into local disk
+  and deleted after that layer's training. Only the 2,996 severe clips the trainer
+  reads are extracted. Nothing is stored on Drive.
+  - The mild/moderate test embeddings needed for evaluation are extracted on the
+    Mac with the same code, as before.
+- **Inputs.** One Kaggle Dataset, `thai-dsr-cv27-ablation`:
+  - the frozen distorted wavs
+  - the tempo mel targets, byte-identical to the W2 `cv27_mel_cache.tar` members
+  - the four manifests
+  - `files.sha256`
+  - a layer-9 reference of 12 test clips taken from the W2 embedding archive
+  The notebook verifies every file and stops before training if layer 9, freshly
+  extracted, differs from the reference by a relative L2 error above 1e-3.
+- **Outputs** go to `/kaggle/working/runs/cv27_layer<NN>_tempo/`: `best.pt`,
+  `run_info.json`, `input_norm.npz`, `train.log` and `loss_curve.png`. Each
+  `run_info.json` records `platform: kaggle`, the GPU, library versions and the
+  layer-9 check.
+- **Library versions** are Kaggle's preinstalled ones, not Colab's. All six layers
+  run in the same Kaggle environment, so the comparison stays like-for-like.
