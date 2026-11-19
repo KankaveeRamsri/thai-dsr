@@ -46,5 +46,27 @@ class ClusterBootstrapTest(unittest.TestCase):
         self.assertLess(summarize.safe_wilcoxon(np.linspace(0.1, 1.0, 20)), 0.001)
 
 
+class ClusterRatioBootstrapTest(unittest.TestCase):
+    def test_ratio_is_corpus_rate_with_ci(self):
+        rng = np.random.default_rng(3)
+        clusters = np.repeat(np.arange(40), 6)
+        den = rng.integers(20, 40, len(clusters)).astype(float)
+        num = np.round(den * rng.uniform(0.05, 0.4, 40)[clusters])
+        n, ratio, low, high = summarize.cluster_ratio_bootstrap(num, den, clusters, 2000, 42)
+        self.assertEqual(n, len(num))
+        self.assertAlmostEqual(ratio, num.sum() / den.sum())
+        self.assertLess(low, ratio)
+        self.assertGreater(high, ratio)
+
+    def test_same_resamples_as_mean_bootstrap(self):
+        """With unit denominators the ratio bootstrap is the mean bootstrap."""
+        rng = np.random.default_rng(4)
+        clusters = np.repeat(np.arange(20), 5)
+        values = rng.normal(size=len(clusters))
+        a = summarize.cluster_bootstrap(values, clusters, 1000, 42)
+        b = summarize.cluster_ratio_bootstrap(values, np.ones_like(values), clusters, 1000, 42)
+        np.testing.assert_allclose(a, b)
+
+
 if __name__ == "__main__":
     unittest.main()

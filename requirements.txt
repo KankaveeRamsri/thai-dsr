@@ -13,3 +13,4 @@ matplotlib>=3.8.0
 sounddevice>=0.4.6
 datasets==2.21.0
 tqdm>=4.66.0
+pythainlp==5.4.0        # Thai word tokenizer (newmm) for the ASR WER; pinned

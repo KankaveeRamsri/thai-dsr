@@ -23,6 +23,12 @@ Reads <eval-dir>/<system>/per_utterance.csv for each system and writes, in
 Pitch / tone metrics (f0_corr, f0_rmse_st, vuv_agree, hnr_db) come from
 per_utterance.csv, or from <system>/pitch_metrics.csv written by
 evaluate_cv_aligned.py --pitch-only for systems evaluated before they existed.
+ASR intelligibility (cer primary, wer) comes from <system>/asr_metrics.csv
+written by scripts/evaluate_asr.py; "clean" (the untouched clean audio) is listed
+as a system for it. CER / WER are corpus-level rates, sum of edits / sum of
+reference lengths, and their bootstrap resamples speakers with that ratio. The
+paired difference is the difference of the two corpus rates on the same clips;
+p_wilcoxon_speaker uses the per-speaker rate differences.
 Metrics a system lacks show as "–" and are left out of its paired comparisons.
 
 The main comparison is stoi_melwarp / pesq_melwarp (mel-domain inverse warp);
@@ -53,6 +59,7 @@ from src.utils.config import cv_data_root  # noqa: E402
 
 SEVERITIES = ["mild", "moderate", "severe"]
 SYSTEMS = [  # (folder, role)
+    ("clean", "reference: untouched clean audio (ASR only)"),
     ("distorted", "floor"),
     ("pv_roundtrip", "control: inverse warp only"),
     ("copysynth_clean", "ceiling (clean timeline)"),
@@ -68,6 +75,8 @@ SYSTEMS = [  # (folder, role)
 PAIRS = [("mapper_tempo", "mapper_linear_oracle"), ("mapper_tempo", "mapper_linear_deploy")]
 GROUPS = {
     "main: STOI/PESQ vs untouched clean, mel-domain inverse warp": ["stoi_melwarp", "pesq_melwarp"],
+    "intelligibility: ASR CER (primary) / WER, corpus level (sum of edits / sum of reference length)":
+        ["cer", "wer"],
     "secondary: STOI/PESQ vs untouched clean, waveform inverse warp (phase vocoder)": ["stoi", "pesq"],
     "mel L1": ["mel_l1", "mel_l1_clean"],
     "speaker similarity (ECAPA cosine)": ["spk_sim_same", "spk_sim_other"],
@@ -76,11 +85,13 @@ GROUPS = {
     "legacy": ["stoi_trunc", "pesq_trunc", "stoi_fwd", "pesq_fwd"],
 }
 METRICS = [m for group in GROUPS.values() for m in group]
-LOWER_IS_BETTER = {"mel_l1", "mel_l1_clean", "f0_rmse_st"}
+LOWER_IS_BETTER = {"mel_l1", "mel_l1_clean", "f0_rmse_st", "cer", "wer"}
+RATIO_METRICS = {"cer": ("cer_edits", "cer_ref_len"), "wer": ("wer_edits", "wer_ref_len")}
+ASR_COLUMNS = ["cer", "wer", "cer_edits", "cer_ref_len", "wer_edits", "wer_ref_len"]
 PITCH_METRICS = ["f0_corr", "f0_rmse_st", "vuv_agree", "f0_n_voiced_both", "hnr_db", "hnr_clean_db"]
 # mel_l1 is measured against each model's own training target, which differs
 # between the clean and distorted timelines, so it is not compared pairwise.
-PAIRED_METRICS = ["stoi_melwarp", "pesq_melwarp", "stoi", "pesq", "mel_l1_clean",
+PAIRED_METRICS = ["stoi_melwarp", "pesq_melwarp", "cer", "wer", "stoi", "pesq", "mel_l1_clean",
                   "spk_sim_same", "spk_sim_other", "f0_corr", "f0_rmse_st", "vuv_agree", "hnr_db",
                   "stoi_trunc", "pesq_trunc"]
 # Metrics missing for a system (e.g. pitch metrics not yet computed) are NaN in
@@ -101,6 +112,27 @@ def cluster_bootstrap(values, clusters, n_boot, seed):
     weights = np.random.default_rng(seed).multinomial(k, np.full(k, 1.0 / k), size=n_boot)
     means = (weights @ sums) / (weights @ counts)
     return len(values), float(values.mean()), float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))
+
+
+def cluster_ratio_bootstrap(numerator, denominator, clusters, n_boot, seed):
+    """sum(numerator) / sum(denominator) and its percentile 95% CI, resampling clusters.
+
+    Uses the same resamples as cluster_bootstrap for the same clusters and seed.
+    """
+    numerator = np.asarray(numerator, dtype=float)
+    denominator = np.asarray(denominator, dtype=float)
+    keep = np.isfinite(numerator) & np.isfinite(denominator)
+    numerator, denominator, clusters = numerator[keep], denominator[keep], np.asarray(clusters)[keep]
+    if len(numerator) == 0 or denominator.sum() <= 0:
+        return 0, np.nan, np.nan, np.nan
+    codes, _ = pd.factorize(clusters, sort=True)
+    sums_n = np.bincount(codes, weights=numerator)
+    sums_d = np.bincount(codes, weights=denominator)
+    k = len(sums_n)
+    weights = np.random.default_rng(seed).multinomial(k, np.full(k, 1.0 / k), size=n_boot)
+    ratios = (weights @ sums_n) / (weights @ sums_d)
+    return (len(numerator), float(numerator.sum() / denominator.sum()),
+            float(np.percentile(ratios, 2.5)), float(np.percentile(ratios, 97.5)))
 
 
 def safe_wilcoxon(diff):
@@ -173,7 +205,14 @@ def main():
                 raise SystemExit(f"{pitch_path} covers different rows than {path}")
             df = df.merge(pitch[["utterance_id", "severity", *PITCH_METRICS]], on=["utterance_id", "severity"],
                           how="left", validate="one_to_one")
-        for metric in [*METRICS, *PITCH_METRICS]:
+        asr_path = eval_dir / name / "asr_metrics.csv"
+        if asr_path.exists() and "cer" not in df.columns:  # from scripts/evaluate_asr.py
+            asr = pd.read_csv(asr_path)
+            if set(zip(asr["utterance_id"], asr["severity"])) != these:
+                raise SystemExit(f"{asr_path} covers different rows than {path}")
+            df = df.merge(asr[["utterance_id", "severity", *ASR_COLUMNS]], on=["utterance_id", "severity"],
+                          how="left", validate="one_to_one")
+        for metric in [*METRICS, *PITCH_METRICS, *ASR_COLUMNS]:
             if metric not in df.columns:
                 df[metric] = np.nan
         frames[name] = df
@@ -187,7 +226,12 @@ def main():
         timeline = df["timeline"].iloc[0]
         for severity, part in by_severity(df):
             for metric in METRICS:
-                n, mean, low, high = cluster_bootstrap(part[metric], part["client_id"], args.n_boot, args.seed)
+                if metric in RATIO_METRICS:
+                    num, den = RATIO_METRICS[metric]
+                    n, mean, low, high = cluster_ratio_bootstrap(part[num], part[den], part["client_id"],
+                                                                 args.n_boot, args.seed)
+                else:
+                    n, mean, low, high = cluster_bootstrap(part[metric], part["client_id"], args.n_boot, args.seed)
                 records.append({"system": name, "role": role, "timeline": timeline, "severity": severity,
                                 "metric": metric, "n": n, "mean": mean, "ci_low": low, "ci_high": high})
     summary = pd.DataFrame(records)
@@ -232,22 +276,38 @@ def main():
             per_clip[f"{metric}_{a_name}"] = a[metric]
             per_clip[f"{metric}_{b_name}"] = b.loc[a.index, metric]
             per_clip[f"{metric}_diff"] = per_clip[f"{metric}_{b_name}"] - per_clip[f"{metric}_{a_name}"]
+            if metric in RATIO_METRICS:
+                num, den = RATIO_METRICS[metric]
+                per_clip[f"{num}_{a_name}"] = a[num]
+                per_clip[f"{num}_{b_name}"] = b.loc[a.index, num]
+                per_clip[den] = a[den]
         per_clip = per_clip.reset_index()
         per_clip.to_csv(out / f"paired_{b_name}_vs_{a_name}_per_clip.csv", index=False)
         paired_rows = []
         for severity, part in by_severity(per_clip):
             for metric in metrics:
                 diff = part[f"{metric}_diff"]
-                n, mean, low, high = cluster_bootstrap(diff, part["client_id"], args.n_boot, args.seed)
                 valid = part[np.isfinite(diff)]
                 d = valid[f"{metric}_diff"]
                 better = (d < 0) if metric in LOWER_IS_BETTER else (d > 0)
-                speaker_means = valid.groupby("client_id")[f"{metric}_diff"].mean()
+                if metric in RATIO_METRICS:  # difference of corpus rates on the same clips
+                    num, den = RATIO_METRICS[metric]
+                    edits = valid[f"{num}_{b_name}"] - valid[f"{num}_{a_name}"]
+                    n, mean, low, high = cluster_ratio_bootstrap(edits, valid[den], valid["client_id"],
+                                                                 args.n_boot, args.seed)
+                    grouped = valid.assign(_e=edits).groupby("client_id")
+                    speaker_means = grouped["_e"].sum() / grouped[den].sum()
+                    mean_a = float(valid[f"{num}_{a_name}"].sum() / valid[den].sum()) if n else np.nan
+                    mean_b = float(valid[f"{num}_{b_name}"].sum() / valid[den].sum()) if n else np.nan
+                else:
+                    n, mean, low, high = cluster_bootstrap(diff, part["client_id"], args.n_boot, args.seed)
+                    speaker_means = valid.groupby("client_id")[f"{metric}_diff"].mean()
+                    mean_a = float(valid[f"{metric}_{a_name}"].mean()) if n else np.nan
+                    mean_b = float(valid[f"{metric}_{b_name}"].mean()) if n else np.nan
                 paired_rows.append({
                     "severity": severity, "metric": metric,
                     "better": "lower" if metric in LOWER_IS_BETTER else "higher", "n": n,
-                    "mean_a": float(valid[f"{metric}_{a_name}"].mean()) if n else np.nan,
-                    "mean_b": float(valid[f"{metric}_{b_name}"].mean()) if n else np.nan,
+                    "mean_a": mean_a, "mean_b": mean_b,
                     "mean_diff": mean, "ci_low": low, "ci_high": high,
                     "share_b_better": float(better.mean()) if n else np.nan,
                     "n_speakers": int(len(speaker_means)),
