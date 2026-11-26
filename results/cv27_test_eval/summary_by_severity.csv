@@ -1,0 +1,577 @@
+system,role,timeline,severity,metric,n,mean,ci_low,ci_high
+clean,reference: untouched clean audio (ASR only),clean,mild,stoi_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,pesq_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,cer,308,0.057424657534246575,0.04771446599876219,0.06794687457908297
+clean,reference: untouched clean audio (ASR only),clean,mild,wer,308,0.1583732057416268,0.13672208794368976,0.1812569722548253
+clean,reference: untouched clean audio (ASR only),clean,mild,stoi,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,pesq,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,mel_l1,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,mel_l1_clean,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,spk_sim_same,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,spk_sim_other,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,f0_corr,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,f0_rmse_st,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,vuv_agree,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,hnr_db,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,stoi_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,pesq_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,stoi_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,mild,pesq_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,stoi_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,pesq_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,cer,308,0.057424657534246575,0.04771446599876219,0.06794687457908297
+clean,reference: untouched clean audio (ASR only),clean,moderate,wer,308,0.1583732057416268,0.13672208794368976,0.1812569722548253
+clean,reference: untouched clean audio (ASR only),clean,moderate,stoi,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,pesq,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,mel_l1,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,mel_l1_clean,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,spk_sim_same,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,spk_sim_other,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,f0_corr,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,f0_rmse_st,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,vuv_agree,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,hnr_db,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,stoi_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,pesq_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,stoi_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,moderate,pesq_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,stoi_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,pesq_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,cer,308,0.057424657534246575,0.04771446599876219,0.06794687457908297
+clean,reference: untouched clean audio (ASR only),clean,severe,wer,308,0.1583732057416268,0.13672208794368976,0.1812569722548253
+clean,reference: untouched clean audio (ASR only),clean,severe,stoi,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,pesq,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,mel_l1,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,mel_l1_clean,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,spk_sim_same,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,spk_sim_other,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,f0_corr,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,f0_rmse_st,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,vuv_agree,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,hnr_db,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,stoi_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,pesq_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,stoi_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,severe,pesq_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,stoi_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,pesq_melwarp,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,cer,924,0.057424657534246575,0.04771446599876219,0.06794687457908297
+clean,reference: untouched clean audio (ASR only),clean,all,wer,924,0.1583732057416268,0.13672208794368976,0.1812569722548253
+clean,reference: untouched clean audio (ASR only),clean,all,stoi,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,pesq,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,mel_l1,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,mel_l1_clean,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,spk_sim_same,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,spk_sim_other,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,f0_corr,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,f0_rmse_st,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,vuv_agree,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,hnr_db,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,stoi_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,pesq_trunc,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,stoi_fwd,0,,,
+clean,reference: untouched clean audio (ASR only),clean,all,pesq_fwd,0,,,
+distorted,floor,distorted,mild,stoi_melwarp,0,,,
+distorted,floor,distorted,mild,pesq_melwarp,0,,,
+distorted,floor,distorted,mild,cer,308,0.23638356164383562,0.19864676520339722,0.2769704726269267
+distorted,floor,distorted,mild,wer,308,0.49282296650717705,0.4295519097985961,0.5593376373692097
+distorted,floor,distorted,mild,stoi,308,0.6978175822880059,0.6836972969876569,0.71043183285821
+distorted,floor,distorted,mild,pesq,308,1.1574940894331252,1.140937348876696,1.1751270058743366
+distorted,floor,distorted,mild,mel_l1,308,1.9772884650276852,1.801110863338555,2.170837663801228
+distorted,floor,distorted,mild,mel_l1_clean,308,1.9850370440777245,1.8081496804352741,2.1791877218848446
+distorted,floor,distorted,mild,spk_sim_same,308,0.6450172551720633,0.6292563759031335,0.6601670209989247
+distorted,floor,distorted,mild,spk_sim_other,308,0.428935731984558,0.4086935913068223,0.449581926496418
+distorted,floor,distorted,mild,f0_corr,308,0.8727538711819063,0.8470797969783792,0.8945449604361586
+distorted,floor,distorted,mild,f0_rmse_st,308,1.659956302053478,1.5344850725629096,1.8050450387633015
+distorted,floor,distorted,mild,vuv_agree,308,0.9144798619688077,0.9079310511884957,0.9208681634090513
+distorted,floor,distorted,mild,hnr_db,308,9.65372090458461,9.019662327095881,10.242995401439945
+distorted,floor,distorted,mild,stoi_trunc,308,0.3925538849253827,0.3692349011788951,0.41529370637281854
+distorted,floor,distorted,mild,pesq_trunc,308,1.1647445725930201,1.148200053451606,1.1821228678247642
+distorted,floor,distorted,mild,stoi_fwd,308,0.8008526711875227,0.7869343427100854,0.8140615321305298
+distorted,floor,distorted,mild,pesq_fwd,308,1.255769800443154,1.2290731548006368,1.2840850671118904
+distorted,floor,distorted,moderate,stoi_melwarp,0,,,
+distorted,floor,distorted,moderate,pesq_melwarp,0,,,
+distorted,floor,distorted,moderate,cer,308,0.4832876712328767,0.4265768914072213,0.5455039055940614
+distorted,floor,distorted,moderate,wer,308,0.8330143540669857,0.7521649202941956,0.9231590426447799
+distorted,floor,distorted,moderate,stoi,308,0.5518191138111463,0.5346938713157924,0.5678757446879117
+distorted,floor,distorted,moderate,pesq,308,1.0785207272350015,1.0703556169128792,1.0870742300030494
+distorted,floor,distorted,moderate,mel_l1,308,2.3859786592520678,2.209099485654686,2.5786531206309875
+distorted,floor,distorted,moderate,mel_l1_clean,308,2.3941497094445414,2.2168675914422584,2.5882937484344626
+distorted,floor,distorted,moderate,spk_sim_same,308,0.4471762825672261,0.4304925184384225,0.4633353144405445
+distorted,floor,distorted,moderate,spk_sim_other,308,0.3153886250337278,0.29835209959112,0.3321555510361241
+distorted,floor,distorted,moderate,f0_corr,308,0.8122329582388318,0.7769040842881437,0.8453617815907917
+distorted,floor,distorted,moderate,f0_rmse_st,308,2.7666673062507567,2.609327041991018,2.9506322844484574
+distorted,floor,distorted,moderate,vuv_agree,308,0.8839240634595584,0.8745969918529708,0.8931178566230324
+distorted,floor,distorted,moderate,hnr_db,308,7.692331341438122,7.078869537742767,8.289849977600293
+distorted,floor,distorted,moderate,stoi_trunc,308,0.2613052109141863,0.24310227788396643,0.2806876818479693
+distorted,floor,distorted,moderate,pesq_trunc,308,1.080511044759255,1.0723973029312015,1.0889719406738823
+distorted,floor,distorted,moderate,stoi_fwd,308,0.6163834913435383,0.5998918543736713,0.6320106464685722
+distorted,floor,distorted,moderate,pesq_fwd,308,1.104289318059946,1.0931896826208942,1.1160207102686144
+distorted,floor,distorted,severe,stoi_melwarp,0,,,
+distorted,floor,distorted,severe,pesq_melwarp,0,,,
+distorted,floor,distorted,severe,cer,308,0.6558904109589041,0.6028550120781742,0.7142087240503414
+distorted,floor,distorted,severe,wer,308,1.0210526315789474,0.9481088085825623,1.1091481249680681
+distorted,floor,distorted,severe,stoi,308,0.4794422714886351,0.46404465039912945,0.4942998231677248
+distorted,floor,distorted,severe,pesq,308,1.0639640216703539,1.057045541204331,1.0714211946094512
+distorted,floor,distorted,severe,mel_l1,308,2.959524371794292,2.7905125976266985,3.143376054101146
+distorted,floor,distorted,severe,mel_l1_clean,308,2.9752010857904114,2.803303296137159,3.1609845632403215
+distorted,floor,distorted,severe,spk_sim_same,308,0.2797553358757225,0.26746459301957515,0.29128311871059104
+distorted,floor,distorted,severe,spk_sim_other,308,0.20642325993791075,0.19427371312399636,0.2180917881408887
+distorted,floor,distorted,severe,f0_corr,307,0.705505601537111,0.6515360841795164,0.7535859634453669
+distorted,floor,distorted,severe,f0_rmse_st,307,3.9706755964053695,3.7220063126210654,4.27054658031007
+distorted,floor,distorted,severe,vuv_agree,308,0.8466293427496867,0.8332874851881702,0.8594694656457879
+distorted,floor,distorted,severe,hnr_db,308,4.345308514483019,3.9079434857389264,4.781778042490283
+distorted,floor,distorted,severe,stoi_trunc,308,0.24476412960833102,0.23195870243010866,0.25724292488672956
+distorted,floor,distorted,severe,pesq_trunc,308,1.067159182065493,1.0600459092712124,1.0746405424197254
+distorted,floor,distorted,severe,stoi_fwd,308,0.5096885303070888,0.49475501795053217,0.5241288567738128
+distorted,floor,distorted,severe,pesq_fwd,308,1.0819079817889572,1.0729845423460234,1.0916802627213134
+distorted,floor,distorted,all,stoi_melwarp,0,,,
+distorted,floor,distorted,all,pesq_melwarp,0,,,
+distorted,floor,distorted,all,cer,924,0.45852054794520547,0.4158464137760261,0.501315758035368
+distorted,floor,distorted,all,wer,924,0.7822966507177034,0.7208366901461458,0.8453628409019616
+distorted,floor,distorted,all,stoi,924,0.5763596558625959,0.5614420973697557,0.590327425936286
+distorted,floor,distorted,all,pesq,924,1.0999929461128268,1.089733083765577,1.11091714355654
+distorted,floor,distorted,all,mel_l1,924,2.4409304986913485,2.267331136925197,2.6298066833915232
+distorted,floor,distorted,all,mel_l1_clean,924,2.451462613104226,2.2762938692727386,2.6424617333866403
+distorted,floor,distorted,all,spk_sim_same,924,0.45731629120500394,0.4448387591559983,0.4693635544066646
+distorted,floor,distorted,all,spk_sim_other,924,0.3169158723187321,0.3021564934253557,0.3319064313165769
+distorted,floor,distorted,all,f0_corr,923,0.7969297542074544,0.7641028427445374,0.8259881024998206
+distorted,floor,distorted,all,f0_rmse_st,923,2.7978304219438273,2.6408375145903684,2.9861473102908467
+distorted,floor,distorted,all,vuv_agree,924,0.881677756059351,0.8727325895300483,0.8904232188020277
+distorted,floor,distorted,all,hnr_db,924,7.2304535868352495,6.686655405508924,7.754072644400951
+distorted,floor,distorted,all,stoi_trunc,924,0.2995410751493,0.28610931624691155,0.31260387114535354
+distorted,floor,distorted,all,pesq_trunc,924,1.1041382664725894,1.093967577243062,1.1147458033659385
+distorted,floor,distorted,all,stoi_fwd,924,0.6423082309460498,0.6275518275877361,0.656367884853836
+distorted,floor,distorted,all,pesq_fwd,924,1.147322366764019,1.1321014499989936,1.163341840135957
+pv_roundtrip,control: inverse warp only,distorted,mild,stoi_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,pesq_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,cer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,wer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,stoi,308,0.7911134641046227,0.7838785111731337,0.7978809286327186
+pv_roundtrip,control: inverse warp only,distorted,mild,pesq,308,1.5704868230726812,1.5232130765982637,1.6194905293954378
+pv_roundtrip,control: inverse warp only,distorted,mild,mel_l1,308,0.44957599900179096,0.4330750281228393,0.466276716454961
+pv_roundtrip,control: inverse warp only,distorted,mild,mel_l1_clean,308,0.4531495045967303,0.436154747423311,0.4703646533695535
+pv_roundtrip,control: inverse warp only,distorted,mild,spk_sim_same,308,0.8935835788335968,0.8859723202965963,0.9010171112505906
+pv_roundtrip,control: inverse warp only,distorted,mild,spk_sim_other,308,0.5453680853760905,0.5217343810698261,0.5686857118666798
+pv_roundtrip,control: inverse warp only,distorted,mild,f0_corr,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,f0_rmse_st,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,vuv_agree,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,hnr_db,0,,,
+pv_roundtrip,control: inverse warp only,distorted,mild,stoi_trunc,308,0.4019704159626037,0.37553800871221954,0.4273127282474769
+pv_roundtrip,control: inverse warp only,distorted,mild,pesq_trunc,308,1.6798486837318964,1.6310468774698514,1.730497641636081
+pv_roundtrip,control: inverse warp only,distorted,mild,stoi_fwd,308,0.9999999999999997,0.9999999999999994,0.9999999999999998
+pv_roundtrip,control: inverse warp only,distorted,mild,pesq_fwd,308,4.643888473510742,4.643888473510742,4.643888473510742
+pv_roundtrip,control: inverse warp only,distorted,moderate,stoi_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,pesq_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,cer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,wer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,stoi,308,0.738625960623546,0.7287649386169038,0.7476555068262539
+pv_roundtrip,control: inverse warp only,distorted,moderate,pesq,308,1.4580551269766573,1.4178021929745181,1.4998583273535608
+pv_roundtrip,control: inverse warp only,distorted,moderate,mel_l1,308,0.5069674760006465,0.4880018986731564,0.5260789448954271
+pv_roundtrip,control: inverse warp only,distorted,moderate,mel_l1_clean,308,0.5136072084114149,0.4937993616939126,0.5336025738222087
+pv_roundtrip,control: inverse warp only,distorted,moderate,spk_sim_same,308,0.8417239066052062,0.8311022328144558,0.8514995543744014
+pv_roundtrip,control: inverse warp only,distorted,moderate,spk_sim_other,308,0.5225612511546563,0.49938962153374017,0.5454094928813473
+pv_roundtrip,control: inverse warp only,distorted,moderate,f0_corr,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,f0_rmse_st,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,vuv_agree,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,hnr_db,0,,,
+pv_roundtrip,control: inverse warp only,distorted,moderate,stoi_trunc,308,0.24537335756264894,0.2259913885836926,0.2657203228543495
+pv_roundtrip,control: inverse warp only,distorted,moderate,pesq_trunc,308,1.4476893586771828,1.4062981375125574,1.4906620129923702
+pv_roundtrip,control: inverse warp only,distorted,moderate,stoi_fwd,308,0.9999999999999997,0.9999999999999992,0.9999999999999997
+pv_roundtrip,control: inverse warp only,distorted,moderate,pesq_fwd,308,4.643888473510742,4.643888473510742,4.643888473510742
+pv_roundtrip,control: inverse warp only,distorted,severe,stoi_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,pesq_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,cer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,wer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,stoi,308,0.7208874458297907,0.7127006146882436,0.7288482201130283
+pv_roundtrip,control: inverse warp only,distorted,severe,pesq,308,1.4243451612336295,1.3861794753278598,1.4647464732389668
+pv_roundtrip,control: inverse warp only,distorted,severe,mel_l1,308,0.5244004472896651,0.5049941839534637,0.5432784484218615
+pv_roundtrip,control: inverse warp only,distorted,severe,mel_l1_clean,308,0.533733802569377,0.5136962459756941,0.5531237515804062
+pv_roundtrip,control: inverse warp only,distorted,severe,spk_sim_same,308,0.8221712417645209,0.809107238889266,0.8340843715095154
+pv_roundtrip,control: inverse warp only,distorted,severe,spk_sim_other,308,0.5125636423958136,0.4881784410811019,0.5359189384858982
+pv_roundtrip,control: inverse warp only,distorted,severe,f0_corr,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,f0_rmse_st,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,vuv_agree,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,hnr_db,0,,,
+pv_roundtrip,control: inverse warp only,distorted,severe,stoi_trunc,308,0.20785779141246627,0.1935904632373337,0.2219701969458522
+pv_roundtrip,control: inverse warp only,distorted,severe,pesq_trunc,308,1.3589145924363817,1.3269280579039564,1.3928289268536622
+pv_roundtrip,control: inverse warp only,distorted,severe,stoi_fwd,308,0.9999999999999997,0.9999999999999992,0.9999999999999997
+pv_roundtrip,control: inverse warp only,distorted,severe,pesq_fwd,308,4.643888473510742,4.643888473510742,4.643888473510742
+pv_roundtrip,control: inverse warp only,distorted,all,stoi_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,pesq_melwarp,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,cer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,wer,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,stoi,924,0.7502089568526531,0.742593150030885,0.7572571449480607
+pv_roundtrip,control: inverse warp only,distorted,all,pesq,924,1.4842957037609894,1.4433530459070105,1.5264050354254735
+pv_roundtrip,control: inverse warp only,distorted,all,mel_l1,924,0.4936479740973675,0.4759726412256571,0.5113553303269586
+pv_roundtrip,control: inverse warp only,distorted,all,mel_l1_clean,924,0.5001635051925074,0.48178095683300975,0.5185711744696024
+pv_roundtrip,control: inverse warp only,distorted,all,spk_sim_same,924,0.8524929090677746,0.8433876785113565,0.8609796643984282
+pv_roundtrip,control: inverse warp only,distorted,all,spk_sim_other,924,0.5268309929755203,0.5033601430287523,0.5499774175552571
+pv_roundtrip,control: inverse warp only,distorted,all,f0_corr,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,f0_rmse_st,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,vuv_agree,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,hnr_db,0,,,
+pv_roundtrip,control: inverse warp only,distorted,all,stoi_trunc,924,0.28506718831257294,0.27181657847384727,0.2981686760822295
+pv_roundtrip,control: inverse warp only,distorted,all,pesq_trunc,924,1.4954842116151537,1.4578555474662527,1.5346601063197645
+pv_roundtrip,control: inverse warp only,distorted,all,stoi_fwd,924,0.9999999999999998,0.9999999999999993,0.9999999999999998
+pv_roundtrip,control: inverse warp only,distorted,all,pesq_fwd,924,4.643888473510742,4.643888473510742,4.643888473510742
+copysynth_clean,ceiling (clean timeline),clean,mild,stoi_melwarp,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,mild,pesq_melwarp,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,mild,cer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,mild,wer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,mild,stoi,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,mild,pesq,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,mild,mel_l1,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,mild,mel_l1_clean,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,mild,spk_sim_same,308,0.9481692370405808,0.9450471291071093,0.951188742056359
+copysynth_clean,ceiling (clean timeline),clean,mild,spk_sim_other,308,0.5676959989077983,0.544308831659786,0.5906486890176029
+copysynth_clean,ceiling (clean timeline),clean,mild,f0_corr,308,0.8846987099826092,0.8531679987319021,0.9121158468838849
+copysynth_clean,ceiling (clean timeline),clean,mild,f0_rmse_st,308,1.1624245138374547,0.9660026997906898,1.3781279881346913
+copysynth_clean,ceiling (clean timeline),clean,mild,vuv_agree,308,0.9669597603838008,0.9596269409974889,0.9737276747844211
+copysynth_clean,ceiling (clean timeline),clean,mild,hnr_db,308,12.831595996460601,12.000893541032449,13.625835325153245
+copysynth_clean,ceiling (clean timeline),clean,mild,stoi_trunc,308,0.9417275707261116,0.9367265201212156,0.9463257937897029
+copysynth_clean,ceiling (clean timeline),clean,mild,pesq_trunc,308,2.9262308528671017,2.8362195507746493,3.019378513442007
+copysynth_clean,ceiling (clean timeline),clean,mild,stoi_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,mild,pesq_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,moderate,stoi_melwarp,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,moderate,pesq_melwarp,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,moderate,cer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,moderate,wer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,moderate,stoi,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,moderate,pesq,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,moderate,mel_l1,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,moderate,mel_l1_clean,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,moderate,spk_sim_same,308,0.9481692370405808,0.9450471291071093,0.951188742056359
+copysynth_clean,ceiling (clean timeline),clean,moderate,spk_sim_other,308,0.5676959989077983,0.544308831659786,0.5906486890176029
+copysynth_clean,ceiling (clean timeline),clean,moderate,f0_corr,308,0.8846987099826092,0.8531679987319021,0.9121158468838849
+copysynth_clean,ceiling (clean timeline),clean,moderate,f0_rmse_st,308,1.1624245138374547,0.9660026997906898,1.3781279881346913
+copysynth_clean,ceiling (clean timeline),clean,moderate,vuv_agree,308,0.9669597603838008,0.9596269409974889,0.9737276747844211
+copysynth_clean,ceiling (clean timeline),clean,moderate,hnr_db,308,12.831595996460601,12.000893541032449,13.625835325153245
+copysynth_clean,ceiling (clean timeline),clean,moderate,stoi_trunc,308,0.9417275707261116,0.9367265201212156,0.9463257937897029
+copysynth_clean,ceiling (clean timeline),clean,moderate,pesq_trunc,308,2.9262308528671017,2.8362195507746493,3.019378513442007
+copysynth_clean,ceiling (clean timeline),clean,moderate,stoi_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,moderate,pesq_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,severe,stoi_melwarp,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,severe,pesq_melwarp,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,severe,cer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,severe,wer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,severe,stoi,308,0.9417232246506857,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,severe,pesq,308,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,severe,mel_l1,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,severe,mel_l1_clean,308,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,severe,spk_sim_same,308,0.9481692370405808,0.9450471291071093,0.951188742056359
+copysynth_clean,ceiling (clean timeline),clean,severe,spk_sim_other,308,0.5676959989077983,0.544308831659786,0.5906486890176029
+copysynth_clean,ceiling (clean timeline),clean,severe,f0_corr,308,0.8846987099826092,0.8531679987319021,0.9121158468838849
+copysynth_clean,ceiling (clean timeline),clean,severe,f0_rmse_st,308,1.1624245138374547,0.9660026997906898,1.3781279881346913
+copysynth_clean,ceiling (clean timeline),clean,severe,vuv_agree,308,0.9669597603838008,0.9596269409974889,0.9737276747844211
+copysynth_clean,ceiling (clean timeline),clean,severe,hnr_db,308,12.831595996460601,12.000893541032449,13.625835325153245
+copysynth_clean,ceiling (clean timeline),clean,severe,stoi_trunc,308,0.9417275707261116,0.9367265201212156,0.9463257937897029
+copysynth_clean,ceiling (clean timeline),clean,severe,pesq_trunc,308,2.9262308528671017,2.8362195507746493,3.019378513442007
+copysynth_clean,ceiling (clean timeline),clean,severe,stoi_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,severe,pesq_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,all,stoi_melwarp,924,0.9417232246506858,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,all,pesq_melwarp,924,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,all,cer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,all,wer,0,,,
+copysynth_clean,ceiling (clean timeline),clean,all,stoi,924,0.9417232246506858,0.9367176522379014,0.9463189671330536
+copysynth_clean,ceiling (clean timeline),clean,all,pesq,924,2.9315287737877336,2.840969778494411,3.024917752085492
+copysynth_clean,ceiling (clean timeline),clean,all,mel_l1,924,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,all,mel_l1_clean,924,0.0,0.0,0.0
+copysynth_clean,ceiling (clean timeline),clean,all,spk_sim_same,924,0.9481692370405808,0.9450471291071092,0.9511887420563591
+copysynth_clean,ceiling (clean timeline),clean,all,spk_sim_other,924,0.5676959989077982,0.5443088316597862,0.590648689017603
+copysynth_clean,ceiling (clean timeline),clean,all,f0_corr,924,0.8846987099826092,0.8531679987319021,0.9121158468838849
+copysynth_clean,ceiling (clean timeline),clean,all,f0_rmse_st,924,1.162424513837455,0.9660026997906898,1.3781279881346915
+copysynth_clean,ceiling (clean timeline),clean,all,vuv_agree,924,0.9669597603838008,0.959626940997489,0.9737276747844212
+copysynth_clean,ceiling (clean timeline),clean,all,hnr_db,924,12.831595996460601,12.00089354103245,13.625835325153245
+copysynth_clean,ceiling (clean timeline),clean,all,stoi_trunc,924,0.9417275707261115,0.9367265201212156,0.9463257937897028
+copysynth_clean,ceiling (clean timeline),clean,all,pesq_trunc,924,2.9262308528671017,2.8362195507746493,3.019378513442007
+copysynth_clean,ceiling (clean timeline),clean,all,stoi_fwd,0,,,
+copysynth_clean,ceiling (clean timeline),clean,all,pesq_fwd,0,,,
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,stoi_melwarp,308,0.9350516973827842,0.9293873320692068,0.940088769609222
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,pesq_melwarp,308,2.810317232237234,2.720912705738365,2.9034450871586532
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,cer,308,0.08416438356164384,0.0689974811826698,0.100987506830576
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,wer,308,0.19904306220095694,0.1726215441136656,0.22736999606247538
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,stoi,308,0.7552263391821684,0.7469385055165745,0.7628388341359456
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,pesq,308,1.5568515433893575,1.51536339492618,1.6000777255143526
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,mel_l1,308,0.0,0.0,0.0
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,mel_l1_clean,308,0.07934412879675816,0.07625135090155924,0.08218905070575196
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,spk_sim_same,308,0.9378630251921543,0.933493724601653,0.9419486114244051
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,spk_sim_other,308,0.563132396768053,0.5394357634012442,0.5865293242015354
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,f0_corr,308,0.8863616657203516,0.8605596885451917,0.9096182020369056
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,f0_rmse_st,308,1.2054968010095972,1.0182660102287568,1.4060761622225133
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,vuv_agree,308,0.9669234976510487,0.9600970603761578,0.9733769364107419
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,hnr_db,308,13.154035879918455,12.349142756270433,13.920680784681347
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,stoi_trunc,308,0.3970398969512125,0.3686570442108507,0.4247755737147439
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,pesq_trunc,308,1.8314965522134459,1.7757211704759108,1.8889803632104807
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,stoi_fwd,308,0.75075162798886,0.7400986847165849,0.7610316753931837
+copysynth_tempo,ceiling (distorted timeline),distorted,mild,pesq_fwd,308,1.604305180249276,1.5583801922431626,1.6507699982407733
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,stoi_melwarp,308,0.9348317307631484,0.9294277615030768,0.9396696962499903
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,pesq_melwarp,308,2.8121293941875556,2.720253079450021,2.904643719154153
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,cer,308,0.08723287671232877,0.07373528084845994,0.1022569852470667
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,wer,308,0.22392344497607655,0.19680132406717307,0.25272790689768865
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,stoi,308,0.7215082678459698,0.7107965075866955,0.7312761679990902
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,pesq,308,1.4585338401329981,1.419144893348064,1.5002947854568742
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,mel_l1,308,0.0,0.0,0.0
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,mel_l1_clean,308,0.07891292143129292,0.07585777507952868,0.08169309128593664
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,spk_sim_same,308,0.9261430140147222,0.9206548296206774,0.9312839530051196
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,spk_sim_other,308,0.5582518943620345,0.5344622981344457,0.5817085831112344
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,f0_corr,308,0.8895827441986366,0.8611400414441492,0.9146387949256727
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,f0_rmse_st,308,1.1710561926546803,0.9900942435035452,1.3669089693304264
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,vuv_agree,308,0.9668297355385976,0.9598784602836201,0.9732878096076785
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,hnr_db,308,13.176891481770513,12.37751287236909,13.93887647063747
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,stoi_trunc,308,0.2300049188667524,0.211083867973436,0.25001058087046146
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,pesq_trunc,308,1.497892897624474,1.4593929529800411,1.5386288229332847
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,stoi_fwd,308,0.7094925726750235,0.6986648095912563,0.7196406429349607
+copysynth_tempo,ceiling (distorted timeline),distorted,moderate,pesq_fwd,308,1.4936104385883777,1.4528424432980702,1.5366059178046687
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,stoi_melwarp,308,0.9344953073403509,0.9289668386586926,0.9394476605054342
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,pesq_melwarp,308,2.8029712628234518,2.7075624577811594,2.8995715815762297
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,cer,308,0.1018082191780822,0.08678931281814191,0.11781648365525339
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,wer,308,0.25645933014354066,0.2214605404426507,0.2934862356580958
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,stoi,308,0.7135522302333793,0.7039132107737692,0.7226632169665065
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,pesq,308,1.4370965500930688,1.402994193860123,1.4734417488663354
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,mel_l1,308,0.0,0.0,0.0
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,mel_l1_clean,308,0.07924678030895524,0.07608867241181044,0.08215795835997433
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,spk_sim_same,308,0.9159036174461593,0.9103316788848206,0.9211465967041171
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,spk_sim_other,308,0.5557824059587415,0.5319417355060289,0.5795999771962331
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,f0_corr,308,0.8942351875659208,0.8653057723938818,0.9189795741757204
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,f0_rmse_st,308,1.1511046987556062,0.9632287394459749,1.360461627782573
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,vuv_agree,308,0.9666457087747712,0.9597244874842806,0.9732299730038295
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,hnr_db,308,13.11430572457519,12.315906436194197,13.878699509117782
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,stoi_trunc,308,0.19296634994454956,0.1792481493028298,0.2060711709642729
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,pesq_trunc,308,1.382762744055166,1.3497101896913826,1.4173097628783915
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,stoi_fwd,308,0.6984656948451865,0.6880123941940197,0.7079000337611384
+copysynth_tempo,ceiling (distorted timeline),distorted,severe,pesq_fwd,308,1.4640395323951523,1.4255942454137458,1.5028884521166683
+copysynth_tempo,ceiling (distorted timeline),distorted,all,stoi_melwarp,924,0.9347929118287611,0.9292854967947674,0.9397324911798085
+copysynth_tempo,ceiling (distorted timeline),distorted,all,pesq_melwarp,924,2.8084726297494136,2.7168508491665913,2.9015163782402493
+copysynth_tempo,ceiling (distorted timeline),distorted,all,cer,924,0.09106849315068494,0.07760202282615217,0.10596297454798426
+copysynth_tempo,ceiling (distorted timeline),distorted,all,wer,924,0.22647527910685805,0.198775369064214,0.2553562273865594
+copysynth_tempo,ceiling (distorted timeline),distorted,all,stoi,924,0.7300956124205059,0.7211500093625983,0.7383355841191027
+copysynth_tempo,ceiling (distorted timeline),distorted,all,pesq,924,1.4841606445384747,1.4472504093894798,1.5229651204245493
+copysynth_tempo,ceiling (distorted timeline),distorted,all,mel_l1,924,0.0,0.0,0.0
+copysynth_tempo,ceiling (distorted timeline),distorted,all,mel_l1_clean,924,0.07916794351233546,0.07607861400391881,0.08197233299303178
+copysynth_tempo,ceiling (distorted timeline),distorted,all,spk_sim_same,924,0.9266365522176787,0.9217294603305268,0.9313111060082438
+copysynth_tempo,ceiling (distorted timeline),distorted,all,spk_sim_other,924,0.5590555656962763,0.5354330284670124,0.5824764852579183
+copysynth_tempo,ceiling (distorted timeline),distorted,all,f0_corr,924,0.8900598658283029,0.8630345328069479,0.9134458883916661
+copysynth_tempo,ceiling (distorted timeline),distorted,all,f0_rmse_st,924,1.1758858974732946,0.9949510850802161,1.372809448391707
+copysynth_tempo,ceiling (distorted timeline),distorted,all,vuv_agree,924,0.9667996473214726,0.9599679712429583,0.9733197089473393
+copysynth_tempo,ceiling (distorted timeline),distorted,all,hnr_db,924,13.148411028754719,12.348390147153758,13.91199697113428
+copysynth_tempo,ceiling (distorted timeline),distorted,all,stoi_trunc,924,0.2733370552541715,0.26052869614102486,0.2864018626198345
+copysynth_tempo,ceiling (distorted timeline),distorted,all,pesq_trunc,924,1.570717397964362,1.5329416638165674,1.6103692836682098
+copysynth_tempo,ceiling (distorted timeline),distorted,all,stoi_fwd,924,0.7195699651696901,0.7097802873124497,0.72861326825127
+copysynth_tempo,ceiling (distorted timeline),distorted,all,pesq_fwd,924,1.520651717077602,1.4806530811645704,1.5614880218309863
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,stoi_melwarp,308,0.34816646729981254,0.3377647392239722,0.358484478666263
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,pesq_melwarp,308,1.073536499754175,1.0656999754579006,1.0816008501310121
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,cer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,wer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,stoi,308,0.34816646729981254,0.3377647392239722,0.358484478666263
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,pesq,308,1.073536499754175,1.0656999754579006,1.0816008501310121
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,mel_l1,308,1.3260269724316411,1.2444333405464683,1.4140234822198505
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,mel_l1_clean,308,1.3260269724316411,1.2444333405464683,1.4140234822198505
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,spk_sim_same,308,0.07661351188933015,0.06422257277992689,0.08914482635260501
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,spk_sim_other,308,0.07183280812748177,0.060043392459547526,0.08395901939096817
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,f0_corr,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,f0_rmse_st,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,vuv_agree,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,hnr_db,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,stoi_trunc,308,0.34816523794990073,0.3377458328672334,0.35848968240284423
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,pesq_trunc,308,1.0741075292810218,1.0661918473413536,1.0822235191066587
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,stoi_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,mild,pesq_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,stoi_melwarp,308,0.34728258378207205,0.33372176472575404,0.3608202000988708
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,pesq_melwarp,308,1.0791754436183285,1.069078572829074,1.0906484986176814
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,cer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,wer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,stoi,308,0.34728258378207205,0.33372176472575404,0.3608202000988708
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,pesq,308,1.0791754436183285,1.069078572829074,1.0906484986176814
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,mel_l1,308,1.3526025112573203,1.2709566545130935,1.4421167482812245
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,mel_l1_clean,308,1.3526025112573203,1.2709566545130935,1.4421167482812245
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,spk_sim_same,308,0.07815328781599275,0.06636352485420274,0.0905447221392121
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,spk_sim_other,308,0.07271535899351184,0.061302559513948085,0.08473341913536528
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,f0_corr,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,f0_rmse_st,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,vuv_agree,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,hnr_db,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,stoi_trunc,308,0.3472851754505348,0.3337164829849232,0.36081935567616524
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,pesq_trunc,308,1.0743918960744685,1.0664334075510606,1.0828247203548413
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,stoi_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,moderate,pesq_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,stoi_melwarp,308,0.32655513528519386,0.313992760729762,0.339017290689589
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,pesq_melwarp,308,1.0764896741935186,1.0680554100322053,1.084960913749996
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,cer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,wer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,stoi,308,0.32655513528519386,0.313992760729762,0.339017290689589
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,pesq,308,1.0764896741935186,1.0680554100322053,1.084960913749996
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,mel_l1,308,1.395164937555016,1.3036130888940194,1.4970377900036531
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,mel_l1_clean,308,1.395164937555016,1.3036130888940194,1.4970377900036531
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,spk_sim_same,308,0.08136006708517524,0.0695772222423256,0.093654601970567
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,spk_sim_other,308,0.07374072730873982,0.062074432982478354,0.08596026010043512
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,f0_corr,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,f0_rmse_st,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,vuv_agree,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,hnr_db,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,stoi_trunc,308,0.3265511520790156,0.31398778141496586,0.33901471840877623
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,pesq_trunc,308,1.0789966037521115,1.0696921717342662,1.0886724720848873
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,stoi_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,severe,pesq_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,stoi_melwarp,924,0.3406680621223594,0.32965377722608097,0.35147283419567993
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,pesq_melwarp,924,1.076400539188674,1.0680056877502688,1.085060601502038
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,cer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,wer,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,stoi,924,0.3406680621223594,0.32965377722608097,0.35147283419567993
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,pesq,924,1.076400539188674,1.0680056877502688,1.085060601502038
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,mel_l1,924,1.3579314737479924,1.2740167259518829,1.4502243165201179
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,mel_l1_clean,924,1.3579314737479924,1.2740167259518829,1.4502243165201179
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,spk_sim_same,924,0.07870895559683272,0.06701113121502142,0.0907999591929522
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,spk_sim_other,924,0.07276296480991115,0.06139574777049082,0.08460445460160353
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,f0_corr,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,f0_rmse_st,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,vuv_agree,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,hnr_db,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,stoi_trunc,924,0.3406671884931503,0.3296290884497356,0.3514780620094789
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,pesq_trunc,924,1.0758320097025338,1.0676717211349562,1.0841592392685993
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,stoi_fwd,0,,,
+mapper_linear_oracle,"(a) linear, clean length (oracle)",clean,all,pesq_fwd,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,stoi_melwarp,308,0.3739386436640441,0.36405463304103025,0.38396411566577693
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,pesq_melwarp,308,1.0731838670643894,1.0654608797655165,1.0812776887527238
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,cer,308,1.0100821917808218,0.9553272962012542,1.0756496270233884
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,wer,308,1.0799043062200957,1.0344313738296198,1.133851324326561
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,stoi,308,0.36476898365422217,0.3541833170563472,0.3752599216371773
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,pesq,308,1.0711659359467494,1.0633600742873162,1.0795765009629859
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,mel_l1,308,1.2906524240970612,1.2096146729666393,1.3782720012239948
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,mel_l1_clean,308,1.3056525541590405,1.2245436003287054,1.3932474813339424
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,spk_sim_same,308,0.07655446987665447,0.06476551177915657,0.08856581451455625
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,spk_sim_other,308,0.07151051436511668,0.06017624979481892,0.0829484982881025
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,f0_corr,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,f0_rmse_st,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,vuv_agree,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,hnr_db,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,stoi_trunc,308,0.3326208263622208,0.3218210352627971,0.34342814335469257
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,pesq_trunc,308,1.0726356367012122,1.065021897990032,1.0803994523993743
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,stoi_fwd,308,0.32556788808253434,0.31592238477420903,0.33616894579791684
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,mild,pesq_fwd,308,1.0831114649772644,1.0741186090802621,1.0926187239221055
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,stoi_melwarp,308,0.3912796903602523,0.37928861385622886,0.4026116976679016
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,pesq_melwarp,308,1.0753136451368208,1.0670101633707272,1.0839118117920297
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,cer,308,0.9666849315068493,0.9333261489710741,1.0057868620279755
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,wer,308,1.0851674641148326,1.0370926603241342,1.1413151137803006
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,stoi,308,0.3754323549004486,0.36272323229141035,0.3872512044848292
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,pesq,308,1.0719868285315377,1.0644897953939072,1.0799171815982602
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,mel_l1,308,1.2879037189406235,1.2061494418528922,1.3779801801952771
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,mel_l1_clean,308,1.30425159555751,1.2230877531857742,1.3935160746670843
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,spk_sim_same,308,0.07650771308456511,0.06472423043167794,0.0886257538435767
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,spk_sim_other,308,0.07174353307923194,0.05984927489821735,0.08404853512245923
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,f0_corr,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,f0_rmse_st,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,vuv_agree,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,hnr_db,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,stoi_trunc,308,0.3122696044282926,0.29754358410033005,0.3270431871749062
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,pesq_trunc,308,1.0758985602236413,1.067446473589463,1.0850762135959873
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,stoi_fwd,308,0.3226535803236561,0.3117443216653311,0.33369442675019007
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,moderate,pesq_fwd,308,1.087381328855242,1.0781468752702041,1.0971210336179957
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,stoi_melwarp,308,0.38955236283776173,0.37764904070988753,0.4009389147456694
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,pesq_melwarp,308,1.073538544116082,1.0654144074525425,1.0818615421201763
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,cer,308,0.9713972602739726,0.9275157195440076,1.0247392341474593
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,wer,308,1.04688995215311,1.0184833393345465,1.0848173492100683
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,stoi,308,0.3716135474533832,0.359641288617063,0.3828548435166787
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,pesq,308,1.0692839103859741,1.0618289143111386,1.077202527552939
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,mel_l1,308,1.307769819900587,1.2205177537375809,1.4047491350406904
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,mel_l1_clean,308,1.3276720000551891,1.2405010888149302,1.4248253245370837
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,spk_sim_same,308,0.0798651358199129,0.06713244972096333,0.09286566600758196
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,spk_sim_other,308,0.07289521151045657,0.060511805015555836,0.0856648102231497
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,f0_corr,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,f0_rmse_st,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,vuv_agree,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,hnr_db,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,stoi_trunc,308,0.3022524181053233,0.28847500252784464,0.3158205749687988
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,pesq_trunc,308,1.0741823482048976,1.0655298684324448,1.083563509059808
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,stoi_fwd,308,0.30479890953011485,0.294392090308105,0.31486128571060723
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,severe,pesq_fwd,308,1.0875502929284975,1.0778504676401006,1.0975366787285086
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,stoi_melwarp,924,0.3849235656206861,0.3741630107830082,0.3954551634523081
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,pesq_melwarp,924,1.0740120187724307,1.0660112421340675,1.082223325597795
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,cer,924,0.9827214611872146,0.9509167063536024,1.0202350448209299
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,wer,924,1.0706539074960129,1.041078299004674,1.1048039511869123
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,stoi,924,0.37060496200268467,0.3595811396967135,0.381217648764212
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,pesq,924,1.0708122249547538,1.063275807646662,1.078755083059927
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,mel_l1,924,1.2954419876460905,1.2128726634487048,1.3863293417053892
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,mel_l1_clean,924,1.3125253832572465,1.2303408878828272,1.4030614358769635
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,spk_sim_same,924,0.07764243959371084,0.06567090225632873,0.08982113154915462
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,spk_sim_other,924,0.07204975298493506,0.06025747896058789,0.0840976697208262
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,f0_corr,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,f0_rmse_st,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,vuv_agree,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,hnr_db,0,,,
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,stoi_trunc,924,0.31571428296527887,0.3041132998396308,0.3272947029579771
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,pesq_trunc,924,1.0742388483765837,1.0661836811044207,1.0827422352949951
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,stoi_fwd,924,0.3176734593121017,0.3084258727971329,0.3272348638079837
+mapper_linear_deploy,"(a) linear, distorted length (deployable)",distorted,all,pesq_fwd,924,1.086014362253668,1.076860138160633,1.0956584478437226
+mapper_tempo,(b) tempo,distorted,mild,stoi_melwarp,308,0.6016489908101286,0.5903702173112256,0.6125004733991528
+mapper_tempo,(b) tempo,distorted,mild,pesq_melwarp,308,1.127936955396231,1.111618860803802,1.1451806189984661
+mapper_tempo,(b) tempo,distorted,mild,cer,308,0.5368767123287671,0.49472987699448356,0.5778378042401813
+mapper_tempo,(b) tempo,distorted,mild,wer,308,0.907177033492823,0.847444573283859,0.964861798540014
+mapper_tempo,(b) tempo,distorted,mild,stoi,308,0.5747699373201195,0.5647408451438605,0.5843038884808125
+mapper_tempo,(b) tempo,distorted,mild,pesq,308,1.1149765136954073,1.1000415055915003,1.1310038553256738
+mapper_tempo,(b) tempo,distorted,mild,mel_l1,308,1.096308657294744,1.0252063650976544,1.178860300307435
+mapper_tempo,(b) tempo,distorted,mild,mel_l1_clean,308,1.1074171600403724,1.0370678600066172,1.189540897342581
+mapper_tempo,(b) tempo,distorted,mild,spk_sim_same,308,0.24291834474875276,0.22598644431825232,0.2597388052498592
+mapper_tempo,(b) tempo,distorted,mild,spk_sim_other,308,0.20179706399614272,0.18535860857891745,0.21810802591693693
+mapper_tempo,(b) tempo,distorted,mild,f0_corr,306,0.4312294842253914,0.3642037481918182,0.49074871925004887
+mapper_tempo,(b) tempo,distorted,mild,f0_rmse_st,306,5.2092752010711205,4.902114208952658,5.523697522620195
+mapper_tempo,(b) tempo,distorted,mild,vuv_agree,308,0.8167450684045552,0.7950236812028535,0.8378695689914113
+mapper_tempo,(b) tempo,distorted,mild,hnr_db,308,4.608089753505984,4.029197965279939,5.179537576758266
+mapper_tempo,(b) tempo,distorted,mild,stoi_trunc,308,0.353000212934887,0.33171444282178864,0.37295593383047976
+mapper_tempo,(b) tempo,distorted,mild,pesq_trunc,308,1.1210114924938648,1.1069063221992512,1.1359101400765261
+mapper_tempo,(b) tempo,distorted,mild,stoi_fwd,308,0.5707147644092401,0.5597446369595824,0.5813925025630082
+mapper_tempo,(b) tempo,distorted,mild,pesq_fwd,308,1.1408204273744063,1.1236495321629936,1.1591457022658025
+mapper_tempo,(b) tempo,distorted,moderate,stoi_melwarp,308,0.617683181306277,0.6073881140132878,0.627769331267154
+mapper_tempo,(b) tempo,distorted,moderate,pesq_melwarp,308,1.129556636918675,1.1121868032981534,1.1479455340486922
+mapper_tempo,(b) tempo,distorted,moderate,cer,308,0.6450410958904109,0.6057187376895259,0.686006624391118
+mapper_tempo,(b) tempo,distorted,moderate,wer,308,1.0220095693779905,0.9728628471556254,1.0698596272896337
+mapper_tempo,(b) tempo,distorted,moderate,stoi,308,0.5755189070362441,0.5645386025941245,0.5859811695887558
+mapper_tempo,(b) tempo,distorted,moderate,pesq,308,1.1117809523235669,1.0972306142434802,1.127199030882523
+mapper_tempo,(b) tempo,distorted,moderate,mel_l1,308,1.0820096988569607,1.0126006732333157,1.1619720348869933
+mapper_tempo,(b) tempo,distorted,moderate,mel_l1_clean,308,1.0952876498559854,1.0265090541450996,1.1740583170825791
+mapper_tempo,(b) tempo,distorted,moderate,spk_sim_same,308,0.244815877427675,0.22815140391149893,0.26158925016404744
+mapper_tempo,(b) tempo,distorted,moderate,spk_sim_other,308,0.20572537052663056,0.1891592750015114,0.2219019854143682
+mapper_tempo,(b) tempo,distorted,moderate,f0_corr,308,0.46957693850704807,0.4021814565978097,0.532887083589272
+mapper_tempo,(b) tempo,distorted,moderate,f0_rmse_st,308,4.913381811574799,4.494607376797539,5.333568949467512
+mapper_tempo,(b) tempo,distorted,moderate,vuv_agree,308,0.8250361983267673,0.8004222259067013,0.8486367861493431
+mapper_tempo,(b) tempo,distorted,moderate,hnr_db,308,4.980506730267304,4.29408916663824,5.662129308775883
+mapper_tempo,(b) tempo,distorted,moderate,stoi_trunc,308,0.23297603177872855,0.21589538921092657,0.2505328401790658
+mapper_tempo,(b) tempo,distorted,moderate,pesq_trunc,308,1.1144998429657578,1.1014013345049873,1.1286511230445126
+mapper_tempo,(b) tempo,distorted,moderate,stoi_fwd,308,0.5954718123231098,0.5841838666551222,0.6065476064995278
+mapper_tempo,(b) tempo,distorted,moderate,pesq_fwd,308,1.1487819966557737,1.1308093003033062,1.1679100433781233
+mapper_tempo,(b) tempo,distorted,severe,stoi_melwarp,308,0.6158201340797828,0.604951819389443,0.6267654993127832
+mapper_tempo,(b) tempo,distorted,severe,pesq_melwarp,308,1.130205148226255,1.1132591867425095,1.14852091603546
+mapper_tempo,(b) tempo,distorted,severe,cer,308,0.7290958904109589,0.6828899370724273,0.7782955433985258
+mapper_tempo,(b) tempo,distorted,severe,wer,308,1.114354066985646,1.055957131282395,1.1780113980937854
+mapper_tempo,(b) tempo,distorted,severe,stoi,308,0.5701441851443273,0.5595348929896783,0.5810104904173339
+mapper_tempo,(b) tempo,distorted,severe,pesq,308,1.1111923773567398,1.0972836740759404,1.1261898733640037
+mapper_tempo,(b) tempo,distorted,severe,mel_l1,308,1.1041801368648356,1.0309077303850072,1.1882141667608725
+mapper_tempo,(b) tempo,distorted,severe,mel_l1_clean,308,1.1219568515752818,1.0490839069161542,1.2054108162110229
+mapper_tempo,(b) tempo,distorted,severe,spk_sim_same,308,0.23688000444057405,0.2212544746911482,0.2524372578254666
+mapper_tempo,(b) tempo,distorted,severe,spk_sim_other,308,0.20002605698642406,0.18488058276059707,0.21496799729384664
+mapper_tempo,(b) tempo,distorted,severe,f0_corr,306,0.4175663476908503,0.34326431562399856,0.4859596558087055
+mapper_tempo,(b) tempo,distorted,severe,f0_rmse_st,306,5.08445737355862,4.7088709842632275,5.460612629723281
+mapper_tempo,(b) tempo,distorted,severe,vuv_agree,308,0.8246165787874056,0.800773676947712,0.8474786843711356
+mapper_tempo,(b) tempo,distorted,severe,hnr_db,308,4.94869592653877,4.264256070547408,5.625379493436773
+mapper_tempo,(b) tempo,distorted,severe,stoi_trunc,308,0.20423127326196974,0.19187335113090248,0.21589770897680163
+mapper_tempo,(b) tempo,distorted,severe,pesq_trunc,308,1.1081139406600555,1.095377046707453,1.1216661775445296
+mapper_tempo,(b) tempo,distorted,severe,stoi_fwd,308,0.5937079767073852,0.582367635653646,0.604734907295322
+mapper_tempo,(b) tempo,distorted,severe,pesq_fwd,308,1.1494196378565453,1.1315203981504722,1.168355112524841
+mapper_tempo,(b) tempo,distorted,all,stoi_melwarp,924,0.6117174353987294,0.6010640406426575,0.6220252295971939
+mapper_tempo,(b) tempo,distorted,all,pesq_melwarp,924,1.1292329135137202,1.1124768187015637,1.1469216561792595
+mapper_tempo,(b) tempo,distorted,all,cer,924,0.6370045662100456,0.6005633384441029,0.6727695261704614
+mapper_tempo,(b) tempo,distorted,all,wer,924,1.0145135566188197,0.9651172552180374,1.0630773465848733
+mapper_tempo,(b) tempo,distorted,all,stoi,924,0.5734776765002302,0.5632806399106783,0.5834103779756082
+mapper_tempo,(b) tempo,distorted,all,pesq,924,1.1126499477919045,1.0982464618932817,1.1277756639338774
+mapper_tempo,(b) tempo,distorted,all,mel_l1,924,1.0941661643388467,1.0241001426855234,1.174845489066639
+mapper_tempo,(b) tempo,distorted,all,mel_l1_clean,924,1.1082205538238799,1.0386725245249628,1.187901612415899
+mapper_tempo,(b) tempo,distorted,all,spk_sim_same,924,0.24153807553900059,0.22576421990298712,0.25744698077230144
+mapper_tempo,(b) tempo,distorted,all,spk_sim_other,924,0.20251616383639912,0.18670943228623357,0.2179142739327596
+mapper_tempo,(b) tempo,distorted,all,f0_corr,920,0.4395230669853704,0.3728182560796699,0.4997386803589445
+mapper_tempo,(b) tempo,distorted,all,f0_rmse_st,920,5.068699745436672,4.732739169472076,5.4083436888656236
+mapper_tempo,(b) tempo,distorted,all,vuv_agree,924,0.8221326151729094,0.7988688674063147,0.8444690086509552
+mapper_tempo,(b) tempo,distorted,all,hnr_db,924,4.845764136770686,4.204875811681109,5.481865036988942
+mapper_tempo,(b) tempo,distorted,all,stoi_trunc,924,0.26340250599186177,0.25270595959444414,0.2742131892113498
+mapper_tempo,(b) tempo,distorted,all,pesq_trunc,924,1.1145417587065594,1.1014225130547393,1.128369064003939
+mapper_tempo,(b) tempo,distorted,all,stoi_fwd,924,0.586631517813245,0.5759023674406484,0.5970297326666549
+mapper_tempo,(b) tempo,distorted,all,pesq_fwd,924,1.1463406872955753,1.1289691338219936,1.1648447590683746

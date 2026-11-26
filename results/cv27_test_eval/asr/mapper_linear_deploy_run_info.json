@@ -1,0 +1,58 @@
+{
+  "system": "mapper_linear_deploy",
+  "rows": 924,
+  "clips": 308,
+  "asr": {
+    "model_id": "openai/whisper-large-v3",
+    "revision": "06f233fe06e710322aca913c1bc4249a0d71fce1",
+    "dtype": "float32",
+    "device": "cpu",
+    "generation": {
+      "language": "th",
+      "task": "transcribe",
+      "num_beams": 1,
+      "do_sample": false,
+      "max_new_tokens": 128,
+      "return_timestamps": false
+    }
+  },
+  "text": {
+    "normalization": "thai_text-v1",
+    "word_tokenizer": "newmm",
+    "pythainlp": "5.4.0"
+  },
+  "fingerprint": "bb1621a0bf26c0a1",
+  "fingerprint_settings": {
+    "asr": {
+      "model_id": "openai/whisper-large-v3",
+      "revision": "06f233fe06e710322aca913c1bc4249a0d71fce1",
+      "dtype": "float32",
+      "device": "cpu",
+      "generation": {
+        "language": "th",
+        "task": "transcribe",
+        "num_beams": 1,
+        "do_sample": false,
+        "max_new_tokens": 128,
+        "return_timestamps": false
+      }
+    },
+    "text": {
+      "normalization": "thai_text-v1",
+      "word_tokenizer": "newmm",
+      "pythainlp": "5.4.0"
+    }
+  },
+  "transcripts": "/Users/kankaweeramsri/data/cv-th/derived/eval/test_full/mapper_linear_deploy/asr_transcripts.jsonl",
+  "audio": "/Users/kankaweeramsri/data/cv-th/derived/eval/test_full/mapper_linear_deploy/audio (native timeline, resampled to 16 kHz)",
+  "reference": "Common Voice sentence (training_manifest transcript)",
+  "git": {
+    "commit": "328f122fb67a2b2ddc20f24a8c40917f6e1577b2",
+    "dirty": false
+  },
+  "seconds_this_session": 5394.2,
+  "seconds_per_clip": 5.835,
+  "real_time_factor_this_session": 1.284,
+  "torch": "2.8.0",
+  "limit": null
+}
