@@ -1,0 +1,136 @@
+{
+  "config": "tempo",
+  "layer": 18,
+  "input_norm": true,
+  "commit": "b6c04e315f407134e9919fae77eea88dbbaea2c7",
+  "ref": "b6c04e315f407134e9919fae77eea88dbbaea2c7",
+  "fixed": {
+    "severity": "severe",
+    "batch_size": 4,
+    "learning_rate": 0.001,
+    "optimizer": "adam",
+    "weight_decay": 0.0,
+    "lr_scheduler": "reduce_on_plateau",
+    "num_epochs": 50,
+    "seed": 42,
+    "input_norm": true,
+    "alignment": "tempo"
+  },
+  "platform": "kaggle",
+  "gpu": "Tesla T4",
+  "versions": {
+    "python": "3.13.16",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "transformers": "5.20.2",
+    "numpy": "2.1.3",
+    "librosa": "0.11.0",
+    "pandas": "2.3.3"
+  },
+  "model_revision": null,
+  "dataset_sha256": {
+    "cv27_distorted_wavs.tar": "a7388062e2b0c2ba4cd0bf064353485015dd58a3daa3498d40c29d46481298bf",
+    "cv27_mel_tempo.tar": "15acffe59119c8202f3f37bf96c2004c6cf424839e173f6a4f490d121fec76a2",
+    "layer09_reference.npz": "9666a9755b9a580d48c04ff3bc92a1d1919f2ee7c6c92834df82165596187fcc",
+    "files.sha256": "fe270537d3445e1028a2e3cdb6ba58525a70246c79e5887748689309797d57e1",
+    "meta/cv27_th_clean_16k_index.csv": "55b67e0232cd8d7208ab05ce1c2cf2596074134ee1e63f2aa1002ca764821381",
+    "meta/cv27_th_distortion_params.csv": "1bfb9a9ef6a68c36e89c4d33a29532812316648690b14eb605998cd81bb75d1b",
+    "meta/cv27_th_speaker_split.csv": "714a4a7a81c3458b4b45cfa898aeedf9fec9828ebd4f30fe269695801a78fcf7",
+    "meta/cv27_th_splits.json": "cb8242ae9942ea6c1e3ba0cb7bde8bbd1b8bb6d3c7361c08fc484884bca1ecce"
+  },
+  "layer9_check": {
+    "max_rel_l2": 4.637753136194078e-06,
+    "tolerance": 0.001,
+    "clips": [
+      {
+        "clip": "common_voice_th_25681042_mild",
+        "rel_l2": 3.950220161641482e-06,
+        "max_abs": 0.00677490234375
+      },
+      {
+        "clip": "common_voice_th_25664127_mild",
+        "rel_l2": 4.132988124183612e-06,
+        "max_abs": 0.00640869140625
+      },
+      {
+        "clip": "common_voice_th_25733330_mild",
+        "rel_l2": 4.222764800942969e-06,
+        "max_abs": 0.0076904296875
+      },
+      {
+        "clip": "common_voice_th_24329994_mild",
+        "rel_l2": 3.867400209855987e-06,
+        "max_abs": 0.00579833984375
+      },
+      {
+        "clip": "common_voice_th_25672647_moderate",
+        "rel_l2": 3.294354428362567e-06,
+        "max_abs": 0.005218505859375
+      },
+      {
+        "clip": "common_voice_th_25701782_moderate",
+        "rel_l2": 3.747075425053481e-06,
+        "max_abs": 0.006988525390625
+      },
+      {
+        "clip": "common_voice_th_25708082_moderate",
+        "rel_l2": 4.365266704553505e-06,
+        "max_abs": 0.00567626953125
+      },
+      {
+        "clip": "common_voice_th_25671606_moderate",
+        "rel_l2": 4.637753136194078e-06,
+        "max_abs": 0.006103515625
+      },
+      {
+        "clip": "common_voice_th_25700028_severe",
+        "rel_l2": 3.6026356156071415e-06,
+        "max_abs": 0.00457763671875
+      },
+      {
+        "clip": "common_voice_th_25730935_severe",
+        "rel_l2": 4.500127943174448e-06,
+        "max_abs": 0.006103515625
+      },
+      {
+        "clip": "common_voice_th_30572226_severe",
+        "rel_l2": 3.7973409234837163e-06,
+        "max_abs": 0.005126953125
+      },
+      {
+        "clip": "common_voice_th_25676444_severe",
+        "rel_l2": 4.372287094156491e-06,
+        "max_abs": 0.00677490234375
+      }
+    ]
+  },
+  "smoke": false,
+  "sessions": [
+    {
+      "started": "2026-11-19 13:39:45",
+      "gpu": "Tesla T4",
+      "commit": "b6c04e315f407134e9919fae77eea88dbbaea2c7",
+      "platform": "kaggle"
+    }
+  ],
+  "result": {
+    "layer": 18,
+    "extract_s": 257.91327357292175,
+    "train_s": 4881.302417516708,
+    "status": "ok",
+    "best_epoch": 18,
+    "best_val_loss": 1.1612833636705993,
+    "epochs": 50,
+    "epoch_s": 96.86799999999998,
+    "test_loss": 1.1556,
+    "input_norm": {
+      "split": "train",
+      "layer": 18,
+      "n_clips": 2383,
+      "n_frames": 987064,
+      "clip_ids_sha256": "9194635bc51e34ef075550179e7ad1ace3425cdd2b6e047c31440a23552acd1e",
+      "std_floor": 1e-05,
+      "n_dims_at_floor": 0
+    }
+  }
+}

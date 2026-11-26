@@ -1,0 +1,81 @@
+{
+  "gpu": "Tesla T4",
+  "commit": "b6c04e315f407134e9919fae77eea88dbbaea2c7",
+  "hours": 8.701836702360048,
+  "output_gb": 0.928552431,
+  "layer9_check_max_rel_l2": 4.637753136194078e-06,
+  "layers": [
+    {
+      "layer": 3,
+      "extract_s": 243.66506481170654,
+      "train_s": 4876.602573633194,
+      "status": "ok",
+      "best_epoch": 27,
+      "best_val_loss": 1.0500911321796356,
+      "epochs": 50,
+      "epoch_s": 96.71400000000001,
+      "test_loss": 1.0842,
+      "total_min": 85.34554496606191
+    },
+    {
+      "layer": 6,
+      "extract_s": 257.95803117752075,
+      "train_s": 4881.130916118622,
+      "status": "ok",
+      "best_epoch": 20,
+      "best_val_loss": 1.0908442227566828,
+      "epochs": 50,
+      "epoch_s": 96.892,
+      "test_loss": 1.0731,
+      "total_min": 85.65851367314657
+    },
+    {
+      "layer": 9,
+      "extract_s": 257.6379578113556,
+      "train_s": 4879.708657979965,
+      "status": "ok",
+      "best_epoch": 24,
+      "best_val_loss": 1.0977818864290831,
+      "epochs": 50,
+      "epoch_s": 96.838,
+      "test_loss": 1.0753,
+      "total_min": 85.62927292585373
+    },
+    {
+      "layer": 12,
+      "extract_s": 257.30509066581726,
+      "train_s": 4884.7476971149445,
+      "status": "ok",
+      "best_epoch": 17,
+      "best_val_loss": 1.1346680903043904,
+      "epochs": 50,
+      "epoch_s": 96.94999999999999,
+      "test_loss": 1.1163,
+      "total_min": 85.70721590518951
+    },
+    {
+      "layer": 18,
+      "extract_s": 257.91327357292175,
+      "train_s": 4881.302417516708,
+      "status": "ok",
+      "best_epoch": 18,
+      "best_val_loss": 1.1612833636705993,
+      "epochs": 50,
+      "epoch_s": 96.86799999999998,
+      "test_loss": 1.1556,
+      "total_min": 85.65972326993942
+    },
+    {
+      "layer": 24,
+      "extract_s": 258.48007917404175,
+      "train_s": 4870.965152263641,
+      "status": "ok",
+      "best_epoch": 12,
+      "best_val_loss": 1.210059811639004,
+      "epochs": 50,
+      "epoch_s": 96.69800000000001,
+      "test_loss": 1.2131,
+      "total_min": 85.49689894914627
+    }
+  ]
+}
