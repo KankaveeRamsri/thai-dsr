@@ -248,3 +248,34 @@ procedure around it changes:
   layer-9 check.
 - **Library versions** are Kaggle's preinstalled ones, not Colab's. All six layers
   run in the same Kaggle environment, so the comparison stays like-for-like.
+
+### Deviation 3 (found 2026-11-26, after training, before any claim): Kaggle layer 24 is block 24 *before* the final LayerNorm
+
+On Kaggle the extraction ran with transformers 5.20.2. There, `outputs.hidden_states[24]`
+is the output of block 24 **without** the encoder's final LayerNorm. This plan (and
+transformers 4.57.6 on the Mac) defines index 24 as the output **after** it. Layers
+0–23 are unaffected.
+
+Evidence:
+- The per-dimension mean of the layer-24 training statistics (`input_norm.npz`)
+  correlates 0.998 with the pre-LayerNorm block-24 output on the Mac, and 0.83 with
+  the post-LayerNorm output.
+- The mean |mean| and mean std are 8.08 and 13.6, against 8.22 and 14.4 pre-LN and
+  0.23 and 0.30 post-LN.
+- For layers 3–18 the Kaggle training statistics agree with the Mac test embeddings.
+- Layer 9 was checked directly against the W2 archive: relative L2 error 4.6e-6.
+
+Consequences:
+- The layer-24 checkpoint (`cv27_layer24_tempo`) was trained on pre-LN block-24
+  outputs.
+- Its first evaluation, with post-LN Mac test embeddings, fed it inputs from a
+  different distribution and is **invalid**: near-zero speaker similarity and
+  F0 correlation, HNR 29 dB. H2 for layer 24 is therefore not decided.
+- The Kaggle reference check covered layer 9 only, which is why this was not caught.
+
+Remedy: open, to be decided.
+- (a) Re-evaluate the existing checkpoint with pre-LN test embeddings and redefine
+  the ablation's "layer 24" as block 24 before the final LayerNorm.
+- (b) Retrain layer 24 on post-LN embeddings, as registered.
+- Either way, future Kaggle runs must pin the transformers version, or check every
+  extracted layer against a Mac reference.
